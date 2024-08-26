@@ -1,6 +1,6 @@
 # Module Types
 
-This page describes the behaviour of every built-in types to use in [module configurations](./Module%20Configuration.md).
+This page describes the behaviour of every built-in types to use in [module configurations](Module-Configuration).
 
 Modules are designed around specific item types, but can still be used on any item, so long as they provides the proper component.
 

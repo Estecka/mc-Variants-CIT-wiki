@@ -5,8 +5,8 @@ It's core principle is the automatic association between models and item variant
 
 It provides specialised modules for miscellani item types, which are enabled and configured via resource packs.
 
-**For resource pack makers:** [Configuring CIT Modules](./Module%20Configuration.md)
+**For resource pack makers:** [Configuring CIT Modules](Module-Configuration)
 
-**For mod developpers:** [Creating custom module types](./Custom%20Module%20Types.md)
+**For mod developpers:** [Creating custom module types](Custom-Module-Types)
 
 

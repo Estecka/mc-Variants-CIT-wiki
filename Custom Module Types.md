@@ -1,6 +1,6 @@
 # Custom Module Types
 
-Custom CIT modules may be defined by mods, for use in [module configurations](./Module%20Configuration.md).
+Custom CIT modules may be defined by mods, for use in [module configurations](Module-Configuration).
 
 A module's primary function is to figure out the variant of an item, from which the mod will derive the model to use. Optionally, it can implement additional logic and special models for situations that are not covered by the mod.
 
