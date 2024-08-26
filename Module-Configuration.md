@@ -30,9 +30,7 @@ Here's an example of a hypothetical module that would be used by the mod Invaria
 ### `type`
 **Mandatory**, Namespaced Identifier
 
-The [module type](Module-Types) of CIT logic to use. This affects how an item's variant is identified, and what special models are available to it.
-
-See below for a list of possible values
+The [type](Module-Types) of the CIT module used for this item. This affects how an item's variant is identified, and what special models are available to it.
 
 ### `modelPrefix`
 **Mandatory**, String
