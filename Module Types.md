@@ -13,8 +13,10 @@ As of writting, available variant IDs are, in order: `lucy`, `wild`, `gold`, `cy
 
 ## `custom_data`
 Derives the item variant from a string stored at the root of the `custom_data` component.
+The key of the element this module will look for must be defined in its parameters.
 
-The key of the element this module will look for must be defined in its parameters, under `nbtKey`.
+### Parameters:
+- `nbtKey`: *Mandatory, String.* The key of the element that will be treated as the variant ID.
 
 Example:
 ```json
@@ -26,6 +28,18 @@ Example:
 	}
 }
 ```
+
+## `custom_name`
+Derives the item variant from the `custom_name` component.
+
+The name is directly used as the variant identifier, so most names should be restricted to the character set `[a-z0-9_.-]`.
+Names with illegal characters can still be used, but the corresponding variant must be hardcoded in the module's parameters. Do note that only one resource pack in the stack can control that list of names.
+
+### Parameters:
+- `caseSensitive`: *Optional, Boolean, defaults to false.*
+When false, all upper case characters are treated as lower cases. Note that uppercase are illegal characters for variant ids.
+- `specialNames`: *Optional, Maps Strings to Identifiers.*
+Hardcoded association between specific names and variant ID. Can be used with names that contain illegal characters.
 
 ## `instrument`
 Derives the item variant from the item component `instrument`, used by goat horns.

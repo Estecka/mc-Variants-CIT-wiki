@@ -5,7 +5,7 @@ A module Configurations is a JSON file provided by a resource pack, which descri
 
 Only one CIT module can exist per item. If you're looking to create a resource pack for a vanilla item, you should have a look at the [recommended configurations](Recommended-Configurations) in order to maximise compatibility with other packs.
 
-## Parameters
+## Schema
 Here's an example of a hypothetical module that would be used by the mod Invariable-Paintings:
 
 `/assets/minecraft/variants-cit/painting.json`
