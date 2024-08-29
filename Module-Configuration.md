@@ -1,14 +1,14 @@
 # Module Configuration
 
 A module Configurations is a JSON file provided by a resource pack, which describes the CIT logic for exactly one item type. The type of the target item is automatically derived from the path of the file:  
-`/assets/<item_namespace>/variants-cit/<item_name>.json`
+`/assets/<item_namespace>/variants-cit/item/<item_name>.json`
 
 Only one CIT module can exist per item. If you're looking to create a resource pack for a vanilla item, you should have a look at the [recommended configurations](Recommended-Configurations) in order to maximise compatibility with other packs.
 
 ## Schema
 Here's an example of a hypothetical module that would be used by the mod Invariable-Paintings:
 
-`/assets/minecraft/variants-cit/painting.json`
+`/assets/minecraft/variants-cit/item/painting.json`
 ```json
 {
 	"type": "painting_variant",
