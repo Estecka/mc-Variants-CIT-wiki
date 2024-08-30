@@ -6,7 +6,7 @@ In particular, it's critical that the model prefix be identical for all; as a ru
 Here is a collection of modules I encourage you to use as-is.
 
 ## Axolotl Buckets
-`/assets/minecraft/variants-cit/item/axolotl_bucket.json`
+`/assets/minecraft/variant-cits/item/axolotl_bucket.json`
 ```json
 {
 	"type": "axolotl_variant",
@@ -16,7 +16,7 @@ Here is a collection of modules I encourage you to use as-is.
 This is the same format used by the mod "More Axolotl Variants"
 
 ## Enchanted Books
-`/assets/minecraft/variants-cit/item/enchanted_book.json`
+`/assets/minecraft/variant-cits/item/enchanted_book.json`
 ```json
 {
 	"type": "stored_enchantments",
@@ -49,7 +49,7 @@ Example: `/assets/minecraft/models/item/enchanted_book/unbreaking.json`
 ```
 
 ## Goat Horns
-`/assets/minecraft/variants-cit/item/goat_horn.json`
+`/assets/minecraft/variant-cits/item/goat_horn.json`
 ```json
 {
 	"type": "instrument",
@@ -63,7 +63,7 @@ You can set your models' parents to the corresponding vanilla models, this will 
 ## Music Discs
 The same config should be used for every music disc types. Although in practice you'll only need to provide configs for the variants you use to host you custom discs.
 
-`/assets/minecraft/variants-cit/item/music_disc_<host>.json`
+`/assets/minecraft/variant-cits/item/music_disc_<host>.json`
 ```json
 {
 	"type": "jukebox_playable",
@@ -75,7 +75,7 @@ This is the same format that is used in the vanilla resources.
 ## Potions
 Being different items, splash potions and lingering potions require a different CIT config.
 
-`/assets/minecraft/variants-cit/item/potion.json`
+`/assets/minecraft/variant-cits/item/potion.json`
 ```json
 {
 	"type": "potion_type",
@@ -83,7 +83,7 @@ Being different items, splash potions and lingering potions require a different 
 }
 ```
 
-`/assets/minecraft/variants-cit/item/splash_potion.json`
+`/assets/minecraft/variant-cits/item/splash_potion.json`
 ```json
 {
 	"type": "potion_type",
@@ -91,7 +91,7 @@ Being different items, splash potions and lingering potions require a different 
 }
 ```
 
-`/assets/minecraft/variants-cit/item/lingering_potion.json`
+`/assets/minecraft/variant-cits/item/lingering_potion.json`
 ```json
 {
 	"type": "potion_type",
