@@ -17,6 +17,7 @@ The key of the element this module will look for must be defined in its paramete
 
 ### Parameters:
 - `nbtKey`: *Mandatory, String.* The key of the element that will be treated as the variant ID.
+- `caseSensitive`: *Optional, boolean, default to True.* If set to false, will convert the nbt data to lower-case. This should be reserved for when you have no control over the data; if you are the data designer, it's recommended to restrict your identifers to the character set `[a-z0-9_.-]`.
 
 Example:
 ```json

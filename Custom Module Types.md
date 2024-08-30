@@ -9,7 +9,7 @@ The example codes below use **Yarn Mappings**.
 ## The simplest module
 The smallest possible module is a simple function, that takes in an `ItemStack`, and returns the `Identifier` for its variant. This may return null if no variant was found, which will use the vanilla model.
 
-You then register an instance of this module with an ID, which will be used as the `type` in resource packs. You may register either a lambda, or an instance of `ISimpleCitModule`.
+You may register either a lambda, or an instance of `ISimpleCitModule`, alongside an ID which will be used as the `type` in resource packs. 
 
 ```java
 public class CustomModule
@@ -21,90 +21,56 @@ implements ISimpleCitModule
 
 	@Override
 	public @Nullable Identifier GetItemVariant(ItemStack stack){
-		// Base logic
+		return stack.get(someComponent).GetVariant();
 	}
 }
 ```
 
 ## Special Modules
-Modules with special models must implements the more complete interface `ICitModule`.
-Unlike the simpler modules, those need to be instantiated per configuration; so instead of directly registering an instance of it, you must register a constructor or equivalent. That constructor accepts the list of special models that were configured by the resource pack.
+Modules with special models must implements `ICitModule`; they are registered the same way as Simple modules.
 
-Your special logic must be implemented in `GetItemModel`, from which you may return any of the models provided via the constructor.
-There is no need to evaluate `GetItemVariant` in there; if no special condition apply, you should return the value from the provided variant manager. Returning `null` will again cause the vanilla model to be used instead.
+Your logic will instead be implemented in `GetItemModel`. Instead of returning a variant ID, it directly returns the ID of the model to use. Returning null will again cause the vanilla model to be used.
+You can access the list of model IDs through the `IVariantManager` passed as parameter; special models use the same keys that are defined in the `special` block of the module configuration.
+
 
 ```java
 public class CustomModule
 extends ICitModule
 {
-	static public void Register(){
-		ModuleRegistrar.Register(Identifier.of("modid","custom_module"), CustomModule::new);
-	}
-
-	private final @Nullable ModelIdentifier mySpecialModel;
-
-	public CustomModel(Map<String,ModelIdentifier> specialModels){
-		this.mySpecialModel = specialModels.get("myKey");
-	}
-
-	@Override
-	public @Nullable Identifier GetItemVariant(ItemStack stack){
-		// Base logic
-	}
-
 	@Override
 	public @Nullable ModelIdentifier GetItemModel(ItemStack stack, IVariantManager variantManager){
-		if (/*Special logic*/)
-			return mySpecialModel;
+		if (/*Special condition*/)
+			return variantManager.GetSpecialModel("specialKey");
 		else
-			return variantManager.GetVariantModel(stack);
+			return variantManager.GetVariantModel(variantId);
 	}
 }
 ```
 
 ## Custom Parameters
-Modules that wish to receive custom parameters must be registered as a constructor, alongside a codec which will be used to decode the `parameter` object in the module configuration.
-
-Those modules can implement either `ISimpleCitModule` or `ICitModule`. The parameters will be passed to the modules constructor, after the special models list if applicable.
+Modules that receive custom parameters must be instantiated per-config. Instead of directly registering an instance of it, you must register a **codec** which will be used to decode the `parameters` block in the module configuration.
 
 ```java
 public class CustomModule
-extends ISimpleCitModule
+extends ICitModule, ISimpleModule //either work
 {
-	static public final MapCodec<MyDataType> CODEC = /*...*/;
+	static public final MapCodec<CustomModule> CODEC = RecordCodecBuilder.mapCodec(builder->builder
+		.group(
+			Codec.BOOL.fieldOf("param1").forGetter(/*...*/),
+			Codec.INT.fieldOf("param2").forGetter(/*...*/)
+		)
+		.apply(builder, CustomModule::new)
+	);
 
 	static public void Register(){
-		ModuleRegistrar.Register(Identifier.of("modid","custom_module"), CustomModule::new, CODEC);
+		ModuleRegistrar.Register(Identifier.of("modid","custom_module"), CODEC);
 	}
 
-	private final MyDataType parameters
-
-	public CustomModel(MyDataType parameters){
-		this.parameters = parameters;
+	public CustomModel(boolean param1, int param2){
+		//...
 	}
 
-	// ...
-}
-```
-or
-```java
-public class CustomModule
-extends ICitModule
-{
-	static public final MapCodec<MyDataType> CODEC = /*...*/;
-
-	static public void Register(){
-		ModuleRegistrar.Register(Identifier.of("modid","custom_module"), CustomModule::new, CODEC);
-	}
-
-	private final MyDataType parameters
-	private final @Nullable ModelIdentifier mySpecialModel;
-
-	public CustomModel(Map<String,ModelIdentifier> specialModels, MyDataType parameters){
-		this.parameters = parameters;
-		this.mySpecialModel = specialModels.get("myKey");
-	}
-
+	// Main logic
 	// ...
 }
 ```
