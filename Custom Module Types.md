@@ -1,13 +1,13 @@
 # Custom Module Types
 
-Custom CIT modules may be defined by mods, for use in [module configurations](Module-Configuration).
+Custom CIT modules may be defined by other mods, for use in [module configurations](Module-Configuration).
 
-A module's primary function is to figure out the variant of an item, from which the mod will derive the model to use. Optionally, it can implement additional logic and special models for situations that are not covered by the mod.
+A module's primary function is to figure out the variant of an item, from which the mod will derive the model to use. Optionally, it can implement additional logic and special models for situations that are not covered by the variant system.
 
 The example codes below use **Yarn Mappings**.
 
 ## The simplest module
-The smallest possible module is a simple function, that takes in an `ItemStack`, and returns the `Identifier` for its variant. This may return null if no variant was found, which will use the vanilla model.
+The smallest possible module is a simple function, that takes in an `ItemStack`, and returns the `Identifier` for its variant. This may return null if no variant was found, which will hand over control to another module.
 
 You may register either a lambda, or an instance of `ISimpleCitModule`, alongside an ID which will be used as the `type` in resource packs. 
 
@@ -29,7 +29,7 @@ implements ISimpleCitModule
 ## Special Modules
 Modules with special models must implements `ICitModule`; they are registered the same way as Simple modules.
 
-Your logic will instead be implemented in `GetItemModel`. Instead of returning a variant ID, it directly returns the ID of the model to use. Returning null will again cause the vanilla model to be used.
+Your logic will instead be implemented in `GetItemModel`. Instead of returning a variant ID, it directly returns the ID of the model to use (or null).
 You can access the list of model IDs through the `IVariantManager` passed as parameter; special models use the same keys that are defined in the `special` block of the module configuration.
 
 
@@ -66,7 +66,7 @@ extends ICitModule, ISimpleModule //either work
 		ModuleRegistrar.Register(Identifier.of("modid","custom_module"), CODEC);
 	}
 
-	public CustomModel(boolean param1, int param2){
+	public CustomModule(boolean param1, int param2){
 		//...
 	}
 

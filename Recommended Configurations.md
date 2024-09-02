@@ -1,9 +1,7 @@
 # Recommended Configurations
+Modules being regular resources, it's possible for different packs can completely overwrite each others modules if stored at the same pathes.  it's possible for multiple similar modules to cooexist, but it may be inconvenient to come up with a truly unique name for the modules, and is less optimized.
 
-This mod only supports a single CIT config per item type. If multiple resource packs want add different variants to the same item, it's important that they use similar enough config in order to be able to cooexist.
-In particular, it's critical that the model prefix be identical for all; as a rule of thumbs, you should use the item's name as the variant directory.
-
-Here is a collection of modules I encourage you to use as-is.
+In order to both reduce the amount of modules per-item, and maximise compatibility between multiple packs, here are some pre-configured modules that cover the most common CIT scenarios. Should your pack include a module at any of the pathes below, it should be configured _exactly_ as provided here, so that other packs may safely rely on it.
 
 ## Axolotl Buckets
 `/assets/minecraft/variant-cits/item/axolotl_bucket.json`
@@ -19,7 +17,7 @@ This is the same format used by the mod "More Axolotl Variants"
 `/assets/minecraft/variant-cits/item/enchanted_book.json`
 ```json
 {
-	"type": "stored_enchantments",
+	"type": "stored_enchantment",
 	"modelPrefix": "item/enchanted_book/",
 	"special": {
 		"multi": "item/multi_enchanted_book"
@@ -61,19 +59,55 @@ Additional models for tooting should be stored in a separate directory: `item/to
 You can set your models' parents to the corresponding vanilla models, this will save you the need to redefine the "display" section.
 
 ## Music Discs
-The same config should be used for every music disc types. Although in practice you'll only need to provide configs for the variants you use to host you custom discs.
+Relevant for datapacks that include custom songs.
 
-`/assets/minecraft/variant-cits/item/music_disc_<host>.json`
+All vanilla discs being different items, their are two ways to go about it. If you're confident your custom songs will only end up on a specific disc, you can create a module specific to it:
+
+`/assets/minecraft/variant-cits/item/music_disc_<name>.json`
 ```json
 {
 	"type": "jukebox_playable",
 	"modelPrefix": "item/music_disc_"
 }
 ```
-This is the same format that is used in the vanilla resources.
+
+Otherwise you may create a single module encompassing all vanilla discs:
+
+`/assets/minecraft/variant-cits/item/music_disc.json`
+```json
+{
+	"type": "jukebox_playable",
+	"items": [
+		"music_disc_5",
+		"music_disc_13",
+		"music_disc_11",
+		"music_disc_blocks",
+		"music_disc_cat",
+		"music_disc_chirp",
+		"music_disc_creator",
+		"music_disc_creator_music_box",
+		"music_disc_far",
+		"music_disc_mall",
+		"music_disc_mellohi",
+		"music_disc_precipice",
+		"music_disc_otherside",
+		"music_disc_pigstep",
+		"music_disc_relic",
+		"music_disc_stal",
+		"music_disc_strad",
+		"music_disc_wait",
+		"music_disc_ward"
+	],
+	"modelPrefix": "item/music_disc_"
+}
+```
+Should a mod include custom disc types, those should not be included in the module for vanilla disc, but in a module unique to this mod.
+
+Both modules the same format as the vanilla disc textures, and so will be compatible with each other.
+
 
 ## Potions
-Being different items, splash potions and lingering potions require a different CIT config.
+Being different items, splash potions and lingering potions require a different modules:
 
 `/assets/minecraft/variant-cits/item/potion.json`
 ```json

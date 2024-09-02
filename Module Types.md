@@ -12,12 +12,12 @@ Axolotl variants are not inherently identifier-based, but this modules converts 
 As of writting, available variant IDs are, in order: `lucy`, `wild`, `gold`, `cyan`, `blue`.
 
 ## `custom_data`
-Derives the item variant from a string stored at the root of the `custom_data` component.
-The key of the element this module will look for must be defined in its parameters.
+Derives the item variant from a string stored somewhere in the `custom_data` component.
+The location of the element this module will look for must be defined in its parameters.
 
 ### Parameters:
-- `nbtKey`: *Mandatory, String.* The key of the element that will be treated as the variant ID.
-- `caseSensitive`: *Optional, boolean, default to True.* If set to false, will convert the nbt data to lower-case. This should be reserved for when you have no control over the data; if you are the data designer, it's recommended to restrict your identifers to the character set `[a-z0-9_.-]`.
+- `nbtPath`: *Mandatory, String.* The path to the variant ID, with dot '`.`' separated elements.
+- `caseSensitive`: *Optional, boolean, default to True.* If set to false, will convert the nbt data to lower-case. This should be reserved for when you have no control over the data; if you are the data designer, you should restrict yout identifiers to the character set `[a-z0-9_-]`.
 
 Example:
 ```json
@@ -25,7 +25,7 @@ Example:
 	"type": "custom_data",
 	"modelPefix": "item/cutomItemType/",
 	"parameters": {
-		"nbtKey": "myNamespace:Variant"
+		"nbtPath": "path.to.variant"
 	}
 }
 ```
@@ -33,14 +33,18 @@ Example:
 ## `custom_name`
 Derives the item variant from the `custom_name` component.
 
-The name is directly used as the variant identifier, so most names should be restricted to the character set `[a-z0-9_.-]`.
-Names with illegal characters can still be used, but the corresponding variant must be hardcoded in the module's parameters. Do note that only one resource pack in the stack can control that list of names.
+The name itself is used as the variant, with illegal characters being either removed or converted:
+Uppercases are converted to lowercases, accents are stripped off, spaces '` `' are converted to underscores '`_`', and all other invalid characters are completely removed.
 
 ### Parameters:
-- `caseSensitive`: *Optional, Boolean, defaults to false.*
-When false, all upper case characters are treated as lower cases. Note that uppercase are illegal characters for variant ids.
+- `debug`: *Optional, defaults to false*. Prints name-to-variants conversion into the log, whenever one is computed.
 - `specialNames`: *Optional, Maps Strings to Identifiers.*
-Hardcoded association between specific names and variant ID. Can be used with names that contain illegal characters.
+Hardcoded associations between specific names and variant ID.
+
+## `enchantment`
+Derives the item variant from a single enchantment in the item component `enchantments`, used by enchanted tools and armours.
+
+The module will prioritize enchantments that, in order: have available models, have the largest exclusive set, and have the highest level.
 
 ## `instrument`
 Derives the item variant from the item component `instrument`, used by goat horns.
@@ -51,7 +55,7 @@ Derives the item variant from the item component `jukebox_playable`, used by mus
 ## `potion_type`
 Derives the item variant from the item component `potion_contents`, used by potions, splash potions, and lingering potions. This specifically looks at the potion's "type", and not the actual status effects.
 
-## `stored_enchantments`
+## `stored_enchantment`
 Derives the item variant from the item component `stored_enchantments`, used by enchanted book.
 
 If the item has **exactly one enchantments**, the variant will be the ID of that enchantment. If it contains multiple enchantments, it will instead use the special model `multi`.
