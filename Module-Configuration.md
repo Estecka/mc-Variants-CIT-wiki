@@ -14,6 +14,7 @@ Here's an example of a hypothetical module that would be used by the mod Invaria
 	"priority": 0,
 	"items": ["painting"],
 	"modelPrefix": "item/painting/",
+	"modelParent": "item/generated",
 	"fallback": "invarpaint:item/filled_painting",
 	"special": {
 		"invalid": "invarpaint:item/missing_painting",
@@ -41,6 +42,13 @@ A subdirectory of the `models/` folder, and/or a prefix. All models whose path s
 - Model path: `/assets/<namespace>/models/<modelPrefix><name>.json`
 
 The name of the variant is appended *directly* to the model-prefix. The presence or absence of a trailing slash '`/`' in the model-prefix makes the difference between a directory, and a filename-prefix.
+
+### `modelParent`
+**Optional**, Namespaced Identifier
+
+If set, the mod will look for textures with the same naming scheme as above, and automatically generates the corresponding models, if they weren't already provided.
+
+The given value is used as the generated models' parent; typically, `item/generated` for regular items, and `item/handheld` for tools. When in doubt, try using the vanilla model as parent.
 
 ### `priority`
 **Optional**, Integer, defaults to 0.
