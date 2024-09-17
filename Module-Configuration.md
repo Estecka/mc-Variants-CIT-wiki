@@ -1,20 +1,30 @@
 # Module Configuration
 
-A module Configurations is a JSON file provided by a resource pack, located somewhere int `variant-cits/item`. It can control a large collection of CITs, and defines how to match them to an item.
+A module Configurations is a JSON file provided by a resource pack, located somewhere in `variants-cit/item`. It can control a large collection of CITs, and defines how to match them to an item.
 
 If you're looking to create a resource pack for a vanilla item, you should have a look at the [recommended configurations](Recommended-Configurations).
 
 ## Schema
-Here's an example of a hypothetical module that would be used by the mod Invariable-Paintings:
+The strict minimum required to form a working module is its type, its target items, and the location of its item models:
 
-`/assets/minecraft/variant-cits/item/painting.json`
 ```json
 {
 	"type": "painting_variant",
-	"priority": 0,
 	"items": ["painting"],
+	"modelPrefix": "item/painting/"
+}
+```
+
+Here's a more complete example, as used by the mod Invariable-Paintings:
+
+`/assets/invarpaint/variants-cit/item/painting.json`
+```json
+{
+	"type": "painting_variant",
+	"items": ["minecraft:painting"],
+	"priority": 0,
 	"modelPrefix": "item/painting/",
-	"modelParent": "item/generated",
+	"modelParent": "minecraft:item/generated",
 	"fallback": "invarpaint:item/filled_painting",
 	"special": {
 		"invalid": "invarpaint:item/missing_painting",
@@ -24,15 +34,31 @@ Here's an example of a hypothetical module that would be used by the mod Invaria
 	}
 }
 ```
-> [!WARNING]
->
-> Invariable-paintings having grand-fathered this mod, its behaviour is the most feature-complete example of how CIT modules can work. 
-> However, there exists no `painting_variant` module yet, as it could conflict with the current version of Invariable-Paintings.
 
 ### `type`
 **Mandatory**, Namespaced Identifier
 
 The [type](Module-Types) of the CIT module used for this item. This affects how an item's variant is identified, and what special models are available to it.
+
+### `items`
+**Optional**, List of Namespaced Identifers, defaults to the module's id.
+
+A list of item types the module will be applied to. If unspecified, the target item is automatically derived from the path of your module: `/assets/<item_namespace>/variant-cits/item/<item_name>.json`
+
+Implicit targeting should be reserved for modules that are intrinsic to the item type. (See [recommended modules](Recommended-Configurations)).
+
+The mod will silently ignore identifiers that do not match an existing item, so a texture pack will remain compatible with versions of minecraft that lacks some of the defined items.
+
+### `priority`
+**Optional**, Integer, defaults to 0.
+
+When multiple modules are applied to the same item stack, modules with higher priorities are evaluated first. If, and only if, a module cannot provide a CIT for the item stack, then the next lower priority module will be evaluated. This can happen, if:
+- The module cannot find a variant for the item.
+- The module has found a variant, but that variant has no CIT, and no fallback was specified.
+- The module wants to use a special model, but that model was not specified..
+
+If your module can be considered intrinsic to the item (see [recommended modules](Recommended-Configurations)), and would almost never fail to apply a CIT, then I recommend a value around 0.
+If your module is based on `custom_data` or `custom_name`, and often leave an item unchanged, then I recommend a value around 100.
 
 ### `modelPrefix`
 **Mandatory**, String
@@ -46,26 +72,9 @@ The name of the variant is appended *directly* to the model-prefix. The presence
 ### `modelParent`
 **Optional**, Namespaced Identifier
 
-If set, the mod will look for textures with the same naming scheme as above, and automatically generates the corresponding models, if they weren't already provided.
+If set, item models will be automatically generated from textures whose name matches the `modelPrefix`, or the `fallback` and `special` models.
 
-The given value is used as the generated models' parent; typically, `item/generated` for regular items, and `item/handheld` for tools. When in doubt, try using the vanilla model as parent.
-
-### `priority`
-**Optional**, Integer, defaults to 0.
-
-If multiple modules are applied to the same item stack, modules with higher priorities are evaluated first. If a module ends up not providing a CIT for the stack, only then control will be handed over to the next lower priority module.
-
-If your module can be considered intrinsic to the item (see [recommended modules](Recommended-Configurations)), and would almost never fail to apply a CIT, then I recommend a value around 0.
-If your module is based on `custom_data` or `custom_name`, and often leave an item unchanged, then I recommend a value around 100.
-
-### `items`
-**Optional**, List of Namespaced Identifers, defaults to the module's id.
-
-A list of item types the module will be applied to. If unspecified, the target item is automatically derived from the path of your module: `/assets/<item_namespace>/variant-cits/item/<item_name>.json`
-
-Implicit targeting should be reserved for modules that are intrinsic to the item type. (See [recommended modules](Recommended-Configurations)).
-
-Regardless of how the targets are defined, the mod will ignore identifiers that do not match an existing item. A pack can will remain compatible with version of minecraft that lack these some of the defined items.
+This value is used as the generated model's parent; typically, `item/generated` for regular items, and `item/handheld` for tools. When in doubt, try using the vanilla model as parent.
 
 ### `fallback`
 **Optional**, Namespaced Identifier. Defaults to null.

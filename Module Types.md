@@ -43,14 +43,43 @@ Hardcoded associations between specific names and variant ID.
 
 ## `enchantment`
 Derives the item variant from a single enchantment in the item component `enchantments`, used by enchanted tools and armours.
+This will prioritize enchantments that, in order: have available models, have the largest exclusive set, or have the highest level.
 
-The module will prioritize enchantments that, in order: have available models, have the largest exclusive set, and have the highest level.
+While one module can only work with a single enchantment, it's still possible to create CITs based on multiple enchantments, by using multiple modules with different priorities and parameters.
+
+### Parameters:
+- `requiredEnchantments`: *Optional, maps Identifiers to Integers.* The module will only be applied to items that have enough levels in the specified enchantments. Enchantments listed here are completely excluded from being selected as the item variant.
+
+### Example:
+This module will manage CITs that only have a single enchantment:
+```json
+{
+	"type": "enchantment",
+	"modelPrefix": "item/diamond_sword/"
+}
+```
+This additional module will only apply to items with the `fire_aspect` enchantement, and provide a CIT based on the second enchantment. (See [module priorities](Module-Configuration#priority).)
+```json
+{
+	"type": "enchantment",
+	"priority": 100,
+	"modelPrefix": "item/fire_aspected_diamond_sword/",
+	"parameters": {
+		"requiredEnchantments": { "fire_aspect": 1 }
+	}
+}
+```
 
 ## `instrument`
 Derives the item variant from the item component `instrument`, used by goat horns.
 
 ## `jukebox_playable`
 Derives the item variant from the item component `jukebox_playable`, used by music discs.
+
+## `painting_variant`
+Derives the item variant from the `variant` element in the `entity_tag` component, used by paintings in the creative inventory.
+
+The special model `invalid` will be applied to painting variants that do not exist with the current datapacks.
 
 ## `potion_type`
 Derives the item variant from the item component `potion_contents`, used by potions, splash potions, and lingering potions. This specifically looks at the potion's "type", and not the actual status effects.

@@ -2,7 +2,7 @@
 
 Override predicates are the vanilla way of defining variants of a model, based on numerical data. Those can be used inside the identifier-based models managed by Variant-CIT's, in order to provide a second layer of variance to the item.
 
-This page describes the predicates that are provided by this mod.
+This mod currently only provides a single predicate.
 
 ## `level`
 **Applicable items:** `enchanted_book`.
