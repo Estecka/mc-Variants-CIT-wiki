@@ -11,13 +11,12 @@ Axolotl variants are not inherently identifier-based, but this modules converts 
 
 As of writting, available variant IDs are, in order: `lucy`, `wild`, `gold`, `cyan`, `blue`.
 
-## `custom_data`
-Derives the item variant from a string stored somewhere in the `custom_data` component.
-The location of the element this module will look for must be defined in its parameters.
+## `custom_data`, `entity_data`, `bucket_entity_data`, `block_entity_data`
+Derives the item variant from a string stored somewhere in the component with matching name.
 
 ### Parameters:
 - `nbtPath`: *Mandatory, String.* The path to the variant ID, with dot '`.`' separated elements.
-- `caseSensitive`: *Optional, boolean, default to True.* If set to false, will convert the nbt data to lower-case. This should be reserved for when you have no control over the data; if you are the data designer, you should restrict yout identifiers to the character set `[a-z0-9_-]`.
+- `caseSensitive`: *Optional, boolean, default to True.* If set to false, will convert the nbt data to lower-case. This should be reserved for when you have no control over the data; if you are the data designer, consider limiting your identifiers to the character set `[a-z0-9_-]`, like for vanilla identifier.
 
 Example:
 ```json

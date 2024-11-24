@@ -85,11 +85,10 @@ Modules with fallback are much less likely to hand over control to lower priorit
 ### `special`
 **Optional**, maps Strings to Namespaced Identifiers.
 
-A list of models that the CIT module may use in certain exceptional circumstances.
-All models listed here are automatically loaded.
-The list of models that are actually used depends on the [`type`](Module-Types) of the CIT module.
+A list of models that the CIT module may use in certain exceptional circumstances. What models are used and when depends on the [`type`](Module-Types) of the CIT module.
 
 All special models are optional and default to null.
+All models listed here are automatically loaded.
 
 
 ### `parameters`
