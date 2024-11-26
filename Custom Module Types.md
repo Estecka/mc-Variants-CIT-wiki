@@ -27,7 +27,7 @@ implements ISimpleCitModule
 ```
 
 ## Special Modules
-Modules with special models must implements `ICitModule`; they are registered the same way as Simple modules.
+Modules with special models must implements the super-type `ICitModule`; they are registered the same way as Simple modules.
 
 Your logic will instead be implemented in `GetItemModel`. Instead of returning a variant ID, it directly returns the ID of the model to use (or null).
 You can access the list of model IDs through the `IVariantManager` passed as parameter; special models use the same keys that are defined in the `special` block of the module configuration.
@@ -38,7 +38,7 @@ public class CustomModule
 extends ICitModule
 {
 	@Override
-	public @Nullable ModelIdentifier GetItemModel(ItemStack stack, IVariantManager variantManager){
+	public @Nullable Identifier GetItemModel(ItemStack stack, IVariantManager variantManager){
 		if (/*Special condition*/)
 			return variantManager.GetSpecialModel("specialKey");
 		else
@@ -48,18 +48,18 @@ extends ICitModule
 ```
 
 ## Custom Parameters
-Modules that receive custom parameters must be instantiated per-config. Instead of directly registering an instance of it, you must register a **codec** which will be used to decode the `parameters` block in the module configuration.
+Modules that receive custom parameters must be instantiated per-config. Instead of directly registering an instance of it, you must register a **codec** which will be applied to the the `parameters` block in the module configuration.
 
 ```java
 public class CustomModule
 extends ICitModule, ISimpleModule //either work
 {
-	static public final MapCodec<CustomModule> CODEC = RecordCodecBuilder.mapCodec(builder->builder
+	static public final MapCodec<CustomModule> CODEC = RecordCodecBuilder.mapCodec(instance->instance
 		.group(
 			Codec.BOOL.fieldOf("param1").forGetter(/*...*/),
 			Codec.INT.fieldOf("param2").forGetter(/*...*/)
 		)
-		.apply(builder, CustomModule::new)
+		.apply(instance, CustomModule::new)
 	);
 
 	static public void Register(){

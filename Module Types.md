@@ -2,7 +2,7 @@
 
 This page describes the behaviour of every built-in types to use in [module configurations](Module-Configuration).
 
-Modules are designed around specific item types, but can still be used on any item, so long as they provides the proper component.
+Some modules are designed around specific item types, but can still be used on any item, so long as they provides the required component.
 
 ## `axolotl_variant`
 Derives the item variant from the `Variant` element in the `bucket_entity_data` component. The component is used by multiple types of bucket-of-mob, but this CIT module only ever returns the ID of axolotl variants.
@@ -36,7 +36,7 @@ The name itself is used as the variant, with illegal characters being either rem
 Uppercases are converted to lowercases, accents are stripped off, spaces '` `' are converted to underscores '`_`', and all other invalid characters are completely removed.
 
 ### Parameters:
-- `debug`: *Optional, defaults to false*. Prints name-to-variants conversion into the log, whenever one is computed.
+- `debug`: *Optional, defaults to false*. Prints name-to-variants conversion into the log, whenever a new one is computed.
 - `specialNames`: *Optional, Maps Strings to Identifiers.*
 Hardcoded associations between specific names and variant ID.
 
