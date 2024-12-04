@@ -43,11 +43,7 @@ The [type](Module-Types) of the CIT module used for this item. This affects how 
 ### `items`
 **Optional**, List of Namespaced Identifers, defaults to the module's id.
 
-A list of item types the module will be applied to. If unspecified, the target item is automatically derived from the path of your module: `/assets/<item_namespace>/variant-cits/item/<item_name>.json`
-
-Implicit targeting should be reserved for modules that are intrinsic to the item type. (See [recommended modules](Recommended-Configurations)).
-
-The mod will silently ignore identifiers that do not match an existing item, so a texture pack will remain compatible with versions of minecraft that lacks some of the defined items.
+A list of item types the module will be applied to. The mod will silently ignore identifiers that do not match an existing item, so a texture pack will remain compatible with versions of minecraft that lacks some of the defined items.
 
 ### `priority`
 **Optional**, Integer, defaults to 0.
@@ -57,7 +53,7 @@ When multiple modules are applied to the same item stack, modules with higher pr
 - The module has found a variant, but that variant has no CIT, and no fallback was specified.
 - The module wants to use a special model, but that model was not specified..
 
-If your module can be considered intrinsic to the item (see [recommended modules](Recommended-Configurations)), and would almost never fail to apply a CIT, then I recommend a value around 0.
+If your module would almost never fail to apply a CIT, then I recommend a value around 0.
 If your module is based on `custom_data` or `custom_name`, and often leave an item unchanged, then I recommend a value around 100.
 
 ### `modelPrefix`
