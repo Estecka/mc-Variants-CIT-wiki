@@ -12,7 +12,7 @@ Axolotl variants are not inherently identifier-based, but this modules converts 
 As of writting, available variant IDs are, in order: `lucy`, `wild`, `gold`, `cyan`, `blue`.
 
 ## `custom_data`, `entity_data`, `bucket_entity_data`, `block_entity_data`
-Derives the item variant from a string stored somewhere in the component with matching name.
+Derives the item variant from a string stored somewhere in the nbt component with matching name.
 
 ### Parameters:
 - `nbtPath`: *Mandatory, String.* The path to the variant ID, with dot '`.`' separated elements.
@@ -86,4 +86,9 @@ Derives the item variant from the item component `potion_contents`, used by poti
 ## `stored_enchantment`
 Derives the item variant from the item component `stored_enchantments`, used by enchanted book.
 
-If the item has **exactly one enchantments**, the variant will be the ID of that enchantment. If it contains multiple enchantments, it will instead use the special model `multi`.
+If the item has **exactly one enchantments**, the variant will be the ID of that enchantment. The enchantment level can optionally be included in the variant ID.
+
+If the item contains multiple enchantments, it will instead use the special model `multi`.
+
+### parameters:
+- `levelSeparator`: _Optional, String._ If set, the module will add the enchantment level to the end of the variant ID, using the given separator. The separator can be an empty string. If no CIT was provided for this specific level, the module will fall back to lower level CITs. Finally, if none could be found, the module will fall back to level-invariant CITs.

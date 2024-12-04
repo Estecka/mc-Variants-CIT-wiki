@@ -1,13 +1,15 @@
-# Recommended Configurations
-
+# Pack inter-compatibility
 This page is about best practices for maximising the compatibility between multiple overlapping texture packs.
 
-For example, you could have one pack that provides CITs for vanilla enchanted book, and a another pack that provides CITs for modded enchantments.
-If both pack provide differently configured modules at the same path, the top-most pack's module will completely overwrite the bottom one. If the modules define different `modelPrefix`es, than one packs CITs will be ignored. 
-So long as none of the modules provide a `fallback` model, the safest way to make those packs work together is for them to provide two separate modules at two separate pathes. (The path of the module has no bearing on its functionality, so long as its `items` is explicitely defined.) 
-However if, in addition to having different prefixes, the modules provide any `fallback` model, then one module's fallback may still take priority over the other's CITs. In this case, the only way to make the packs work together is to make sure they are set up to use the exact same module.
+Suppose you have two texture packs. One pack provides CITs for vanilla enchanted book, the other provides CITs for modded enchantments. These packs can easily be made compatible, but there are a few pitfalls to avoid:
+- **One pack overwrite the other's module.** If both pack provide differently configured modules at the same path, the top-most module will overwrite the bottom one. If the two modules are configured identically, this will not be an issue. You can move your modules to your own namespace.
+- **One pack's module provides a fallback model.** Even if both modules are loaded, the one with a fallback model is unlikely to ever hand over control to the other. You can ensure the module without a fallback has a higher priority than the other one.
 
-The list of modules below covers some of the most common use cases. Should you decide to include a module at one of the pathes below, it should be configured _exactly_ as provided here. Doing so will ensure your pack remains compatible with other packs that use the same module.
+In all cases, even if the two packs' modules diverge to preserve the full functionality of both, you can still offer basic compatibility by ensuring your CITs use the same naming scheme (`modelPrefix` and other separators) as the other pack. This will allow one pack's CITs to be detected and used by the other pack's module.
+
+# Recommended Configurations
+
+The list of modules below covers some common use cases. Should you decide to include a module at one of the pathes specified below, it should be configured _exactly_ as provided here. If you need to make any modification, move the module to your own namespace to avoid conflicts with other packs.
 
 ## Axolotl Buckets
 `/assets/minecraft/variants-cit/item/axolotl_bucket.json`

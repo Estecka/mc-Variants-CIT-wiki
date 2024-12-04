@@ -1,1 +1,1 @@
-_This wiki is for version **3.1.0** of Variants-CIT_
+_This wiki is for version **3.2.0** of Variants-CIT_
