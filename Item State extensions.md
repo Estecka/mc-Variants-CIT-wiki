@@ -2,6 +2,10 @@
 
 Item States / Item Assets (resources under the `items/` folder) are the vanilla way of changing an item's model. Those can be used to provide a second layer of variance to an item, on top of the modules from this mod.
 
+> [!IMPORTANT]
+>
+> This page is only applicable to MC 1.21.4 and onward.
+
 ## Numeric Properties
 Properties to be used inside the vanilla `dispatch_range` selector
 
@@ -9,6 +13,10 @@ Properties to be used inside the vanilla `dispatch_range` selector
 
 Returns the level of the first enchantment in `stored_enchantment`.
 Behaviour is undefined on books with multiple enchantments.
+
+> [!TIP]
+>
+> The `stored_enchantment` module now has built-in support for enchantment levels.
 
 ### `variants-cit:custom_data`, `entity_data`, `bucket_entity_data`, `block_entity_data`
 Returns the value of the a number stored in the NBT component with matching name.
@@ -19,7 +27,7 @@ Returns the value of the a number stored in the NBT component with matching name
 
 ## Model selectors
 ### `minecraft:range_dispatch`
-> [!WARNING]
+> [!CAUTION]
 >
 > This feature is experimental. It could be removed depending what direction Mojang takes item models in the future.
 
@@ -31,7 +39,7 @@ If set, the mod will look for models whose ID are the given value value followed
 The vanilla `entries` field is still strictly required.
 
 ## Making modded assets vanilla-compatible 
-> [!WARNING]
+> [!CAUTION]
 >
 > This feature is experimental. It could be removed depending on what direction Mojang takes item models in the future.
 
@@ -42,15 +50,15 @@ Every model selector now take a new optional field `variants-cit:override`, its 
 ```json
 {
 	"model": {
-		// Uses this model in vanilla minecraft
+		"//": "Uses this model in vanilla minecraft",
 		"type": "model",
 		"model": "...",
 
-		// Uses this model instead when variants-CIT is installed
+		"//": "Uses this model instead when variants-CIT is installed"
 		"variants-cit:override": {
 			"type": "range_dispatch",
 			"property": "variants-cit:stored_enchantment_level",
-			/* ... */
+			"//": "..."
 		}
 	}
 }

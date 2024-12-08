@@ -38,7 +38,7 @@ Here's a more complete example, as used by the mod Invariable-Paintings:
 The [type](Module-Types) of the CIT module used for this item. This affects how an item's variant is identified, and what special models are available to it.
 
 ### `items`
-**Required**, List of Namespaced Identifers, defaults to the module's id.
+**Optional**, List of Namespaced Identifers, defaults to the module's id.
 
 A list of item types the module will be applied to. The mod will silently ignore identifiers that do not match an existing item, so a texture pack will remain compatible with versions of minecraft that lacks some of the defined items.
 
@@ -69,7 +69,7 @@ Matching model   | `/assets/<namespace>/models/item/<modelPrefix><path>.json`
 Matching texture | `/assets/<namespace>/textures/item/<modelPrefix><path>.json`
 
 
-> [!INFO]
+> [!IMPORTANT]
 >
 > Pre-1.21.4, models were resolved from the root of `models/` and `texture/`, instead of their `item/` subdirectory.
 > For backward compatibility, values with a leading "item/" will have that prefix stripped off.
@@ -113,7 +113,7 @@ Resulting item state:
 The model to use for items for which a variant was identified, but no model was provided for this variant.
 Modules with fallback are much less likely to hand over control to lower priority modules.
 
-> [!INFO]
+> [!NOTE]
 >
 > For backward compatibility with pre-1.21.4 packs, the leading "item/" will be stripped off if present.
 
@@ -126,7 +126,7 @@ A list of models that the CIT module may use in certain exceptional circumstance
 All special models are optional and default to null.
 All models listed here are automatically loaded.
 
-> [!INFO]
+> [!NOTE]
 >
 > For backward compatibility with pre-1.21.4 packs, the leading "item/" will be stripped off if present.
 
