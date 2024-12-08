@@ -23,6 +23,7 @@ The list of modules below covers some common use cases. Should you decide to inc
 This is the same naming scheme used by the mod *More Axolotl Variants*
 
 ## Enchanted Books
+For level-invariant CITs:  
 `/assets/minecraft/variants-cit/item/enchanted_book.json`
 ```json
 {
@@ -35,24 +36,21 @@ This is the same naming scheme used by the mod *More Axolotl Variants*
 }
 ```
 
-Models in the variant directory should only contain level-invariant models.
-Storing level-based models in the variant directory will cause each level to be detected as its own enchantment. This is unlikely to cause bugs, but is less optimised. Level-based models should be stored in a separate directory. I recommend `enchanted_book_levels`.
-
-In order to assign each model to the corresponding level, use the `level` predicate to define overrides inside the level-invariant models.  
-Example: `/assets/minecraft/models/item/enchanted_book/unbreaking.json`
+For level-based CITs:  
+`/assets/minecraft/variants-cit/item/enchanted_book_levels.json`
 ```json
 {
-	"parent": "item/enchanted_book_levels/unbreaking_1",
-	"overrides": [
-		{
-			"predicate": { "level": 2 },
-			"model": "item/enchanted_book_levels/unbreaking_2"
-		},
-		{
-			"predicate": { "level": 3 },
-			"model": "item/enchanted_book_levels/unbreaking_3"
-		}
-	]
+	"type": "stored_enchantment",
+	"priority": 1,
+	"items": ["enchanted_book"],
+	"modelPrefix": "item/enchanted_book_levels/",
+	"modelParent": "item/generated",
+	"parameters": {
+		"levelSeparator": "."
+	},
+	"special": {
+		"multi": "item/multi_enchanted_book"
+	}
 }
 ```
 
