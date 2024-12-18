@@ -77,6 +77,8 @@ This additional module will only apply to items with the `fire_aspect` enchantem
 ## `instrument`
 Derives the item variant from the item component `instrument`, used by goat horns.
 
+Note that all vanilla instruments have their name suffixed with `_goat_horn`; you'll need that suffix in your CITs *in addition* to your model prefix.
+
 ## `jukebox_playable`
 Derives the item variant from the item component `jukebox_playable`, used by music discs.
 
