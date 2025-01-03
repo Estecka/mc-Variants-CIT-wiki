@@ -99,3 +99,15 @@ If the item contains multiple enchantments, it will instead use the special mode
 
 ### parameters:
 - `levelSeparator`: _Optional, String._ If set, the module will add the enchantment level to the end of the variant ID, using the given separator. The separator can be an empty string. If no CIT was provided for this specific level, the module will fall back to lower level CITs. Finally, if none could be found, the module will fall back to level-invariant CITs.
+
+## `trim`
+Combines the pattern and material from the `trim` component into a single identifier, in a way that imitates the vanilla format for trimmed armour models.
+The resulting variant is: `<pattern_namespace>:<pattern_path>_<material_path>`.
+
+E.g: `minecraft:sentry_diamond`
+
+**Only the namespace of the pattern is used. The material's namespace is discarded.**
+
+
+## `trim_pattern`, `trim_material`
+Uses either the pattern or the material of the `trim` component as a variant.

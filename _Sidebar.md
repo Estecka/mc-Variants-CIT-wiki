@@ -1,4 +1,5 @@
 ### Wikis for other versions:
+- [v3.3](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v3.3)
 - [v3.2](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v3.2)
 - [v3.1](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v3.1)
 - ~~v3.0~~
