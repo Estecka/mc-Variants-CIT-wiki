@@ -2,7 +2,7 @@
 
 This page describes the behaviour of every built-in types to use in [module configurations](Module-Configuration).
 
-Modules are designed around specific item types, but can still be used on any item, so long as they provides the proper component.
+Some modules are designed around specific item types, but can still be used on any item, so long as they provides the required component.
 
 ## `axolotl_variant`
 Derives the item variant from the `Variant` element in the `bucket_entity_data` component. The component is used by multiple types of bucket-of-mob, but this CIT module only ever returns the ID of axolotl variants.
@@ -41,7 +41,7 @@ The name itself is used as the variant, with illegal characters being either rem
 Uppercases are converted to lowercases, accents are stripped off, spaces '` `' are converted to underscores '`_`', and all other invalid characters are completely removed.
 
 ### Parameters:
-- `debug`: *Optional, defaults to false*. Prints name-to-variants conversion into the log, whenever one is computed.
+- `debug`: *Optional, defaults to false*. Prints name-to-variants conversion into the log, whenever a new one is computed.
 - `specialNames`: *Optional, Maps Strings to Identifiers.*
 Hardcoded associations between specific names and variant ID.
 
@@ -77,6 +77,8 @@ This additional module will only apply to items with the `fire_aspect` enchantem
 ## `instrument`
 Derives the item variant from the item component `instrument`, used by goat horns.
 
+Note that all vanilla instruments have their name suffixed with `_goat_horn`; you'll need that suffix in your CITs *in addition* to your model prefix.
+
 ## `jukebox_playable`
 Derives the item variant from the item component `jukebox_playable`, used by music discs.
 
@@ -97,3 +99,15 @@ If the item contains multiple enchantments, it will instead use the special mode
 
 ### parameters:
 - `levelSeparator`: _Optional, String._ If set, the module will add the enchantment level to the end of the variant ID, using the given separator. The separator can be an empty string. If no CIT was provided for this specific level, the module will fall back to lower level CITs. Finally, if none could be found, the module will fall back to level-invariant CITs.
+
+## `trim`
+Combines the pattern and material from the `trim` component into a single identifier, in a way that imitates the vanilla format for trimmed armour models.
+The resulting variant is: `<pattern_namespace>:<pattern_path>_<material_path>`.
+
+E.g: `minecraft:sentry_diamond`
+
+**Only the namespace of the pattern is used. The material's namespace is discarded.**
+
+
+## `trim_pattern`, `trim_material`
+Uses either the pattern or the material of the `trim` component as a variant.

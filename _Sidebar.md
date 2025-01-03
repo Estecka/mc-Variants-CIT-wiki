@@ -1,7 +1,9 @@
 ### Wikis for other versions:
+- [v3.3](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v3.3)
 - [v3.2](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v3.2)
 - [v3.1](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v3.1)
 - ~~v3.0~~
+- [v2.8](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v2.8)
 - [v2.7](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v2.7)
 - [v2.6](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v2.6)
 - [v2.5](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v2.5)
