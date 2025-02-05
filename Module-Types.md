@@ -1,6 +1,6 @@
 # Module Types
 
-This page describes the behaviour of every built-in types to use in [module configurations](Module-Configuration).
+This page describes the behaviour of every built-in types to use in [module configurations](Module-Configuration). See [model prefixes](Module-Configuration#modelPrefix) in particular, to understand how variants are associated with textures and models.
 
 Some modules are designed around specific item types, but can still be used on any item, so long as they provides the required component.
 
@@ -9,14 +9,15 @@ Derives the item variant from the `Variant` element in the `bucket_entity_data` 
 
 Axolotl variants are not inherently identifier-based, but this modules converts them to a namespaced identifier. It will ignore variants that are not stored in number format.
 
-As of writting, available variant IDs are, in order: `lucy`, `wild`, `gold`, `cyan`, `blue`.
+As of writting, available variant IDs are, in order: `lucy`, `wild`, `gold`, `cyan`, `blue`. All those ids will use `minecraft:` as their namespace.
 
 ## `custom_data`, `entity_data`, `bucket_entity_data`, `block_entity_data`
 > [!TIP]
 >
 > These item components also have more specialised modules: `axolotl_variant` and `painting_variant`.
 
-Derives the item variant from either a **string** or a **number** stored somewhere in the nbt component with matching name.
+Copies the variant from either a **string** or a **number** stored somewhere in the nbt component with matching name.
+For numbers, the namespace will always be "`minecraft:`".
 
 
 ### Parameters:
@@ -35,24 +36,27 @@ Example:
 ```
 
 ## `custom_name`
-Derives the item variant from the `custom_name` component.
+Derives the variant from the `custom_name` component.
 
 The name itself is used as the variant, with illegal characters being either removed or converted:
 Uppercases are converted to lowercases, accents are stripped off, spaces '` `' are converted to underscores '`_`', and all other invalid characters are completely removed.
 
+E.g: "Épée de l'End" -> `minecraft:epee_de_lend`
+
+Special formatting, such as colour and boldness, are ignored.
+
 ### Parameters:
 - `debug`: *Optional, defaults to false*. Prints name-to-variants conversion into the log, whenever a new one is computed.
-- `specialNames`: *Optional, Maps Strings to Identifiers.*
-Hardcoded associations between specific names and variant ID.
+- `specialNames`: *Optional, Maps Strings to Identifiers.* Lets you hardcode some associations between names and variant ID, instead of letting the module compute them automatically like above. (This parameter is a relica from older versions, and will not be required in most cases.)
 
 ## `enchantment`
-Derives the item variant from a single enchantment in the item component `enchantments`, used by enchanted tools and armours.
+Copies the variant from a single enchantment in the item component `enchantments`, used by enchanted tools and armours.
 This will prioritize enchantments that, in order: have available models, have the largest exclusive set, or have the highest level.
 
 While one module can only work with a single enchantment, it's still possible to create CITs based on multiple enchantments, by using multiple modules with different priorities and parameters.
 
 ### Parameters:
-- `requiredEnchantments`: *Optional, maps Identifiers to Integers.* The module will only be applied to items that have enough levels in the specified enchantments. Enchantments listed here are completely excluded from being selected as the item variant.
+- `requiredEnchantments`: *Optional, maps Identifiers to Integers.* The module will only be applied to items that have enough levels in the specified enchantments. Enchantments listed here are completely excluded Copies being as the item variant.
 
 ### Example:
 This module will manage CITs that only have a single enchantment:
@@ -75,30 +79,30 @@ This additional module will only apply to items with the `fire_aspect` enchantem
 ```
 
 ## `instrument`
-Derives the item variant from the item component `instrument`, used by goat horns.
+Copies the variant from the item component `instrument`, used by goat horns.
 
 Note that all vanilla instruments have their name suffixed with `_goat_horn`; you'll need that suffix in your CITs *in addition* to your model prefix.
 
 ## `jukebox_playable`
-Derives the item variant from the item component `jukebox_playable`, used by music discs.
+Copies the variant from the item component `jukebox_playable`, used by music discs.
 
 ## `painting_variant`
-Derives the item variant from the `variant` element in the `entity_tag` component, used by paintings in the creative inventory.
+Copies the variant from the `variant` element in the `entity_tag` component, used by paintings in the creative inventory.
 
 The special model `invalid` will be applied to painting variants that do not exist with the current datapacks.
 
 ## `potion_type`
-Derives the item variant from the item component `potion_contents`, used by potions, splash potions, and lingering potions. This specifically looks at the potion's "type", and not the actual status effects.
+Derives the variant from the item component `potion_contents`, used by potions, splash potions, and lingering potions. This specifically looks at the potion's "type", and not the actual status effects.
 
 ## `stored_enchantment`
-Derives the item variant from the item component `stored_enchantments`, used by enchanted book.
+Copies the variant from a single enchantment in the item component `stored_enchantments`, used by enchanted books.
 
-If the item has **exactly one enchantment**, the variant will be the ID of that enchantment. The enchantment level can optionally be included in the variant ID.
+If the item has **exactly one enchantment**, the variant will be the ID of that enchantment. If the item contains multiple enchantments, it will instead use the special model `multi`.
 
-If the item contains multiple enchantments, it will instead use the special model `multi`.
+The enchantment level can optionally be included in the variant ID.
 
 ### parameters:
-- `levelSeparator`: _Optional, String._ If set, the module will add the enchantment level to the end of the variant ID, using the given separator. The separator can be an empty string. If no CIT was provided for this specific level, the module will fall back to lower level CITs. Finally, if none could be found, the module will fall back to level-invariant CITs.
+- `levelSeparator`: _Optional, String._ If set, the module will add the enchantment level to the end of the variant ID, using the given separator. The separator can be an empty string. If no asset was provided for this specific level, the module will fall back to lower level CITs. Finally, if none could be found, the module will fall back to level-invariant CITs.
 
 ## `trim`
 Combines the pattern and material from the `trim` component into a single identifier, in a way that imitates the vanilla format for trimmed armour models.

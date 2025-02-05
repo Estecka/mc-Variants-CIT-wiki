@@ -9,9 +9,12 @@ The strict minimum required to form a working module is its type, its target ite
 {
 	"type": "painting_variant",
 	"items": ["painting"],
-	"modelPrefix": "item/painting/"
+	"modelPrefix": "item/painting/",
+	"modelParent": "item/generated"
 }
 ```
+
+(`modelParent` is technically optional, but will be useful in almost all cases.)
 
 Here's a more complete example, as used by the mod Invariable-Paintings:
 
@@ -56,13 +59,14 @@ If your module often leave an item unchanged, then I recommend a value around 10
 ### `modelPrefix`
 **Mandatory**, String
 
-A subdirectory of the `items/` folder, and/or a prefix. All assets whose path start with this string (including subdirectories) are matched to the item variant with the corresponding identifier:  
+The prefix for the CITs that this module can use. CITs can be in either of the vanilla `items/`, `models/` and `textures/` folders. All assets whose path start with this string (including subdirectories) are matched to the item variant with the corresponding identifier.
 
-The name of the variant is appended *directly* to the model-prefix. The presence or absence of a trailing slash '`/`' makes the difference between a prefix that consists only of directories, and a prefix that contains a filename.
+The module will prioritize different types of assets depending on what is available and how other options are configured:
+1. First, the module will look for a matching `item/`.
+2. If absent, and if `itemsFromModels` is set to true, then the module will look for a matching `model/`.
+3. If absent, and if `modelParent` is also defined, then the module will look for a matching `texture/`.
 
-Depending on which asset generation options are used, the module may also look for models and/or textures with matching names:
-
-Item variant     | `<namespace>:<path>`
+Variant ID       | `<namespace>:<path>`
 ---------------- | :-------------------
 Matching item    | `/assets/<namespace>/items/<modelPrefix><path>.json`
 Matching model   | `/assets/<namespace>/models/item/<modelPrefix><path>.json`
@@ -71,18 +75,22 @@ Matching texture | `/assets/<namespace>/textures/item/<modelPrefix><path>.json`
 
 > [!IMPORTANT]
 >
-> Pre-1.21.4, models were resolved from the root of `models/` and `texture/`, instead of their `item/` subdirectory.
-> For backward compatibility, values with a leading "item/" will have that prefix stripped off.
+> Pre-1.21.4, before the introduction of the `items/` folder, prefixes were resolved from the root of `models/` and `texture/`, instead of their `item/` subdirectory.
+> For backward compatibility, prefixes starting with "`item/`" will have that bit stripped off in MC 1.21.4. If you want your pack to be compatible with MC 1.21.3 and earlier, you must still start your prefix with "`item/`".
+
+The presence or absence of a slash '`/`' at the end of a prefix is important ! It makes the difference between a prefix that consists only of directories, and a prefix that contains the beginning of a filename:
+- Prefix: `enchanted_book/` -> Variant asset: `<namespace>:enchanted_book/<path>`
+- Prefix: `enchanted_book_` -> Variant asset: `<namespace>:enchanted_book_<path>`
 
 
 ### `modelParent`
 **Optional**, Namespaced Identifier.
 
-If set, missing `models/` will be automatically generated from existing `textures/`, whose name matches the `modelPrefix`, or the `fallback` and `special` models.
+If set, missing `models/` will be automatically generated from existing `textures/`, whose name matches the `modelPrefix`, the `fallback`, and the `special` models.
 
 The give value is used as the generated model's parent; typically, `item/generated` for regular items, and `item/handheld` for tools. When in doubt, try using the vanilla model as parent.
 
-Resulting models:
+Generated models:
 ```json
 {
 	"parent": "<modelParent>",

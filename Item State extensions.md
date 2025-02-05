@@ -1,6 +1,6 @@
 # Item State Extensions
 
-Item States / Item Assets (resources under the `items/` folder) are the vanilla way of changing an item's model. Those can be used to provide a second layer of variance to an item, on top of the modules from this mod.
+Item States (resources under the `items/` folder) are the vanilla way of changing an item's model. Those can be used to provide a second layer of variance to an item, on top of the modules from this mod.
 
 > [!IMPORTANT]
 >
