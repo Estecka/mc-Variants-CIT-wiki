@@ -2,7 +2,80 @@
 
 This page describes the behaviour of every built-in types to use in [module configurations](Module-Configuration). See [model prefixes](Module-Configuration#modelPrefix) in particular, to understand how variants are associated with textures and models.
 
-Some modules are designed around specific item types, but can still be used on any item, so long as they provides the required component.
+# Generalist modules
+> [!IMPORTANT]
+>
+> `component_data` and `component_format` are experimental and may receive breaking changes shortly after release.
+
+## `component_data`
+
+Pulls a single data from a given component, and uses that data as the variant ID.
+
+The module will fail if the item does not have the component, or valid data is missing from that component at that path.
+
+### Parameters:
+- `debug`: *Optional boolean, defaults to `false`.* Causes variant IDs encountered by the module to be printed in the log.
+- All parameters from [NBT Adapters](./NbtAdapter).
+
+### Example:
+```json
+{
+	"type": "component_data",
+	"items": "minecraft:firework_rocket",
+	"modelPrefix": "item/firework_rocket/flight_",
+	"parameters": {
+		"componentType": "fireworks",
+		"nbtPath": ".flight_duration"
+	}
+}
+```
+
+## `component_format`
+A step up from `component_data`, that can pull and combine multiple pieces of data from multiple components at once. All requested data must be present and valid for the module to apply to an item stack.
+
+### Parameters:
+- `debug`: *Optional boolean, defaults to `false`.* Causes variant IDs encountered by the module to be printed in the log.
+- `format`: *Mandatory, string*. The format of the variant ID. The string can contain variables formatted as `${name}`, which will be substitued with the data extracted from the components. Variable names can only contain lowercase alphabetical characters.
+- `variables`: *Mandatory, Maps variable names to [NBT Adapters](./NbtAdapter)*. Indicates where and how to get the data for each variable in the format.
+
+### Example:
+This would reproduce the behaviour of the [`trim`](./Module-Types.md#trim) module type:
+```json
+{
+	"type": "component_format",
+	"items": "minecraft:diamond_sword",
+	"modelPrefix": "item/trimmed_diamond_sword/",
+	"parameters": {
+		"format": "${pattern}_${material}",
+		"variables": {
+			"pattern": {
+				"componentType": "trim",
+				"nbtPath": ".pattern"
+			},
+			"material": {
+				"componentType": "trim",
+				"nbtPath": ".material",
+				"transform": "discard_namespace"
+			}
+		}
+	}
+}
+```
+
+
+## `custom_data`, `entity_data`, `bucket_entity_data`, `block_entity_data`
+
+Work identically to `component_data`, but do not take a `componentType` argument. They are hardcoded to target specific components.
+
+> [!TIP]
+>
+> These item components also have purpose-made modules: `axolotl_variant` and `painting_variant`.
+
+
+# Purpose-made modules
+These modules were designed around specific use cases and item types. They can still be used on any item, so long as it provides the required component.
+
+Some of these modules have extra functionalities that cannot be reproduced using generalist modules.
 
 ## `axolotl_variant`
 Derives the item variant from the `Variant` element in the `bucket_entity_data` component. The component is used by multiple types of bucket-of-mob, but this CIT module only ever returns the ID of axolotl variants.
@@ -10,30 +83,6 @@ Derives the item variant from the `Variant` element in the `bucket_entity_data` 
 Axolotl variants are not inherently identifier-based, but this modules converts them to a namespaced identifier. It will ignore variants that are not stored in number format.
 
 As of writting, available variant IDs are, in order: `lucy`, `wild`, `gold`, `cyan`, `blue`. All those ids will use `minecraft:` as their namespace.
-
-## `custom_data`, `entity_data`, `bucket_entity_data`, `block_entity_data`
-> [!TIP]
->
-> These item components also have more specialised modules: `axolotl_variant` and `painting_variant`.
-
-Copies the variant from either a **string** or a **number** stored somewhere in the nbt component with matching name.
-For numbers, the namespace will always be "`minecraft:`".
-
-
-### Parameters:
-- `nbtPath`: *Mandatory, String.* The path to the variant ID, with dot '`.`' separated elements.
-- `caseSensitive`: *Optional, boolean, default to True.* If set to false, will convert the strings to lower-case. This should be reserved for when you have no control over the data; if you are the data designer, consider limiting your identifiers to the character set `[a-z0-9_-.]`, like for vanilla identifier.
-
-Example:
-```json
-{
-	"type": "custom_data",
-	"modelPefix": "item/cutomItemType/",
-	"parameters": {
-		"nbtPath": "path.to.variant"
-	}
-}
-```
 
 ## `custom_name`
 Derives the variant from the `custom_name` component.

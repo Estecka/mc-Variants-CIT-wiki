@@ -57,6 +57,8 @@ Similarly, if you want to leverage the functionalities of MC 1.21.4's new [item
 # Troubleshooting
 
 ## Models are unchanged
+
+### Check that the module and its models are properly loaded.
 Hit F3+T (reload resource packs), then look at Minecraft's console log. Look for a line that says _**"Found X variants for CIT module <module_id>"**_.
 (The module id is `<namespace>:<path>` for the file `assets/<namespace>/variants-cit/item/<path>.json`)
 
@@ -64,10 +66,21 @@ If you cannot find the line with your module's id, it means the module itself co
 
 If the line exists, but the number of variants is wrong, it means there is an issue with the file structure of your models/textures; make sure their path match the [model prefix](Module-Configuration#modelPrefix) defined in your module. If you are providing textures without any model, make sure your module has a [model parent](Module-Configuration#modelParent).
 
+### Check the variant ID and the data structure of the item.
+If both the module and models are loaded, then it means you model names don't match the item's variant ID, or that the module could not find the variant ID.
+
+In game, put an item in your main-hand, and use use the the command `/data get entity @s SelectedItem.components` in order to quickly check that the components on the item match the one expected by the module.
+For NBT-based modules, how those components are structured, this will also show the structure of the component, so you can check your nbtPath.
+
+Modules that perform some heavy transformation on the data (such as `custom_name` or `component_data`) can take `"debug":true` as parameter, which will print the final variant IDs of any item it encounters into the console log.
+For other module types, double check [how the variant ID is computed](./Module-Types).
+
+
+
 ## Missing models
 If you use ModernFix, try disabling [Dynamic Resources](https://github.com/embeddedt/ModernFix/wiki/Dynamic-Resources-FAQ).
 
-Otherwise, double check that the models, model parents, or item states are correct.
+Otherwise, double check that the baked models, model parents, or item states are correct.
 
 ## Items aren't held correctly
 Check that you are using the correct model parent. `item/generated` for regular items, `item/handheld` for regular tools and weapons.
