@@ -11,8 +11,8 @@ Its core principle is the automatic association between a model and its item var
 **For mod developpers:**
 - [Creating custom module types](Custom-Module-Types)
 
-## Disambiguation
 
+## Definitions & Disambiguation
 ### Vanilla concepts:
 
 - **"Item state"** refers to the assets under the "`items/`" folder of a resource pack.
@@ -22,7 +22,7 @@ Its core principle is the automatic association between a model and its item var
 "Item model" shall not be used, because of its ambiguity between the "`items/`" and "`models/`" folders.
 
 ### Variants-CIT concepts:
-- **"Module"** refers to the assets under the `variants-cit/item/` folder of resource packs.
+- **"Module"** refers to the assets under the `variants-cit/item/` folder of resource packs. A module's job is to figure out the variant ID of an item stack, and give it the corresponding model or texture from a large collection.
 - **"Variant ID"** or simply **"variant"**, is an intermediary piece of data that a module will calculate for an item stack, right before choosing its model or texture.  
 In broad terms, the variant is the data you are looking for in an item: for an enchanted book module, the variant will be the enchantment, for a custom name module, the variant will be the item's name. In many cases, the variant is just a verbatim copy of the value found on the item. Othertimes, the variant can be an agglomerate of multiple pieces of data (e.g: enchantment id + enchantment level), or be a sanitized version of the raw data (e.g: removing illegal characters from a custom name).  
 The variant id is directly used to construct the item's model/texture id. Model and variant ids have a one-to-one relationship in both direction.  

@@ -30,6 +30,10 @@ The location of the data to extract within the input NBT. The path can be an emp
 - `{n}` expects a compound, but accesses it like an array of key-value pairs, and returns the pair at the given index. It should always be followed by either `.key` or `.value`.
 The order in which entries are sorted is undefined.
 
+> [!TIP]
+> 
+> In-game, you can use `/data get entity @s SelectedItem.components` to quickly check the component structure of an item in your main hand.
+
 ### `expect`
 **Optional,** String, defaults to `"primitive"`.
 
