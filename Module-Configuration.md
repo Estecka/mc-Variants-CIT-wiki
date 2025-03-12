@@ -59,18 +59,18 @@ If your module often leave an item unchanged, then I recommend a value around 10
 ### `modelPrefix`
 **Mandatory**, String
 
-The prefix for the CITs that this module can use. CITs can be in either of the vanilla `items/`, `models/` and `textures/` folders. All assets whose path start with this string (including subdirectories) are matched to the item variant with the corresponding identifier.
+The prefix for the CITs that this module can use. CITs can be in either of the vanilla `items/`, `models/` and `textures/` folders. All assets whose path start with the model prefix (including subdirectories) are matched to the item variant with the corresponding identifier.
 
 The module will prioritize different types of assets depending on what is available and how other options are configured:
-1. First, the module will look for a matching `item/`.
+1. First, the module will look for a matching `items/`.
 2. If absent, and if `itemsFromModels` is set to true, then the module will look for a matching `model/`.
 3. If absent, and if `modelParent` is also defined, then the module will look for a matching `texture/`.
 
-Variant ID       | `<namespace>:<path>`
----------------- | :-------------------
-Matching item    | `/assets/<namespace>/items/<modelPrefix><path>.json`
-Matching model   | `/assets/<namespace>/models/item/<modelPrefix><path>.json`
-Matching texture | `/assets/<namespace>/textures/item/<modelPrefix><path>.json`
+Variant ID           | `<namespace>:<path>`
+----------------     | :-------------------
+Matching item state  | `/assets/<namespace>/items/<modelPrefix><path>.json`
+Matching baked model | `/assets/<namespace>/models/item/<modelPrefix><path>.json`
+Matching texture     | `/assets/<namespace>/textures/item/<modelPrefix><path>.png`
 
 
 > [!IMPORTANT]
