@@ -3,19 +3,16 @@
 This page describes the behaviour of every built-in types to use in [module configurations](Module-Configuration). See [model prefixes](Module-Configuration#modelPrefix) in particular, to understand how variants are associated with textures and models.
 
 # Generalist modules
-> [!IMPORTANT]
->
-> `component_data` and `component_format` are experimental and may receive breaking changes shortly after release.
 
 ## `component_data`
 
-Pulls a single data from a given component, and uses that data as the variant ID.
+Pulls a single piece of data from a given component or property, and uses that data as the variant ID.
 
 The module will fail if the item does not have the component, or valid data is missing from that component at that path.
 
 ### Parameters:
 - `debug`: *Optional boolean, defaults to `false`.* Causes variant IDs encountered by the module to be printed in the log.
-- All parameters from [NBT Adapters](./NbtAdapter).
+- All parameters from [Item Properties](./Item-Properties).
 
 ### Example:
 ```json
@@ -24,48 +21,69 @@ The module will fail if the item does not have the component, or valid data is m
 	"items": "minecraft:firework_rocket",
 	"modelPrefix": "item/firework_rocket/flight_",
 	"parameters": {
-		"componentType": "fireworks",
-		"nbtPath": ".flight_duration"
+		"debug": true,
+		"componentType": "lore",
+		"nbtPath": "[0]",
+		"transform": "sanitize_path"
 	}
 }
 ```
 
 ## `component_format`
-A step up from `component_data`, that can pull and combine multiple pieces of data from multiple components at once. All requested data must be present and valid for the module to apply to an item stack.
+A step up from `component_data`, that can pull and combine multiple pieces of data from multiple properties at once. 
+
+The module will fail if at least one piece of data is missing or invalid.
 
 ### Parameters:
 - `debug`: *Optional boolean, defaults to `false`.* Causes variant IDs encountered by the module to be printed in the log.
 - `format`: *Mandatory, string*. The format of the variant ID. The string can contain variables formatted as `${name}`, which will be substitued with the data extracted from the components. Variable names can only contain lowercase alphabetical characters.
-- `variables`: *Mandatory, Maps variable names to [NBT Adapters](./NbtAdapter)*. Indicates where and how to get the data for each variable in the format.
+- `variables`: *Mandatory, Maps variable names to [Item Properties](./Item-Properties)*. Indicates where and how to get the data for each variable in the format.
 
 ### Example:
-This would reproduce the behaviour of the [`trim`](./Module-Types.md#trim) module type:
+This behaves similarly to the [`trim`](./Module-Types.md#trim) module type, but can handle multiple item types at once, without mixing their respective CITs:
 ```json
 {
 	"type": "component_format",
-	"items": "minecraft:diamond_sword",
-	"modelPrefix": "item/trimmed_diamond_sword/",
+	"items": [ "diamond_pickaxe", "netherite_axe", "netherite_sword", "..."],
+	"modelPrefix": "item/trimmed_",
 	"parameters": {
-		"format": "${pattern}_${material}",
+		"debug": true,
+		"format": "${patternspace}:${item}/${patternpath}_${material}",
 		"variables": {
-			"pattern": {
+			"patternspace": {
 				"componentType": "trim",
-				"nbtPath": ".pattern"
+				"nbtPath": ".pattern",
+				"expect": "identifier",
+				"transform": "discard_path"
+			},
+			"item": {
+				"property": "item_type",
+				"transform": "discard_namespace"
+			},
+			"patternpath": {
+				"componentType": "trim",
+				"nbtPath": ".pattern",
+				"expect": "identifier",
+				"transform": "discard_namespace"
 			},
 			"material": {
 				"componentType": "trim",
 				"nbtPath": ".material",
+				"expect": "identifier",
 				"transform": "discard_namespace"
 			}
 		}
 	}
 }
 ```
+Example variant id: `minecraft:netherite_sword/sentry_diamond`
+
+Corresponding texture/baked model id: `minecraft:item/trimmed_netherite_sword/sentry_diamond`
 
 
 ## `custom_data`, `entity_data`, `bucket_entity_data`, `block_entity_data`
 
-Work identically to `component_data`, but do not take a `componentType` argument. They are hardcoded to target specific components.
+Work similarly to `component_data`, are hardcoded to use the `item_component` property with their respective `componentType`.
 
 > [!TIP]
 >
@@ -78,11 +96,20 @@ These modules were designed around specific use cases and item types. They can s
 Some of these modules have extra functionalities that cannot be reproduced using generalist modules.
 
 ## `axolotl_variant`
-Derives the item variant from the `Variant` element in the `bucket_entity_data` component. The component is used by multiple types of bucket-of-mob, but this CIT module only ever returns the ID of axolotl variants.
+Constructs a variant id from the color of the Axolotl, and optionally its age. Target components and data vary depending on the version of Minecraft.
 
-Axolotl variants are not inherently identifier-based, but this modules converts them to a namespaced identifier. It will ignore variants that are not stored in number format.
+As of writing, available colours are: `lucy`, `wild`, `gold`, `cyan`, `blue`. All are in the `minecraft` namespace.
 
-As of writting, available variant IDs are, in order: `lucy`, `wild`, `gold`, `cyan`, `blue`. All those ids will use `minecraft:` as their namespace.
+If a baby CIT is missing the module will fallback to the adult CIT of the same colour.
+
+Example variant ids:
+- `minecraft:lucy` Default for all ages.
+- `minecraft:lucy_baby` Default for babies.
+- `minecraft:lucy_adult` If `adultSuffix` is set to `_adult`.
+
+### parameters
+- `adultSuffix`: *Optional, defaults to an empty string*.
+- `babySuffix`: *Optional, defaults to `"_baby"`*.
 
 ## `custom_name`
 Derives the variant from the `custom_name` component.
@@ -132,13 +159,23 @@ Copies the variant from the item component `instrument`, used by goat horns.
 
 Note that all vanilla instruments have their name suffixed with `_goat_horn`; you'll need that suffix in your CITs *in addition* to your model prefix.
 
+## `item_count`
+
+Uses the item count as the variant. If no CIT matches the exact count, it will automatically fall back to lower-value CITs.
+
+The namespace of the variant id is fixed, but configurable.
+
+### Parameters:
+- `namespace` _Optional string, defaults to `"minecraft"`._ The namespace to use for the variant id.
+
 ## `jukebox_playable`
 Copies the variant from the item component `jukebox_playable`, used by music discs.
 
 ## `painting_variant`
-Copies the variant from the `variant` element in the `entity_tag` component, used by paintings in the creative inventory.
+Uses the painting id as the variant id, used by paintings in the creative inventory.
+Target component varies depending on the version of Minecraft.
 
-The special model `invalid` will be applied to painting variants that do not exist with the current datapacks.
+The special model `invalid` will be applied to painting variants that do not exist with the current datapacks. (No longer possible in MC 1.21.5)
 
 ## `potion_type`
 Derives the variant from the item component `potion_contents`, used by potions, splash potions, and lingering potions. This specifically looks at the potion's "type", and not the actual status effects.

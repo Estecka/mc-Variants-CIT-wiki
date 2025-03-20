@@ -2,13 +2,15 @@
 
 A module Configurations is a JSON file provided by a resource pack, located somewhere in `variants-cit/item`. It controls a large collection of CITs, and defines how to match them to an item.
 
+Ultimately, all a module does is override the value of the `item_model` component of the item, meaning everything that can be done with those can still be done with Variants-CIT. Having a good understanding of [Item states](https://minecraft.wiki/w/Items_model_definition) will help a lot.
+
 ## Schema
 The strict minimum required to form a working module is its type, its target items, and the location of its models:
 
 ```json
 {
 	"type": "painting_variant",
-	"items": ["painting"],
+	"items": "painting",
 	"modelPrefix": "item/painting/",
 	"modelParent": "item/generated"
 }
@@ -41,9 +43,9 @@ Here's a more complete example, as used by the mod Invariable-Paintings:
 The [type](Module-Types) of the CIT module used for this item. This affects how an item's variant is identified, and what special models are available to it.
 
 ### `items`
-**Optional**, List of Namespaced Identifers, defaults to the module's id.
+**Mandatory**, A single, or a list of Namespaced Identifiers.
 
-A list of item types the module will be applied to. The mod will silently ignore identifiers that do not match an existing item, so a texture pack will remain compatible with versions of minecraft that lacks some of the defined items.
+A list of item types the module will be applied to. The mod will silently ignore identifiers that do not match an existing item, so a texture pack will remain compatible with versions of minecraft that lack some of the defined items.
 
 ### `priority`
 **Optional**, Integer, defaults to 0.
@@ -59,28 +61,33 @@ If your module often leave an item unchanged, then I recommend a value around 10
 ### `modelPrefix`
 **Mandatory**, String
 
-The prefix for the CITs that this module can use. CITs can be in either of the vanilla `items/`, `models/` and `textures/` folders. All assets whose path start with the model prefix (including subdirectories) are matched to the item variant with the corresponding identifier.
+The location of the CITs that this module will use as variants. CITs can be in either of the vanilla `items/`, `models/item/` and `textures/item/` folders. All assets whose path start with the model prefix (including subdirectories) are matched to the item variant with the corresponding identifier.
 
-The module will prioritize different types of assets depending on what is available and how other options are configured:
-1. First, the module will look for a matching `items/`.
+For a given variant, the module will prioritize different types of assets depending on what is available and how other options are configured:
+1. First, the module will look for a matching `items/`. (The vanilla behaviour of the `item_model` component.)
 2. If absent, and if `itemsFromModels` is set to true, then the module will look for a matching `model/`.
 3. If absent, and if `modelParent` is also defined, then the module will look for a matching `texture/`.
 
-Variant ID           | `<namespace>:<path>`
-----------------     | :-------------------
-Matching item state  | `/assets/<namespace>/items/<modelPrefix><path>.json`
-Matching baked model | `/assets/<namespace>/models/item/<modelPrefix><path>.json`
-Matching texture     | `/assets/<namespace>/textures/item/<modelPrefix><path>.png`
+Variant ID                         | `<namespace>:<path>`
+---------------------------------- | :-------------------
+Equivalent `item_model` component  | `<namespace>:<modelPrefix><path>`
+Matching item state                | `/assets/<namespace>/items/<modelPrefix><path>.json`
+Matching baked model                     | `/assets/<namespace>/models/item/<modelPrefix><path>.json`
+Matching texture                   | `/assets/<namespace>/textures/item/<modelPrefix><path>.png`
 
 
 > [!IMPORTANT]
 >
 > Pre-1.21.4, before the introduction of the `items/` folder, prefixes were resolved from the root of `models/` and `texture/`, instead of their `item/` subdirectory.
-> For backward compatibility, prefixes starting with "`item/`" will have that bit stripped off in MC 1.21.4. If you want your pack to be compatible with MC 1.21.3 and earlier, you must still start your prefix with "`item/`".
+> For backward compatibility, prefixes starting with "`item/`" will have that bit stripped off in MC 1.21.4. If you want your pack to be compatible with both MC 1.21.4 and earlier versions, you must keep using "`item/`" at the start of your prefix.
 
 The presence or absence of a slash '`/`' at the end of a prefix is important ! It makes the difference between a prefix that consists only of directories, and a prefix that contains the beginning of a filename:
 - Prefix: `enchanted_book/` -> Variant asset: `<namespace>:enchanted_book/<path>`
 - Prefix: `enchanted_book_` -> Variant asset: `<namespace>:enchanted_book_<path>`
+
+> [!CAUTION]
+>
+> You should never use an empty string, or only `"item/"` as the model prefix. Doing so will cause the module to collect **every single** item model in the game as a potential variant. This may cause unexpected behaviours (especially with modules like `custom_name`) and reduce performances.
 
 
 ### `modelParent`
@@ -88,7 +95,7 @@ The presence or absence of a slash '`/`' at the end of a prefix is important ! 
 
 If set, missing `models/` will be automatically generated from existing `textures/`, whose name matches the `modelPrefix`, the `fallback`, and the `special` models.
 
-The give value is used as the generated model's parent; typically, `item/generated` for regular items, and `item/handheld` for tools. When in doubt, try using the vanilla model as parent.
+The given value is used as the generated model's parent; typically, `item/generated` for regular items, and `item/handheld` for tools. When in doubt, try using the vanilla model as parent.
 
 Generated models:
 ```json

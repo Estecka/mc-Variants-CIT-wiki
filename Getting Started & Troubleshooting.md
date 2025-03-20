@@ -10,7 +10,7 @@ The file will have this content:
 ```json
 {
 	"type": "custom_name",
-	"items": ["minecraft:diamond_sword"],
+	"items": "minecraft:diamond_sword",
 	"modelParent": "minecraft:item/handheld",
 	"modelPrefix": "item/custom_diamond_sword/"
 }
@@ -24,7 +24,7 @@ The file will have this content:
 `modelPrefix` can be whatever your want, but keep note of what you choose.
  The trailing slash '`/`' at the end of the prefix is important !
 
-Starting MC 1.21.4, the leading `item/` in the model prefix is implied, but if you want your pack to be cross-compatible with MC 1.21.3 and earlier, you should always specify it.
+Starting MC 1.21.4, the leading `item/` in the model prefix is implied, but if you want your pack to be compatible with MC 1.21.3 and earlier, you should always specify it.
 
 See [here](Module-Configuration#modelPrefix) for an advanced description of the possible configurations.
 
@@ -53,10 +53,18 @@ It's more of the same, just provide a similarly named [json model](https://minec
 Similarly, if you want to leverage the functionalities of MC 1.21.4's new [item states](https://minecraft.wiki/w/Items_model_definition), just provide an appropriately named file:  
 `/assets/minecraft/items/custom_diamond_sword/epee_de_lend.json`
 
+Ultimately, all the mod does is override the value of the `item_model` component of the item, meaning everything that can be done with those can be done with Variants-CIT. Having a good understanding of how this component works will help you a lot.
+
+Variant ID                         | `<namespace>:<path>`
+---------------------------------- | :-------------------
+Equivalent `item_model` component  | `<namespace>:<modelPrefix><path>`
+Matching item state                | `/assets/<namespace>/items/<modelPrefix><path>.json`
+Matching baked model               | `/assets/<namespace>/models/item/<modelPrefix><path>.json`
+Matching texture                   | `/assets/<namespace>/textures/item/<modelPrefix><path>.png`
 
 # Troubleshooting
 
-## Models are unchanged
+## Models are left unchanged
 
 ### Check that the module and its models are properly loaded.
 Hit F3+T (reload resource packs), then look at Minecraft's console log. Look for a line that says _**"Found X variants for CIT module <module_id>"**_.
@@ -69,20 +77,29 @@ If the line exists, but the number of variants is wrong, it means there is an is
 ### Check the variant ID and the data structure of the item.
 If both the module and models are loaded, then it means you model names don't match the item's variant ID, or that the module could not find the variant ID.
 
-In game, put an item in your main-hand, and use use the the command `/data get entity @s SelectedItem.components` in order to quickly check that the components on the item match the one expected by the module.
-For NBT-based modules, how those components are structured, this will also show the structure of the component, so you can check your nbtPath.
+In game, put an item in your main-hand, and use the the command `/data get entity @s SelectedItem.components` in order to quickly check that the components on the item match the one expected by the module.
+For NBT-based modules, this will also show the structure of the component, so you can check your nbtPath.
 
 Modules that perform some heavy transformation on the data (such as `custom_name` or `component_data`) can take `"debug":true` as parameter, which will print the final variant IDs of any item it encounters into the console log.
 For other module types, double check [how the variant ID is computed](./Module-Types).
 
 
 
-## Missing models
+## Missing models or textures
+(A.k.a. the pink and black checkerboard.)
+
 If you use ModernFix, try disabling [Dynamic Resources](https://github.com/embeddedt/ModernFix/wiki/Dynamic-Resources-FAQ).
 
 Otherwise, double check that the baked models, model parents, or item states are correct.
 
-## Items aren't held correctly
+Optifine allows for pack structures and asset formats that are illegal in vanilla minecraft.
+If you are trying to port an optifine-formatted pack, even if the models are already provided to you, you may still need to make modifications to them, and move some files around to directories where Minecraft will actually load them.
+
+If possible, try testing your models and item states in vanilla minecraft, by using the `item_model` component instead of a CIT module.
+
+## Items aren't held correctly, missing animations
 Check that you are using the correct model parent. `item/generated` for regular items, `item/handheld` for regular tools and weapons.
 
-Models for weapons with complexes animations like bows and tridents cannot be generated automatically from textures. For those, you'll need to provide custom item states and baked models, using the vanilla assets as an example.
+Models for weapons with complexes animations like bows, shields and tridents cannot be generated automatically from textures. For those, you'll need to provide custom item states and baked models, using the vanilla assets as an example.
+
+If possible, try testing your models and item states in vanilla minecraft, by using the `item_model` component instead of a CIT module.

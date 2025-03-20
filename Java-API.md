@@ -1,6 +1,6 @@
-# Custom Module Types
+# Java API
 
-Custom CIT modules may be defined by other mods, for use in [module configurations](Module-Configuration).
+Custom modules types can be implemented by other mods, for use in [module configurations](Module-Configuration).
 
 A module's primary function is to figure out the variant of an item, from which the mod will derive the model to use. Optionally, it can implement additional logic and special models for situations that are not covered by the variant system.
 
