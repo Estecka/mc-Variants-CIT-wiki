@@ -24,6 +24,7 @@ The module will fail if the item does not have the component, or valid data is m
 		"debug": true,
 		"componentType": "lore",
 		"nbtPath": "[0]",
+		"expect": "rich_text",
 		"transform": "sanitize_path"
 	}
 }
