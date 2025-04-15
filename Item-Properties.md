@@ -6,7 +6,8 @@ Item Properties are a type of parameter used in the `component_format` and `comp
 ```json
 {
 	"property": "item_type",
-	"transform": "discard_namespace"
+	"transform": "discard_namespace",
+	"fallback": "missingno"
 }
 ```
 
@@ -20,11 +21,19 @@ See [Property Types](#property-types) below for a list of possible properties an
 When a property has no mandatory parameters  `{"property":"item_type"}` can be condensed to just `"item_type"`.
 
 #### `transform`
-**Optional**, a single string, or an array of strings. Defaults to an empty array.
+**Optional**, a single [transform](#transforms), or an array of transforms. Defaults to an empty array.
 
-A series of transformations applied to the value of the property. The order of the items in the array matters.
+A series of transformations applied to the value of the property.
 
-Possible transformations are:
+#### `fallback`
+**Optional**
+
+If specified, the property will never fail.
+If the property is missing or invalid, this string will be used as the property's value instead.
+
+## Transforms
+### Simple transforms
+Simple transforms take no parameters and are specified as plain string:
 - **`lowercase`**: Converts all upper-cases to lower-cases.
 - **`sanitize`**: Removes all characters that are illegal for an identifier. Uppercases are replaced with lowercases, spaces are replaced with underscores, accentuated characters have their accents stripped, and all other invalid characters are removed completely.
 **The result is not guaranteed to be a valid identifier**; for example it may still contain more than one column `':'`.
@@ -32,6 +41,27 @@ Possible transformations are:
 - **`sanitize_namespace`**: Like `sanitize`, but also strips all characters that are illegal for an identifier's namespace.
 - **`discard_namespace`**: Removes `':'` and all preceding characters. Behaviour is undefined on strings that contain multiple columns.
 - **`discard_path`**: Removes `':'` and all following characters. Behaviour is undefined on strings that contain multiple columns.
+
+### Regex Transform
+Regex transform makes use of *regular expressions* to either modify, or invalidate the value of a property.
+
+This transform takes parameters, and so must be specified as an object:
+
+```json
+{
+	"regex": "prefix_(.*)",
+	"substitution": "$1"
+}
+```
+
+**`regex`** Is the pattern the property value must match. If the string does not match, the property will be invalidated.
+
+**`substitution`** constructs a new value for the property from values captured by the pattern. It is optional and defaults to `"$0"`, which passes the original string through unmodified.
+
+> [!TIP]
+>
+>  Use [regex101.com](https://regex101.com/) to test you patterns and substitution strings.
+
 
 # Property types
 ## `item_component`

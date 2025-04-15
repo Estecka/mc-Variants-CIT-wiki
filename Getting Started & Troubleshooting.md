@@ -1,10 +1,10 @@
 # Getting Started
-
-This will walk you through the process of changing a diamond sword based on a name given in an anvil. This assumes you already have some basic understanding of [namespaced identifiers](https://minecraft.wiki/w/Identifier), and how to [create and organize resource packs](https://minecraft.wiki/w/Tutorial:Creating_a_resource_pack).
+## The basics
+Variants-CItT's format is fundamentally different from Optifine. In order to get your bearings, this will walk you through the process of changing a diamond sword based on a name given in an anvil. This assumes you already have some basic understanding of [namespaced identifiers](https://minecraft.wiki/w/Identifier), and how to [create and organize resource packs](https://minecraft.wiki/w/Tutorial:Creating_a_resource_pack).
 
 ### 1. Create the CIT module
 
-Create a JSON file anywhere in `assets/<namespace>/variants-cit/item/<path>.json`. The `<namespace>` and `<path>` of the file doesn't affect its functionality.
+Create a JSON file anywhere in `assets/<namespace>/variants-cit/item/<path>.json`. The `<namespace>` and `<path>` of the file doesn't affect its functionality, but should be unique.
 
 The file will have this content:
 ```json
@@ -33,7 +33,7 @@ See [here](Module-Configuration#modelPrefix) for an advanced description of the 
 
 Suppose we want to use a custom texture for a sword named **"Épée de l'End"**.
 
-We need to figure out the so-called "variant id" of this item. Finding a variant id is a common step for all module types, but the way it is calculated varies from one type to another. Again, refers to the [type list](Module-Types) to learn how a specific module finds its variants.
+We need to figure out the so-called **"variant id"** of this item. Finding a variant id is a common step for all module types, but the way it is calculated varies from one type to another. Again, refers to the [type list](Module-Types) to learn how a specific module finds its variants.
 
 
 In the case of `custom_name`, the module creates the variant by sanitizing the item's name, removing any illegal characters:
@@ -42,6 +42,8 @@ In the case of `custom_name`, the module creates the variant by sanitizing the i
 In your pack, place your texture at:  
 `/assets/minecraft/textures/item/custom_diamond_sword/epee_de_lend.png`  
 and that's it! The mod will know to use this texture for this name, you texture pack is now functional.
+
+If you want to support more custom names, you don't need to make any change to the module; just add appropriately named textures to the pack.
 
 ### 3. Using custom models
 
@@ -61,6 +63,95 @@ Equivalent `item_model` component  | `<namespace>:<modelPrefix><path>`
 Matching item state                | `/assets/<namespace>/items/<modelPrefix><path>.json`
 Matching baked model               | `/assets/<namespace>/models/item/<modelPrefix><path>.json`
 Matching texture                   | `/assets/<namespace>/textures/item/<modelPrefix><path>.png`
+
+## Using custom data as variants
+Relevant documentation: [Item Properties / Transforms](./Item-Properties)
+### Locating the data
+The `custom_name` module type we used above requires little configuration, but is designed around a specific use case. There are other purpose-made modules for other common use cases, but if you need a variant that is stored into an unusual location, the two modules types that will interest you are [`component_data`](./Module-Types#component_data) and [`component_format`](./Module-Types#component_format); those let you pick data from anywhere in a chosen component's NBT representation.
+
+Suppose you want to create a module for the effect of suspicious stew:
+First, you need to figure out where the variant is stored in the item. Go in-game, put a bowl of supicious stew in your main hand, and use the command: `/data get entity @s SelectedItem.components`. This should print something like this into the chat:
+
+![{"minecraft:suspicious_stew_effects": [{duration:7, id:"minecraft:saturation"}]}](./nbt_path_command.jpg)
+
+Here we learn that: (1) The effect id is in a component called `suspicious_stew_effect`. (2) The effect is stored under a key "id", which itself is stored at the first position of an array.
+
+Fill this into the `componentType` and `nbtPath` parameters of component_data, and your module will use the effect id as the variant id:
+```json
+{
+	"type": "component_data",
+	"items": "minecraft:suspicious_stew",
+	"modelPrefix": "item/stew/",
+	"parameters": {
+		"componentType": "suspicious_stew_effects",
+		"nbtPath": "[0].id"
+	}
+}
+```
+
+### Combining multiple pieces of data
+The module `component_data` can only work with a single piece of data, `component_format` is its equivalent for working with multiple pieces of data.
+
+Here's a module that constructs a variant id from both a firework's explosion pattern, and its flight duration:
+```json
+{
+	"type": "component_format",
+	"items": "firework_rocket",
+	"modelPrefix": "item/rocket/",
+	"parameters": {
+		"format": "${pattern}_${duration}",
+		"variables": {
+			"pattern":  { "componentType": "fireworks", "nbtPath": ".explosions[0].shape" },
+			"duration": { "componentType": "fireworks", "nbtPath": ".flight_duration" }
+		}
+	}
+}
+```
+
+The objects inside "variables" are formatted the same way as for the `component_data` module. The variant id is built using the provided `format`, where `${variables}` are substitued with their corresponding value.
+
+### Sanitizing the data
+
+By default, variants are expected to be stored as plain identifiers. If the data you're looking for contains some illegal characters, you'll need extra parameters in order to convert it into a valid variant ID.
+
+Hypixel uses upper-case identifiers, minecraft identifiers only allows lower-cases. You can convert those ids to lower-case like this:
+```json
+{
+	"componentType": "custom_data",
+	"nbtPath": ".id",
+	"transform": "lowercase"
+}
+```
+
+For more complex texts similar to custom names, you'll want two things:
+- `"expect":"rich_text"` will let the module know the text may not be stored as a plain string, but instead as an NBT text. **This will strip all formatting from the text,** there is currently no reliable way to use formatting in the variant id.
+- `"transform":"sanitize"` wil perform a much more aggressive sanitization, identically to the `custom_name` module mentioned in the beginning.
+
+```json
+{
+	"componentType": "lore",
+	"nbtPath": "[0]",
+	"expect": "rich_text",
+	"transform": "sanitize"
+}
+```
+
+If you want to only use a portion of the text, or require it to match a specific format, you can use regular expressions to transform the data.
+For example, this will only match custom names that start with a given prefix, and remove that prefix from the variant-id:
+```json
+{
+	"componentType": "custom_name",
+	"nbtPath": "",
+	"expect": "rich_text",
+	"transform": [
+		"sanitize",
+		{ "regex":"someprefix_(.+)", "substitution":"$1"}
+	]
+}
+```
+Here, the regex is applied _after_ sanitization, but you can change the order of the transforms, or add new ones as you see fit.
+
+I recommend you use [regex101.com](https://regex101.com/) to test your regular expressions and substitution strings.
 
 # Troubleshooting
 

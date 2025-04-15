@@ -7,7 +7,6 @@
 - [v3.1](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v3.1)
 
 ## MC 1.21.3 and earlier
-- [v2.10](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v2.10)
 - [v2.9](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v2.9)
 - [v2.8](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v2.8)
 - [v2.7](https://github.com/Estecka/mc-Variants-CIT/tree/wiki/v2.7)
