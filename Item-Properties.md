@@ -49,12 +49,13 @@ This transform takes parameters, and so must be specified as an object:
 
 ```json
 {
-	"regex": "prefix_(.*)",
+	"regex": "(?i)Prefix_(.*)",
 	"substitution": "$1"
 }
 ```
 
 **`regex`** Is the pattern the property value must match. If the string does not match, the property will be invalidated.
+Regex flags can be defined at the start of the pattern using inline modifiers, such as `(?imsxu)`
 
 **`substitution`** constructs a new value for the property from values captured by the pattern. It is optional and defaults to `"$0"`, which passes the original string through unmodified.
 
