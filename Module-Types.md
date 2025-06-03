@@ -41,7 +41,7 @@ The module will fail if at least one piece of data is missing or invalid.
 - `variables`: *Mandatory, Maps variable names to [Item Properties](./Item-Properties)*. Indicates where and how to get the data for each variable in the format.
 
 ### Example:
-This behaves similarly to the [`trim`](./Module-Types.md#trim) module type, but can handle multiple item types at once, without mixing their respective CITs:
+This behaves similarly to the [`trim`](./Module-Types#trim) module type, but can handle multiple item types at once, without mixing their respective CITs:
 ```json
 {
 	"type": "component_format",
