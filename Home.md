@@ -9,7 +9,7 @@ Its core principle is the automatic association between a model and its item var
 - [Configuring CIT Modules](Module-Configuration)
 
 **For mod developpers:**
-- [Creating custom module types](Custom-Module-Types)
+- [Creating custom module types](Java-API)
 
 
 ## Definitions & Disambiguation
