@@ -1,5 +1,7 @@
 ### [Home](./Home)
 
+### [FAQ](./FAQ)
+
 ### For pack makers
 - [Getting Started](./Getting%20Started%20&%20Troubleshooting)
 - [Troubleshooting](./Getting%20Started%20&%20Troubleshooting#troubleshooting)
