@@ -1,15 +1,15 @@
 # Variants-CIT
 
-Variants-CIT is a mod for changing in bulk the models of item with easily identifiable variants.
-Its core principle is the automatic association between a model and its item variant, based on the filename of that model.
+Variants-CIT is a mod for managing large collection of item variants that all follow the same rule, without needing to define each variant individually: Just point at the folder containing your models, and the mod will automatically associate each model to the item variant with a matching name.
 
 **For resource pack makers:**
-- [Getting Started & Troubleshooting](Getting-Started-&-Troubleshooting)
-- [Module Types](Module-Types)
-- [Configuring CIT Modules](Module-Configuration)
+- [FAQ](./FAQ)
+- [Getting Started & Troubleshooting](./Getting%20Started%20&%20Troubleshooting)
+- [Module Types](./Module-Types)
+- [Configuring CIT Modules](./Module-Configuration)
 
 **For mod developpers:**
-- [Creating custom module types](Java-API)
+- [Creating custom module types](./Java-API)
 
 
 ## Definitions & Disambiguation

@@ -37,7 +37,7 @@ The module will fail if at least one piece of data is missing or invalid.
 
 ### Parameters:
 - `debug`: *Optional boolean, defaults to `false`.* Causes variant IDs encountered by the module to be printed in the log.
-- `format`: *Mandatory, string*. The format of the variant ID. The string can contain variables formatted as `${name}`, which will be substitued with the data extracted from the components. Variable names can only contain lowercase alphabetical characters.
+- `format`: *Mandatory, string*. The format of the variant ID. The string can contain variables formatted as `${name}`, which will be substitued with the data extracted from the components. Variable names can contain any character in `[a-zA-Z0-9_]`, but may not start with a number.
 - `variables`: *Mandatory, Maps variable names to [Item Properties](./Item-Properties)*. Indicates where and how to get the data for each variable in the format.
 
 ### Example:
@@ -45,32 +45,29 @@ This behaves similarly to the [`trim`](./Module-Types#trim) module type, but can
 ```json
 {
 	"type": "component_format",
-	"items": [ "diamond_pickaxe", "netherite_axe", "netherite_sword", "..."],
+	"items": [ "diamond_pickaxe", "iron_axe", "netherite_sword", "..."],
 	"modelPrefix": "item/trimmed_",
 	"parameters": {
 		"debug": true,
-		"format": "${patternspace}:${item}/${patternpath}_${material}",
+		"format": "${patternSpace}:${item}/${patternPath}_${material}",
 		"variables": {
-			"patternspace": {
+			"patternSpace": {
 				"componentType": "trim",
 				"nbtPath": ".pattern",
-				"expect": "identifier",
 				"transform": "discard_path"
 			},
 			"item": {
 				"property": "item_type",
 				"transform": "discard_namespace"
 			},
-			"patternpath": {
+			"patternPath": {
 				"componentType": "trim",
 				"nbtPath": ".pattern",
-				"expect": "identifier",
 				"transform": "discard_namespace"
 			},
 			"material": {
 				"componentType": "trim",
 				"nbtPath": ".material",
-				"expect": "identifier",
 				"transform": "discard_namespace"
 			}
 		}
@@ -80,15 +77,6 @@ This behaves similarly to the [`trim`](./Module-Types#trim) module type, but can
 Example variant id: `minecraft:netherite_sword/sentry_diamond`
 
 Corresponding texture/baked model id: `minecraft:item/trimmed_netherite_sword/sentry_diamond`
-
-
-## `custom_data`, `entity_data`, `bucket_entity_data`, `block_entity_data`
-
-Work similarly to `component_data`, are hardcoded to use the `item_component` property with their respective `componentType`.
-
-> [!TIP]
->
-> These item components also have purpose-made modules: `axolotl_variant` and `painting_variant`.
 
 
 # Purpose-made modules
@@ -125,6 +113,17 @@ Special formatting, such as colour and boldness, are ignored.
 ### Parameters:
 - `debug`: *Optional, defaults to false*. Prints name-to-variants conversion into the log, whenever a new one is computed.
 - `specialNames`: *Optional, Maps Strings to Identifiers.* Lets you hardcode some associations between names and variant ID, instead of letting the module compute them automatically like above. (This parameter is a relica from older versions, and will not be required in most cases.)
+
+
+## `durability`
+Uses the item's remaining durability as variant. The module will use the closest CIT with a value greater or equal to the item's durability.
+
+Durability is based on the `damage` and `max_damage` components, but only `max_damage` is required for the module to apply. Items without a `damage` component are treated as full durability.
+
+### Parameters:
+- `namespace` _Optional string, defaults to `"minecraft"`._ The namespace to use for the variant id.
+- `scale`: *Optional positive integer, defaults to the item's maximum durability.* The range of values to use. For example, with a scale of 100, the variant will be the precentage of durability, instead of the raw durability.
+
 
 ## `enchantment`
 Copies the variant from a single enchantment in the item component `enchantments`, used by enchanted tools and armours.

@@ -1,10 +1,13 @@
 # Getting Started
 ## The basics
-Variants-CItT's format is fundamentally different from Optifine. In order to get your bearings, this will walk you through the process of changing a diamond sword based on a name given in an anvil. This assumes you already have some basic understanding of [namespaced identifiers](https://minecraft.wiki/w/Identifier), and how to [create and organize resource packs](https://minecraft.wiki/w/Tutorial:Creating_a_resource_pack).
+Variants-CIT's format is fundamentally different from Optifine. In order to get your bearings, this will walk you through the process of changing a diamond sword based on a name given in an anvil. This assumes you already have some basic understanding of [namespaced identifiers](https://minecraft.wiki/w/Identifier), and how to [create and organize resource packs](https://minecraft.wiki/w/Tutorial:Creating_a_resource_pack).
 
 ### 1. Create the CIT module
 
-Create a JSON file anywhere in `assets/<namespace>/variants-cit/item/<path>.json`. The `<namespace>` and `<path>` of the file doesn't affect its functionality, but should be unique.
+The module is the object that decides when to change the item's texture, and what texture to use.
+A single module can manage multiple variants, and does not care about the exact list of variants. You'll usually only need a single module per item, regardless of how many textures you have.
+
+Create a JSON file anywhere in `assets/<namespace>/variants-cit/item/<path>.json`. The `<namespace>` and `<path>` of the file doesn't affect its functionality. Your name should nonetheless be unique, since other packs can overwrite each other's modules.
 
 The file will have this content:
 ```json
@@ -16,17 +19,17 @@ The file will have this content:
 }
 ```
 
-`type` can be anything from [this list](Module-Types). Simply changing the module's type is enough to change its behaviour; the rest of the pack's structure will remain the same in almost all cases.
+- `type` can be anything from [this list](Module-Types). Simply changing the module's type is enough to change its behaviour; the rest of the pack's structure will remain the same in almost all cases.
 
 
-`modelParent` will usually be `item/handheld` for tools and weapons, or `item/generated` for almost all other items.
+- `modelParent` will usually be `item/handheld` for tools and weapons, or `item/generated` for almost all other items.
 
-`modelPrefix` can be whatever your want, but keep note of what you choose.
- The trailing slash '`/`' at the end of the prefix is important !
+- `modelPrefix` can be whatever your want, but keep note of what you choose; this is the folder where we'll put our textures later on.
+The trailing slash '`/`' at the end of the prefix is important !
 
-Starting MC 1.21.4, the leading `item/` in the model prefix is implied, but if you want your pack to be compatible with MC 1.21.3 and earlier, you should always specify it.
+  Starting MC 1.21.4, the leading `item/` in the model prefix is implied, but if you want your pack to be compatible with MC 1.21.3 and earlier, you should always specify it.
 
-See [here](Module-Configuration#modelPrefix) for an advanced description of the possible configurations.
+See [here](Module-Configuration#modelPrefix) for an advanced quide on how to configure modules.
 
 
 ### 2. Add textures to the pack
@@ -43,7 +46,7 @@ In your pack, place your texture at:
 `/assets/minecraft/textures/item/custom_diamond_sword/epee_de_lend.png`  
 and that's it! The mod will know to use this texture for this name, you texture pack is now functional.
 
-If you want to support more custom names, you don't need to make any change to the module; just add appropriately named textures to the pack.
+If you want to support more custom names, you don't need to make any change to the module; just add more textures to the pack, and name them appropriately.
 
 ### 3. Using custom models
 
@@ -65,18 +68,24 @@ Matching baked model               | `/assets/<namespace>/models/item/<modelPref
 Matching texture                   | `/assets/<namespace>/textures/item/<modelPrefix><path>.png`
 
 ## Using custom data as variants
-Relevant documentation: [Item Properties / Transforms](./Item-Properties)
-### Locating the data
-The `custom_name` module type we used above requires little configuration, but is designed around a specific use case. There are other purpose-made modules for other common use cases, but if you need a variant that is stored into an unusual location, the two modules types that will interest you are [`component_data`](./Module-Types#component_data) and [`component_format`](./Module-Types#component_format); those let you pick data from anywhere in a chosen component's NBT representation.
+The `custom_name` module type we used above requires little configuration, but is designed around a specific use case. There are other [purpose-made modules](./Module-Types#purpose-made-modules) for other common use cases, but if you need a variant that is stored into an unusual location, the two modules types that will interest you are [`component_data`](./Module-Types#component_data) and [`component_format`](./Module-Types#component_format); those let you pick data from anywhere in a chosen component's NBT representation.
 
+Relevant documentation: [Item Properties / Transforms](./Item-Properties)
+
+### Locating the data
 Suppose you want to create a module for the effect of suspicious stew:
-First, you need to figure out where the variant is stored in the item. Go in-game, put a bowl of supicious stew in your main hand, and use the command: `/data get entity @s SelectedItem.components`. This should print something like this into the chat:
+First, you need to figure out where the variant is stored in the item. Go in-game, put a bowl of supicious stew in your main hand, and use this command:  
+```
+/data get entity @s SelectedItem.components
+```
+
+ This should print something like this into the chat:
 
 ![{"minecraft:suspicious_stew_effects": [{duration:7, id:"minecraft:saturation"}]}](./nbt_path_command.jpg)
 
 Here we learn that: (1) The effect id is in a component called `suspicious_stew_effect`. (2) The effect is stored under a key "id", which itself is stored at the first position of an array.
 
-Fill this into the `componentType` and `nbtPath` parameters of component_data, and your module will use the effect id as the variant id:
+Fill this into the `componentType` and ['`nbtPath`'](./Item-Properties#nbtpath) parameters of component_data, and your module will use the effect id as the variant id:
 ```json
 {
 	"type": "component_data",

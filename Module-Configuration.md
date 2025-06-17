@@ -110,7 +110,9 @@ Generated models:
 ### `itemsFromModels`
 **Optional**, boolean, defaults to true.
 
-If set, missing `items/` will be automatically generated based on existing or previously generated `models/`, whose name matches the `modelPrefix` or the `fallback` and `special` models.
+If enabled, missing `items/` will be automatically generated based on existing or previously generated `models/`, whose name matches the `modelPrefix` or the `fallback` and `special` models.
+
+If you are working with item types that require you to provide your own item states (Bows, Shields, Tridents, etc), I recommend setting this to false. It won't make anything work, but it's better for performances and for debugging. This will prevent the module from generating garbage unused variants from animation-specific assets (`_pulling`, `_blocking`, etc), and will prevent half-working models from showing up if your item-states aren't properly set-up.
 
 Resulting item state:
 ```json
