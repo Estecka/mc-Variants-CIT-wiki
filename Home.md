@@ -7,6 +7,7 @@ Variants-CIT is a mod for managing large collection of item variants that all fo
 - [Getting Started & Troubleshooting](./Getting%20Started%20&%20Troubleshooting)
 - [Module Types](./Module-Types)
 - [Configuring CIT Modules](./Module-Configuration)
+- [Equipped Armors](./Equipped%20Armor) (Alpha Feature)
 
 **For mod developpers:**
 - [Creating custom module types](./Java-API)
