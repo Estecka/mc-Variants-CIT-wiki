@@ -49,8 +49,10 @@ Defining variables that are not used in the format is currently allowed, but is 
 
 
 ### Q: Changing the look of equipped armor.
-**Not supported.** Armors are rendered as entities, not as item stacks.
-Currently under consideration, but no ETA.
+**Experimental.**
+Modules for this are practically identical to regular modules, but need to be provided with [`equipments`](https://minecraft.wiki/w/Equipment) as CITs, (instead of Item States and Baked Models for regular modules).
+
+See: [Equipable Modules](https://github.com/Estecka/mc-Variants-CIT/wiki/Equipped%20Armor)
 
 
 ### Q: Changing the look of the trident's projectile.
