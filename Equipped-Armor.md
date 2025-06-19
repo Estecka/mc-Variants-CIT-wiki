@@ -2,9 +2,11 @@
 
 > [!CAUTION]
 >
-> This feature is experimental. Everything described here may receive breaking change.
->
 > This feature is exclusive to VCIT v3 and v4. (MC 1.21.4 and onward)
+>
+> This feature is experimental. Everything described here may receive breaking change.  
+> Planned changes for release:
+> - `aspect` will be renamed to `context`
 
 Changing the look of equipped armor works a bit differently from regular items, but most of what is written in [Module Configuration](./Module-Configuration) and the rest of the wiki still applies here. This page here will only cover the differences.
 
