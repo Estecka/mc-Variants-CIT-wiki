@@ -2,6 +2,13 @@
 
 This page describes the behaviour of every built-in types to use in [module configurations](Module-Configuration). See [model prefixes](Module-Configuration#modelPrefix) in particular, to understand how variants are associated with textures and models.
 
+A module's type defines how its item's variant ID will be computed.
+Each type has its own separate system, so the `"parameters"` of one type do not apply to the others, unless explicitely specified.
+
+Existing types can be thought of as belonging to either of two families:  
+The purpose-made types require no parameters to be functional, but are tailored for specific and common use cases. When they do have parameters, those are usually optional, and only there for fine-tuning.  
+The generalist types are more flexible, but require a lot more configuration to achieve basic results. Those are a relatively recent addition, and there are still some purpose-made functionalities that cannot be replicated using generalist modules (e.g: Enchantment priority and numeric value thresholds).
+
 # Generalist modules
 
 ## `component_data`
