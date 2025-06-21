@@ -68,7 +68,7 @@ These items use [item states](https://minecraft.wiki/w/Items_model_definition) t
 
 Item states are a vanilla feature, if you have trouble getting item states to work, also try seeking help from other minecraft communities; they probably have more resources will be more reactive than I.
 
-See: [`modelPrefix`](./Module-Configuration#modelprefix), [#69](https://github.com/Estecka/mc-Variants-CIT/issues/42), [#42](https://github.com/Estecka/mc-Variants-CIT/issues/42)
+See: [`modelPrefix`](./Module-Configuration#modelprefix), [#69](https://github.com/Estecka/mc-Variants-CIT/issues/69), [#42](https://github.com/Estecka/mc-Variants-CIT/issues/42)
 
 
 ### Q: Animated textures.
