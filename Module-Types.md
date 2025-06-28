@@ -121,6 +121,11 @@ Special formatting, such as colour and boldness, are ignored.
 - `debug`: *Optional, defaults to false*. Prints name-to-variants conversion into the log, whenever a new one is computed.
 - `specialNames`: *Optional, Maps Strings to Identifiers.* Lets you hardcode some associations between names and variant ID, instead of letting the module compute them automatically like above. (This parameter is a relica from older versions, and will not be required in most cases.)
 
+> [!TIP]
+>
+> This historical module type has very limited set of options. Using [`component_data`](#component_data) instead will give you access to Regex matching and substitutions.
+
+
 
 ## `durability`
 Uses the item's remaining durability as variant. The module will use the closest CIT with a value greater or equal to the item's durability.
