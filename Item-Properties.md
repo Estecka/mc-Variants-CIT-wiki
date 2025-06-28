@@ -11,7 +11,7 @@ Item Properties are a type of parameter used by the `component_format` and `comp
 }
 ```
 
-Some property types may take additional parameters.
+Some property types may take additional parameters, in particular the [`item_component`](#item_component) property, which your are most likely interested in.
 
 #### `property`
 **Optional**, defaults to `"item_component"`
@@ -77,7 +77,7 @@ This transform takes parameters, and so must be specified as an object:
 #### `regex`
 **Mandatory** string.
 
-The pattern the property should must match.
+The pattern the property should match.
 Regex flags can be defined at the start of the pattern using inline modifiers, such as `(?imsxu)`
 
 #### `substitution`
@@ -175,7 +175,7 @@ Return the exact count of the item stack.
 
 Returns the color name of an axolotl in a bucket.
 
-The nbt representation of this data varies between version of minecraft, so using this property is more reliable than `item_component`.
+The nbt representation of this data varies between versions of minecraft, so using this property is more reliable than `item_component`.
 
 ## `bucket_entity_age`
 
@@ -203,4 +203,4 @@ The value to return for babies.
 
 Returns the variant of a painting from the creative inventory.
 
-The nbt representation of this data varies between version of minecraft, so using this property is more reliable than `item_component`.
+The nbt representation of this data varies between versions of minecraft, so using this property is more reliable than `item_component`.
