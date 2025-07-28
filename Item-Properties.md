@@ -49,6 +49,9 @@ will be expanded to:
 ```
 
 ## Transforms
+Transforms can always specfied as either a single value/object, or as an array.
+When providing an array, each transform receives the result of the previous transform.
+
 ### Simple transforms
 Simple transforms take no parameters and are specified as plain string:
 - **`lowercase`**: Converts all upper-cases to lower-cases.

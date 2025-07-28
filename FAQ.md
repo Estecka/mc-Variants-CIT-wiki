@@ -18,20 +18,50 @@ Follow the [introductory tutorial](./Getting%20Started%20&%20Troubleshooting).
 For some specific uses cases, you will also want to learn how to use the vanilla ['`item_model`' component](https://minecraft.wiki/w/Items_model_definition).
 
 
-### Q:	Changing an item's look based on its name.
+### Q: Changing an item's look based on its name.
 Follow the [introductory tutorial](./Getting%20Started%20&%20Troubleshooting), which does precisely that.
+
+### Q: Matching prefixes, suffixes, and other patterns in names
+
+Instead of using a `custom_name` module, use a [`component_data`](./Module-Types.md#component_data) module with a [Regex Transform](./Item-Properties.md#regex-transform).
+
+#### Example:
+```json
+{
+	"type": "component_data",
+	"items": "...",
+	"modelPrefix": "...",
+	"parameters": {
+		"componentType": "custom_name",
+		"expect": "rich_text",
+		"transform": [
+			"sanitize_path",
+			{
+				"regex": "prefix_(.+)_suffix",
+				"substitution": "$1"
+			}
+		]
+	}
+}
+```
+
+You can use [Regex 101](https://regex101.com/) to test your regexes and substitution strings. Make sure to select the "Java 8" flavor and the "Substitution" function in the left panel.
+
+Remember that unlike optifine, VCIT does not work by matching values, but by *transforming* raw data into a variant ID. Similarly, the regex here does not simply validate the name's format, it extracts a variant from the name, using _capturing groups_ and a _substitution_ string
+
+See also: [Regex-related Issues](https://github.com/Estecka/mc-Variants-CIT/issues?q=is%3Aissue%20label%3A%22items%20states%22)
 
 
 ### Q: Using X or Y component as the variant.
 Check whether their is a [purpose-made module](./Module-Types#purpose-made-modules) for your use case. Otherwise, use a [`component_data`](./Module-Types#component_data) module.
 
-See Also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#item_component)
+See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#item_component)
 
 
 ### Q: Using multiple components or multiple pathes.
 Use a [`component_format`](./Module-Types#component_format) module instead of `component_data`.
 
-See Also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#item_component)
+See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#item_component)
 
 
 ### Q: Add arbitrary checks or requirements for what items are affected by a module.
@@ -68,7 +98,7 @@ These items use [item states](https://minecraft.wiki/w/Items_model_definition) t
 
 Item states are a vanilla feature, if you have trouble getting item states to work, also try seeking help from other minecraft communities; they probably have more resources will be more reactive than I.
 
-See: [`modelPrefix`](./Module-Configuration#modelprefix), [#69](https://github.com/Estecka/mc-Variants-CIT/issues/69), [#42](https://github.com/Estecka/mc-Variants-CIT/issues/42)
+See also: [`modelPrefix`](./Module-Configuration#modelprefix), [Item-states related issues](https://github.com/Estecka/mc-Variants-CIT/issues?q=is%3Aissue%20label%3A%22items%20states%22)
 
 
 ### Q: Animated textures.
