@@ -98,6 +98,21 @@ Fill this into the `componentType` and ['`nbtPath`'](./Item-Properties#nbtpath) 
 }
 ```
 
+> [!TIP]
+> 
+> Specific components and data types may require extra `"expect"` and `"transform"` parameters.
+> For now, you can just set them to auto:
+> ```json
+> {
+> 	"componentType": "...",
+> 	"nbtPath": "...",
+> 	"expect": "auto",
+> 	"transform": "sanitize_auto"
+> }
+> ```
+> I wouldn't recommend using these values in released packs, but you can use them as training wheels.
+> It's easier to get something working with them, but they may also reduce performances, or treat some invalid components as valid.
+
 ### Combining multiple pieces of data
 The module `component_data` can only work with a single piece of data, `component_format` is its equivalent for working with multiple pieces of data.
 

@@ -49,7 +49,7 @@ will be expanded to:
 ```
 
 ## Transforms
-Transforms can always specfied as either a single value/object, or as an array.
+Transforms can be specfied as either a single value/object, or as an array of them.
 When providing an array, each transform receives the result of the previous transform.
 
 ### Simple transforms
