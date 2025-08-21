@@ -1,10 +1,8 @@
-# Equippable Modules (Alpha)
+# Equippable Modules (Beta)
 
-> [!CAUTION]
+> [!IMPORTANT]
 >
 > This feature is exclusive to VCIT v3 and v4. (MC 1.21.4 and onward)
->
-> This feature is experimental. Everything described here may receive breaking change.
 
 Changing the look of equipped armor works a bit differently from regular items, but most of what is written in [Module Configuration](./Module-Configuration) and the rest of the wiki still applies here. This page here will only cover the differences.
 

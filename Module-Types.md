@@ -137,14 +137,18 @@ Durability is based on the `damage` and `max_damage` components, but only `max_d
 - `scale`: *Optional positive integer, defaults to the item's maximum durability.* The range of values to use. For example, with a scale of 100, the variant will be the precentage of durability, instead of the raw durability.
 
 
-## `enchantment`
-Copies the variant from a single enchantment in the item component `enchantments`, used by enchanted tools and armours.
+## `enchantment`, `stored_enchantment`
+Derives the variant ID from one of the enchantment on the item, optionally including the enchantment's level. Tools should use `enchantments`, and books should use `stored_enchantment`.
+
 This will prioritize enchantments that, in order: have available models, have the largest exclusive set, or have the highest level.
 
-While one module can only work with a single enchantment, it's still possible to create CITs based on multiple enchantments, by using multiple modules with different priorities and parameters.
+If the special model "`multi`"  is defined, it will be used on items with more than one enchantments. This will only count enchantments that are not defined in the `requiredEnchantment` parameter.
+
+While one module can only work with a single enchantment, it is still possible to create CITs based on multiple enchantments, by using multiple modules with different priorities and `requiredEnchantments` parameters.
 
 ### Parameters:
-- `requiredEnchantments`: *Optional, maps Identifiers to Integers.* The module will only be applied to items that have enough levels in the specified enchantments. Enchantments listed here are completely excluded Copies being as the item variant.
+- `levelSeparator`: _Optional, String._ If set, the module will add the enchantment level at the end of the variant ID, using the given separator. The module will fall back to lower-level CITs, if it can't find one that matches the item's exact level. Finally, if none could be found, the module will fall back to level-invariant CITs.
+- `requiredEnchantments`: *Optional, maps Identifiers to Integers.* The module will only be applied to items that have enough levels in the specified enchantments. Enchantments listed here will never be selected as the variant ID.
 
 ### Example:
 This module will manage CITs that only have a single enchantment:
@@ -154,7 +158,7 @@ This module will manage CITs that only have a single enchantment:
 	"modelPrefix": "item/diamond_sword/"
 }
 ```
-This additional module will only apply to items with the `fire_aspect` enchantement, and provide a CIT based on the second enchantment. (See [module priorities](Module-Configuration#priority).)
+This additional module will only apply to items with the `fire_aspect` enchantement, and provide a CIT based on a second enchantment. (See [module priorities](Module-Configuration#priority).)
 ```json
 {
 	"type": "enchantment",
@@ -191,16 +195,6 @@ The special model `invalid` will be applied to painting variants that do not exi
 
 ## `potion_type`
 Derives the variant from the item component `potion_contents`, used by potions, splash potions, and lingering potions. This specifically looks at the potion's "type", and not the actual status effects.
-
-## `stored_enchantment`
-Copies the variant from a single enchantment in the item component `stored_enchantments`, used by enchanted books.
-
-If the item has **exactly one enchantment**, the variant will be the ID of that enchantment. If the item contains multiple enchantments, it will instead use the special model `multi`.
-
-The enchantment level can optionally be included in the variant ID.
-
-### parameters:
-- `levelSeparator`: _Optional, String._ If set, the module will add the enchantment level to the end of the variant ID, using the given separator. The separator can be an empty string. If no asset was provided for this specific level, the module will fall back to lower level CITs. Finally, if none could be found, the module will fall back to level-invariant CITs.
 
 ## `trim`
 Combines the pattern and material from the `trim` component into a single identifier, in a way that imitates the vanilla format for trimmed armour models.

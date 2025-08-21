@@ -8,7 +8,7 @@
 - [Module Configuration](./Module-Configuration)
 - [Module Types](./Module-Types)
 - [Property Types](./Item-Properties)
-- [Equipped Armor](./Equipped%20Armor) (Alpha feature)
+- [Equipped Armor](./Equipped%20Armor) (Beta feature)
 
 ### For mod developpers:
 - [Java API](./Java-API)
