@@ -23,7 +23,7 @@ Follow the [introductory tutorial](./Getting%20Started%20&%20Troubleshooting), w
 
 ### Q: Matching prefixes, suffixes, and other patterns in names
 
-Instead of using a `custom_name` module, use a [`component_data`](./Module-Types.md#component_data) module with a [Regex Transform](./Item-Properties.md#regex-transform).
+Instead of using a `custom_name` module, use a [`component_data`](./Module-Types.md#component_data) module with a [Regex Transform](./Item-Properties.md#transform-regex).
 
 #### Example:
 ```json
@@ -55,17 +55,17 @@ See also: [Regex-related Issues](https://github.com/Estecka/mc-Variants-CIT/issu
 ### Q: Using X or Y component as the variant.
 Check whether their is a [purpose-made module](./Module-Types#purpose-made-modules) for your use case. Otherwise, use a [`component_data`](./Module-Types#component_data) module.
 
-See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#item_component)
+See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#property-item_component)
 
 
 ### Q: Using multiple components or multiple pathes.
 Use a [`component_format`](./Module-Types#component_format) module instead of `component_data`.
 
-See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#item_component)
+See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#property-item_component)
 
 
 ### Q: Add arbitrary checks or requirements for what items are affected by a module.
-Technically not a feature, however, this should be possible to achieve using the [regex transform](./Item-Properties#regex-transform) in a `component_format` module.
+Technically not a feature, however, this should be possible to achieve using the [regex transform](./Item-Properties#transform-regex) in a `component_format` module.
 
 Defining variables that are not used in the format is currently allowed, but is still considered a fringe case. Please leave a comment [here](https://github.com/Estecka/mc-Variants-CIT/issues/57) describing your use case, to help shape a potential upcoming feature.
 

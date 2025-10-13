@@ -12,3 +12,5 @@
 
 ### For mod developpers:
 - [Java API](./Java-API)
+
+### [Deprecated Features](./Deprecated_Features)
