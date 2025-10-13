@@ -85,7 +85,7 @@ First, you need to figure out where the variant is stored in the item. Go in-gam
 
 Here we learn that: (1) The effect id is in a component called `suspicious_stew_effect`. (2) The effect is stored under a key "id", which itself is stored at the first position of an array.
 
-Fill this into the `componentType` and ['`nbtPath`'](./Item-Properties#nbtpath) parameters of component_data, and your module will use the effect id as the variant id:
+Fill this into the `componentType` and ['`nbtPath`'](./Item-Properties#field-nbtpath) parameters of component_data, and your module will use the effect id as the variant id:
 ```json
 {
 	"type": "component_data",
