@@ -68,7 +68,7 @@ Matching baked model               | `/assets/<namespace>/models/item/<modelPref
 Matching texture                   | `/assets/<namespace>/textures/item/<modelPrefix><path>.png`
 
 ## Using custom data as variants
-The `custom_name` module type we used above requires little configuration, but is designed around a specific use case. There are other [purpose-made modules](./Module-Types#purpose-made-modules) for other common use cases, but if you need a variant that is stored into an unusual location, the two modules types that will interest you are [`component_data`](./Module-Types#component_data) and [`component_format`](./Module-Types#component_format); those let you pick data from anywhere in a chosen component's NBT representation.
+The `custom_name` module type we used above requires little configuration, but is designed around a specific use case. There are other [purpose-made modules](./Module-Types#purpose-made-modules) for other common use cases, but if you need a variant that is stored into an unusual location, the two modules types that will interest you are [`component_data`](./Module-Types#module-component_data) and [`component_format`](./Module-Types#module-component_format); those let you pick data from anywhere in a chosen component's NBT representation.
 
 Relevant documentation: [Item Properties / Transforms](./Item-Properties)
 

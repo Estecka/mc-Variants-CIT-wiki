@@ -59,7 +59,7 @@ See also: [Item properties](./Item-Properties) and ['`item_component`' property]
 
 
 ### Q: Using multiple components or multiple pathes.
-Use a [`component_format`](./Module-Types#component_format) module instead of `component_data`.
+Use a [`component_format`](./Module-Types#module-component_format) module instead of `component_data`.
 
 See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#property-item_component)
 

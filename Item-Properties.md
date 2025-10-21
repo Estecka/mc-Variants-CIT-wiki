@@ -206,7 +206,8 @@ This option overrides `optional`.
 These transforms take no parameter and can never fail. They're almost always specified as plain string.
 - **`lowercase`**: Converts all upper-case characters to lower-case.
 - **`sanitize`**: Removes all characters that are illegal for an identifier. Uppercases are replaced with lowercases, spaces are replaced with underscores, accentuated characters have their accents stripped, and all other invalid characters are removed completely.
-**The result is not guaranteed to be a valid identifier**; for example it may still contain more than one column `':'`, or the namespace could contain a slash `'/'`.
+**The result is not guaranteed to be a valid identifier**; for example it may still contain more than one column `':'`, or the namespace could contain a slash `'/'`.  
+See also: [`charset_remap`](#transform-charset_remap).
 - **`sanitize_path`**: Similar to `sanitize`, but removes all `':'`, and so always returns a valid identifier path.
 - **`sanitize_namespace`**: Similar to `sanitize`, but removes all `':'` and `'/'`, and so always returns a valid identifier namespace.
 - **`sanitize_auto`**: Does nothing if the string is a valid identifier. Otherwise, behaves identically to `sanitize_path`.
@@ -230,7 +231,7 @@ If the input matches the regex, it will be replaced with the substitution string
 	"matchAll": true,
 }
 ```
-Specifying `"function":"regex"` is optional only for this particular transform type.
+> Specifying `"function":"regex"` is optional only for this particular transform type.
 
 In this example, the regex asserts that the input must start with `"prefix_"`, and removes that prefix from the string.  
 
@@ -277,7 +278,7 @@ If the sub-transform *succeeds*, then the *original* value is returned instead o
 In this example, the whitelist will evaluate a lowercase string, but the capitalized string will be returned on success.
 
 ## Transform: `alternative`
-Contains multiple chains of transforms, and tests them independently until *one of them* succeeds. This returns the result of the first transform to succeed. This fails if all sub transforms fail.
+Contains multiple chains of transforms, and tests them independently until *one of them* succeeds. This returns the result of the first transform to succeed. This fails if all sub-transforms fail.
 ###	Schema
 ```jsonc
 {
@@ -320,7 +321,7 @@ The original value is returned in case of success.
 ```
 
 ## Transform: `remap`
-If the input value is in the provided map, this will return the associated value instead.
+If the input value is in the provided map's keys, this will return the associated value instead.
 This fails if the input is not in the map.
 ```json
 {
@@ -335,8 +336,8 @@ This fails if the input is not in the map.
 
 ## Transform: `charset_remap`
 
-Individually replaces or delete each character in a string.
-This can for example be used in addition to `sanitize`, in order to preserve meaningful characters that would otherwise be removed.
+Individually replaces or delete characters in the input string.
+This can, for example, be used prior to `sanitize`, in order to preserve meaningful characters that would otherwise be removed.
 
 This transform never fails.
 
@@ -344,12 +345,35 @@ This transform never fails.
 ```json
 {
 	"function": "charset_remap",
-	"source":      "абвгдеж...",
-	"destination": "abvgdez..."
+	"source":      "абвгдезийклмнопрстуфхюя",
+	"destination": "abvgdezijklmnoprstufxyy",
+	"delete":      "ь",
+	"map": {
+		"ж": "zh",
+		"ц": "ts",
+		"ч": "ch",
+		"ш": "sh"
+	}
 }
 ```
+> ⚠ I am not familiar with the cyrillic alphabet. Take this example with a grain of salt.
+
+#### Field: `source`, `destination`
+**Mandatory,** *Strings*
 
 Each character present in `source` will be replaced with the one of equivalent index in `destination`.
-If `source` is longer than `destination`, superfluous characters will be deleted instead of replaced.
 
+If `source` is longer than `destination`, superfluous characters will be deleted instead of replaced.
 Behaviour is undefined if `source` contains multiple occurences of the same character.
+
+#### Field: `delete`
+**Optional**, *String*
+
+Characters listed here will be deleted instead of replaced. This overrides mappings done in `source` and `destination`.
+
+#### Field: `map`
+**Optional**, *Maps Characters to Strings*
+
+`map` behaves the same the same as the three previous fields, but allows one character to be mapped to a longer string.
+
+This overrides mappings done in the previous fields.

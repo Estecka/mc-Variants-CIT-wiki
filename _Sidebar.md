@@ -7,7 +7,8 @@
 - [Troubleshooting](./Getting%20Started%20&%20Troubleshooting#troubleshooting)
 - [Module Configuration](./Module-Configuration)
 - [Module Types](./Module-Types)
-- [Property Types](./Item-Properties)
+- [Item Property Types](./Item-Properties)
+- [Transform Types](./Item-Properties#transforms)
 - [Equipped Armor](./Equipped%20Armor) (Beta feature)
 
 ### For mod developpers:
