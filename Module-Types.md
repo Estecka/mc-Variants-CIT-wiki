@@ -174,8 +174,9 @@ This additional module will only apply to items with the `fire_aspect` enchantem
 }
 ```
 
-## Module: `enchantment_vector`, `stored_enchantment_vector`
 
+## Module: `enchantment_vector`, `stored_enchantment_vector`  
+<span id="enchantment_vector"></span><span id="stored_enchantment_vector"></span>
 > ⚠ This module is exclusive to VCIT v3/v4 (MC 1.21.4+)
 
 Picks a model based on *all* of the item's enchantments and their levels.
