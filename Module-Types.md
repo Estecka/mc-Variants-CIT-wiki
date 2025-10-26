@@ -195,7 +195,7 @@ To require a specific level, just add a number after the enchantment's name. (No
 
 `fire_aspect2__mending.png`
 
-For enchantments in modded namespaces, include the namespace before the name as usual, but use two dots (`".."`) as a separator instead of a colon:
+For enchantments in modded namespaces, include the namespace before the name as usual, but use two dots (`".."`) as a separator instead of a colon. The namespace of the models never changes, and can be defined in the parameters.
 
 `fire_aspect2__illagerplus..illager_bane__mending.png`
 
@@ -215,20 +215,22 @@ In order to shorten your filenames, you can define aliases in the module's param
 
 
 ### Parameters:
-- **`bakingDebug`**: _Optional Boolean, defaults to `false`._
-During resource reload, the module will print into the log the list of unique enchantments it detected in your CITs, and thinks are valid. You can easily spot subtle filename errors by looking for enchantment names you know should not exist.
-- **`runtimeDebug`**: _Optional Boolean, defaults to `false`._
-Whenever the module recomputes an item's model, it will print that model's name into the log.
-- **`enchantSeparator`**: _Optional String, defaults to `"__"`._
-The separator to use between enchantments in model names. This string cannot be empty.
+- **`bakingDebug`**: _Optional Boolean. Defaults to `false`._
+  During resource reload, the module will print into the log the list of unique enchantments it detected in your CITs, and thinks are valid. You can easily spot subtle filename errors by looking for enchantment names you know should not exist.
+- **`runtimeDebug`**: _Optional Boolean. Defaults to `false`._
+  Whenever the module recomputes an item's model, it will print that model's name into the log.
+- **`namespace`**: _Optional String. Defaults to `"minecraft"`._
+  The namespace that will contain all the models. (Enchantments have no effect on the namespace of models.)
+- **`enchantSeparator`**: _Optional String. Defaults to `"__"`._
+  The separator to use between enchantments in model names. This string cannot be empty.
 - **`levelSeparator`**: _Optional String._
-The separator to use between enchantments names and their levels. This defaults to an empty string if `optionalLevel` is enabled.
-- **`optionalLevel`**: _Optional Boolean, defaults to `true`._
-Whether enchantment levels are optional. When disabled, if `levelSeparator` is set, levels will be required; if `levelSeparator` is unset, levels will be unsupported.
-- **`enchantAliases`**: _Optional, maps identifiers to identifiers._
-If a model's name describes an enchantment present in this map's key, it will use the corresponding value instead. This allows giving multiple aliases to the same enchantment, and does not prevent other models from using the enchantment's original name.
-- **`ordering`**: _Optional, Array of Strings. Defaults to `["taxicab", "dimension"]`._
-Defines what models are prioritized when no perfect match exists. The first comparator matters the most, the others will be used as tie-breakers.
+  The separator to use between enchantments names and their levels. This defaults to an empty string if `optionalLevel` is enabled.
+- **`optionalLevel`**: _Optional Boolean. Defaults to `true`._
+  Whether enchantment levels are optional. When disabled, if `levelSeparator` is set, levels will be required; if `levelSeparator` is unset, levels will be unsupported.
+- **`enchantAliases`**: _Optional, maps Identifiers to Identifiers._
+  If a model's name describes an enchantment present in this map's key, it will use the corresponding value instead. This allows giving multiple aliases to the same enchantment, and does not prevent other models from using the enchantment's original name.
+- **`ordering`**: _Optional array of Strings. Defaults to `["taxicab", "dimension"]`._
+  Defines what models are prioritized when no perfect match exists. The first comparator matters the most, the others will be used as tie-breakers.
 	- `"taxicab"`: Prioritizes models with the most levels in total.
 	- `"dimension"`: Prioritizes models with the most enchantments, regardless of levels.
 	- `"maximum"`:   Prioritizes models with the highest single level.
