@@ -142,7 +142,7 @@ Derives the variant ID from one of the enchantment on the item, optionally inclu
 
 > [!TIP]
 > 
-> **This module was designed with single-enchantment CITs in mind,** its ability to handle multiple enchantments are limited, and require creating multiple modules. **Consider using `enchantment_vector` instead for CITs based on multiple enchantments.**
+> **This module was designed with single-enchantment CITs in mind,** its ability to handle multiple enchantments is limited, and requires creating multiple modules. **Consider using `enchantment_vector` instead for CITs based on multiple enchantments.**
 
 This will prioritize enchantments that, in order: have available models, have the largest exclusive set, or have the highest level.
 
