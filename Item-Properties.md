@@ -11,7 +11,7 @@ Item Properties are a type of parameter used by the `component_format` and `comp
 	"transform": [ "lowercase", { "function":"regex", "...":"..." } ]
 }
 ```
-Additional fileds may be required depending on the property type, in particular the [`item_component`](#item_component) property, which your are most likely interested in.
+Additional fileds may be required depending on the property type, in particular the [`item_component`](#property-item_component) property, which your are most likely interested in.
 
 #### Field: `property`
 **Mandatory**, string.  
