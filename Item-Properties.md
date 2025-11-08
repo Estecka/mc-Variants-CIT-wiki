@@ -37,13 +37,13 @@ For properties with no mandatory parameters, just give the property name: `"item
 
 For `item_component` properties, instead provide the component's name, immediately followed by the optional nbt path:
 ```json
-"custom_data.key[1]"
+"custom_data.keyname[1]"
 ```
 is short for:
 ```json
 {
 	"componentType": "custom_data",
-	"nbtPath": ".key[1]",
+	"nbtPath": ".keyname[1]",
 	"expect": "auto",
 	"transform": "sanitize_auto"
 }
@@ -61,7 +61,7 @@ If the component or the data is missing, or the data does not have the expected 
 ```json
 {
 	"componentType": "fireworks",
-	"nbtPath": ".array[0].map{0}.key",
+	"nbtPath": ".somearray[0].somemap{0}.key",
 	"expect": "rich_text"
 }
 ```
@@ -78,12 +78,12 @@ The identifier of the item component to use.
 
 The location of the data to extract within the input NBT. If left unspecified, the raw component will be used as the data.
 
-- `.keyname` Expects a compound, and returns the value under the given name. "keyname" can contain any alpha-numerical characters, both upper and lower cases, as well as any character that is legal for a namespaced identifier to hold, excluding dots `'.'`.
+- **`.keyname`** is used to access maps, it returns the value under the given key. "keyname" must be replaced with the actual name of the key. It can contain any alpha-numerical characters, both upper and lower cases, as well as any character that is legal for a namespaced identifier to hold, excluding dots `'.'`.
 
-- `[n]` expects an array, and returns the value at the given index. "n" must be a number. Negative values start at the end of the index.
+- **`[n]`** is used to access arrays, it returns the value at the given index. "n" must be a number. Negative values start at the end of the index.
 
-- `{n}` expects a compound, but accesses it like an array of key-value pairs, and returns the pair at the given index. It should always be followed by either `.key` or `.value`.
-The order in which entries are sorted is undefined.
+- **`{n}`** is used to access maps in an array-like fashion, it returns the key-value pair at the given index. It should always be followed by `.key` or `.value` literally.
+The order in which entries are sorted is undefined, but will remain constant for a given item.
 
 > [!TIP]
 > 

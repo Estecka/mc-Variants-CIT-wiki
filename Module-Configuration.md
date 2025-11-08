@@ -107,12 +107,16 @@ Generated models:
 }
 ```
 
+The generated models have an id and a path, as if they were provided by a texture pack.
+
+*Only one* model can exist at a given path. If multiple modules with identical `modelPrefix`es have different `modelParent`s, it is undefined which parent will be used for the models they generate. If one module's prefix a sub-set of the other, the most specific prefix will take priority over its own subset of models.
+
 ### `itemsFromModels`
 **Optional**, boolean, defaults to true.
 
 If enabled, missing `items/` will be automatically generated based on existing or previously generated `models/`, whose name matches the `modelPrefix` or the `fallback` and `special` models.
 
-If you are working with item types that require you to provide your own item states (Bows, Shields, Tridents, etc), I recommend setting this to false. It won't make anything work, but it's better for performances and for debugging. This will prevent the module from generating garbage unused variants from animation-specific assets (`_pulling`, `_blocking`, etc), and will prevent half-working models from showing up if your item-states aren't properly set-up.
+If you are working with item types that require you to provide your own item states (Bows, Shields, Tridents, etc), I recommend setting this to false. It won't make anything work, but it's better for performances and for debugging. This will prevent the module from generating garbage unused variants from animation-specific assets (`_pulling`, `_blocking`, etc), and thus will prevent half-working models from showing up if your item-states aren't properly set-up.
 
 Resulting item state:
 ```json

@@ -1,10 +1,10 @@
-# Equippable Modules (Beta)
+# Equippable Modules
 
 > [!IMPORTANT]
 >
 > This feature is exclusive to VCIT v3 and v4. (MC 1.21.4 and onward)
 
-Changing the look of equipped armor works a bit differently from regular items, but most of what is written in [Module Configuration](./Module-Configuration) and the rest of the wiki still applies here. This page here will only cover the differences.
+Changing the look of equipped armor works similarly regular items, so most of what is written in the rest of the wiki still applies here. This page here will only cover the differences.
 
 The main difference is that equippable modules will override the ['`equippable`'](https://minecraft.wiki/w/Data_component_format#equippable) component's `assetId` field, instead of the `item_model` component previously.
 

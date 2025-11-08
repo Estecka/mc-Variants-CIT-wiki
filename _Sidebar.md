@@ -9,7 +9,7 @@
 - [Module Types](./Module-Types)
 - [Item Property Types](./Item-Properties)
 - [Transform Types](./Item-Properties#transforms)
-- [Equipped Armor](./Equipped%20Armor) (Beta feature)
+- [Equipped Armor](./Equipped%20Armor)
 
 ### For mod developpers:
 - [Java API](./Java-API)
