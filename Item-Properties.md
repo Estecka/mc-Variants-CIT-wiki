@@ -78,7 +78,14 @@ The identifier of the item component to use.
 
 The location of the data to extract within the input NBT. If left unspecified, the raw component will be used as the data.
 
-- **`.keyname`** is used to access maps, it returns the value under the given key. "keyname" must be replaced with the actual name of the key. It can contain any alpha-numerical characters, both upper and lower cases, as well as any character that is legal for a namespaced identifier to hold, excluding dots `'.'`.
+- **`.keyname`** or **`.'keyname'`** is used to access maps, it returns the value under the given key. "keyname" must be replaced with the actual name of the key.  
+  The unquoted syntax supports a limited character set, similar to namespaced identifier: `[a-zA-Z0-9:/_-]`.  
+  The quoted syntax allows for any characters except single quotes and escape characters (`'` and `\`).  
+
+  In both syntaxes, the escape character `\` can be used to intepret the next character literally, on the off-chance you do need a single quote in your keyname. Note that `\` is already an escape character in JSON, so you'll need to double them up everytime:
+  1. Json file: `"nbtPath":".'weird\\'key\\\\"`
+  2. As seen by the mod: `.'weird\'key\\'`
+  3. Resulting key name: `weird'key\`
 
 - **`[n]`** is used to access arrays, it returns the value at the given index. "n" must be a number. Negative values start at the end of the index.
 

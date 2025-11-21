@@ -16,6 +16,9 @@ The active wiki no longer advertises removed or deprecated features. Wikis for o
 ## Deprecated Features
 These features still work, but should no longer be used. Removal is not necessarily planned, but they are no longer maintained. They could change behaviour unexpectedly at the whims of minecraft internals.
 
+### Java API
+The java API will probably be removed in the next major version, at the same times the mod moves from intermediary to unobfuscated minecraft. As far as I know, no one's using it anyways. Recent versions of VCIT have received a lot of low-level changes, and I want the comfort to be able to break things in future versions.
+
 ### Miscellaneous
 - Modules located in `variant-cits/` (mispelled) should be moved to `variants-cit/` (mod id).
 - Modules should explicitely specify an `items` field, instead of naming the module itself after the target item type.
