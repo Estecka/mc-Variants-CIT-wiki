@@ -3,7 +3,7 @@
 ### [FAQ](./FAQ)
 
 ### For pack makers
-- [Getting Started](./Getting%20Started%20&%20Troubleshooting)
+- [Getting Started](./Getting%20Started)
 - [Troubleshooting](./Troubbleshooting)
 - [Module Configuration](./Module-Configuration)
 - [Module Types](./Module-Types)
