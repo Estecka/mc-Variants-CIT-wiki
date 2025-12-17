@@ -162,7 +162,7 @@ This module will manage CITs that only have a single enchantment:
 	"modelPrefix": "item/diamond_sword/"
 }
 ```
-This additional module will only apply to items with the `fire_aspect` enchantement, and provide a CIT based on a second enchantment. (See [module priorities](Module-Configuration#priority).)
+This additional module will only apply to items with the `fire_aspect` enchantement, and provide a CIT based on a second enchantment. (See [module priorities](Module-Configuration#field-priority).)
 ```json
 {
 	"type": "enchantment",
