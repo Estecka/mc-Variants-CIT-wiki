@@ -2,7 +2,7 @@
 
 ### [FAQ](./FAQ)
 
-### For pack makers
+### For Resource Pack makers
 - [Getting Started](./Getting%20Started)
 - [Troubleshooting](./Troubbleshooting)
 - [Module Configuration](./Module-Configuration)
@@ -10,8 +10,6 @@
 - [Item Property Types](./Item-Properties)
 - [Transform Types](./Item-Properties#transforms)
 - [Equipped Armor](./Equipped%20Armor)
-
-### For mod developpers:
-- [Java API](./Java-API)
+- [Asset Generation](./Asset-Generation) (Alpha)
 
 ### [Deprecated Features](./Deprecated_Features)

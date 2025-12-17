@@ -1,4 +1,4 @@
-# FAQ
+# FAQ / Index
 
 ### Q: Will this work with X or Y pack ?
 If this pack was made for Optifine: **No**.
@@ -90,15 +90,18 @@ See: [Equipable Modules](https://github.com/Estecka/mc-Variants-CIT/wiki/Equippe
 
 
 ### Q: Weapons/tools in the player's hand are held incorrectly.
-Use `item/handheld` as the [`modelParent`](./Module-Configuration#modelparent) in your module, or as the `parent` in your [baked models](https://minecraft.wiki/w/Model#Item_models).
+Use `item/handheld` as the [`modelParent`](./Module-Configuration#field-modelparent) in your module, or as the `parent` in your baked models.
 
 
 ###	Q: Shield blocking, Bow pulling, Trident in hand, Throwing trident, Fishing Rod cast, Goat Horn tooting and other item-specific actions.
-These items use [item states](https://minecraft.wiki/w/Items_model_definition) to control their animations, which VCIT cannot generate automatically. You must provide these item states in your pack; one for each variant, like for baked models and textures. Just copy the vanilla item states for those items, and swap out the model names with your custom ones.
+Add an [`assetGen`](./Module-Configuration#asset-generation) field to your module, and set it to the [generator preset](./Asset-Generation#built-in-asset-generator-presets) that matches your item type.
+(This feature is currently in alpha.)
 
-Item states are a vanilla feature, if you have trouble getting item states to work, also try seeking help from other minecraft communities; they probably have more resources will be more reactive than I.
+If your item is not supported by any preset, you will need to either provide your own items states and baked models, or learn how to write a [custom asset generator](./Asset-Generation#custom-asset-generators). Either way, this requires a good understanding of how vanilla [item states](https://minecraft.wiki/w/Items_model_definition) work.
 
-See also: [`modelPrefix`](./Module-Configuration#modelprefix), [Item-states related issues](https://github.com/Estecka/mc-Variants-CIT/issues?q=is%3Aissue%20label%3A%22items%20states%22)
+Item states are a vanilla feature. If you have trouble getting item states to work, you can also try seeking help from other minecraft communities; they probably have more resources and will be more reactive than I.
+
+See also: [`modelPrefix`](./Module-Configuration#field-modelprefix), [Item-states related issues](https://github.com/Estecka/mc-Variants-CIT/issues?q=is%3Aissue%20label%3A%22items%20states%22)
 
 
 ### Q: Animated textures.
@@ -108,9 +111,9 @@ If you have trouble getting vanilla animations to work, also try seeking help fr
 
 
 ### Q: Missing models/textures (magenta checkerboard), but the models work in optifine.
-__**DO NOT TEST YOUR MODELS WITH OPTIFINE OR CIT-RESEWN INSTALLED.**__
+__**Do not use Optifine, Cit-Resewn, or Blockbench as indicators that your models are valid.**__
 
-Your baked models or item states probably rely on features that are exclusive to optifine, those files are not compatible with vanilla minecraft and need to be modified.
+Your json models probably rely on **features that are exclusive to optifine,** those models are not compatible with vanilla minecraft and need to be modified. Unlike Optifine, Variants-CIT does not change the inner-working of models; all it does is swap one model for another.
 
 Known issues are:
 - The resource location of models or textures [uses a bad formatting](https://github.com/Estecka/mc-Variants-CIT/issues/42#issuecomment-2746369948)

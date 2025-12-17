@@ -41,12 +41,12 @@ If your module's ID is not listed by the autocomplete, it means there is an erro
 If no error appears at all, your module is probably stored in the wrong folder.
 
 #### > "This module would normally not apply to items of type xxxx."
-Your item's type was not listed in the module's target [`items`](./Module-Configuration#items).
+Your item's type was not listed in the module's target [`items`](./Module-Configuration#field-items).
 
 #### > "The item has a valid variant, but no associated model exists."
 The command will also give you the variant ID of your item, and what your model/texture should be named. Make sure that the file name matches exactly what is given.
 
-Note that if you want to provide only textures but no baked model, you must also define a [model parent](Module-Configuration#modelParent) in the module, otherwise textures will be ignored.
+Note that if you want to provide only textures but no baked model, you must also define a [model parent](Module-Configuration#field-modelparent) in the module, or an equivalent [asset generator](./Module-Configuration#field-assetgen), otherwise textures will be ignored.
 
 Instead of `walkthrough`, you can also use the `dump` commands to check whether your existing models were collected by the module, and if so, what variant ID they were associated with.
 

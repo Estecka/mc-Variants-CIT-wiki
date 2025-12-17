@@ -16,6 +16,10 @@ The active wiki no longer advertises removed or deprecated features. Wikis for o
 ## Deprecated Features
 These features still work, but should no longer be used. Removal is not necessarily planned, but they are no longer maintained. They could change behaviour unexpectedly at the whims of minecraft internals.
 
+> [!CAUTION]
+> 
+> **PORTING THIS MOD TO THE UPCOMING UNOBFUSCATED VERSIONS OF MINECRAFT WILL REQUIRE SWEEPING CHANGES TO THE CODEBASE. MANY DEPRECATED FEATURES MAY BE REMOVED IN ORDER TO SIMPLIFY THAT PROCESS.**
+
 ### Java API
 The java API will probably be removed in the next major version, at the same times the mod moves from intermediary to unobfuscated minecraft. As far as I know, no one's using it anyways. Recent versions of VCIT have received a lot of low-level changes, and I want the comfort to be able to break things in future versions.
 
@@ -36,3 +40,5 @@ The java API will probably be removed in the next major version, at the same tim
 
 ### Minecraft versions
 - Variants-CIT v2 (MC 1.21 to 1.21.3) is nearing end of life. The internals of minecraft have greatly changed in MC 1.21.4, and newer mod features are becoming difficult or impossible to backport to this version.
+
+- Variants-CIT v3 and v4 (MC 1.x) may stop receiving new features after the mod is ported to MC 26.x.

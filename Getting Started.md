@@ -29,7 +29,7 @@ The trailing slash '`/`' at the end of the prefix is important !
 
   Starting MC 1.21.4, the leading `item/` in the model prefix is implied, but if you want your pack to be compatible with MC 1.21.3 and earlier, you should always specify it.
 
-See [here](Module-Configuration#modelPrefix) for an advanced quide on how to configure modules.
+See [here](Module-Configuration#field-modelprefix) for an advanced quide on how to configure modules.
 
 
 ### 2. Add textures to the pack
