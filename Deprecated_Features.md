@@ -24,7 +24,7 @@ These features still work, but should no longer be used. Removal is not necessar
 The java API will probably be removed in the next major version, at the same times the mod moves from intermediary to unobfuscated minecraft. As far as I know, no one's using it anyways. Recent versions of VCIT have received a lot of low-level changes, and I want the comfort to be able to break things in future versions.
 
 ### Miscellaneous
-- Modules located in `variant-cits/` (mispelled) should be moved to `variants-cit/` (mod id).
+- Modules located in `variant-cits/item/` (mispelled) and `variants-cit/item/` should be moved to `variants-cit/modules/`.
 - Modules should explicitely specify an `items` field, instead of naming the module itself after the target item type.
 - `modelPrefix` should never be empty, or containing only `"item/"`.
 

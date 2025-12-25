@@ -1,6 +1,10 @@
 # Modules
 
-A module is a JSON file provided by a resource pack, located somewhere in `variants-cit/item/`. It controls a large collection of models, and defines how to match them to an item.
+A module is a JSON file provided by a resource pack, located somewhere in `variants-cit/modules/`. It controls a large collection of models, and defines how to match them to an item.
+
+> [!INFO]
+> 
+> If you look at existing packs, you may find that they store their modules in `item/` instead of `modules/`. This older directory is still functional, but deprecated.
 
 Ultimately, all a module does is override one of the component of an item, (either `item_model` or `equippable`), meaning everything that can be done with those components can also be done with Variants-CIT. Having a good understanding of vanilla model mechanics ([Item states](https://minecraft.wiki/w/Items_model_definition) and [Equipments](https://minecraft.wiki/w/Equipment)) will help a lot.
 
@@ -82,6 +86,12 @@ If your module often leave an item unchanged, then I recommend a value around 10
 ## Variant Library
 Fields that define what set of assets will be collected by the module, in order to create its library of variants.
 
+> [!IMPORTANT]
+>
+> Pre-1.21.4, before the introduction of the `items/` folder, model prefixes, fallbacks and special models were resolved from the root of `models/` and `texture/`, instead of their `item/` subdirectory.
+>
+> For versions of minecraft 1.21.4 and above, the leading `item/` is now implied and doesn't need to be specified. For backward compatibility, pathes starting with "`item/`" will have that bit stripped off. However if you want your pack to be compatible with versions earlier than MC 1.21.4, you must keep using "`item/`" at the start of your pathes.
+
 ### Field: `modelPrefix`
 **Mandatory**, String
 
@@ -112,22 +122,11 @@ Equivalent `equippable` component  | `<namespace>:<modelPrefix><path>`
 Matching equipment asset           | `/assets/<namespace>/equipment/<modelPrefix><path>`
 Matching equipment texture         | `/assets/<namespace>/entity/equipment/<layer>/<modelPrefix><path>`
 
-
-> [!IMPORTANT]
->
-> Pre-1.21.4, before the introduction of the `items/` folder, prefixes were resolved from the root of `models/` and `texture/`, instead of their `item/` subdirectory.
-> For backward compatibility, prefixes starting with "`item/`" will have that bit stripped off in MC 1.21.4. If you want your pack to be compatible with both MC 1.21.4 and earlier versions, you must keep using "`item/`" at the start of your prefix.
-
 ### Field: `fallback`
 **Optional**, Namespaced Identifier.
 
 The model to use for items for which a variant was identified, but no model was provided for this variant.
 Modules with fallback are much less likely to hand over control to lower priority modules.
-
-> [!NOTE]
->
-> For backward compatibility with pre-1.21.4 packs, the leading "item/" will be stripped off if present.
-
 
 ### Field: `special`
 **Optional**, maps Strings to Namespaced Identifiers.
@@ -136,10 +135,6 @@ A list of models that the CIT module may use in certain exceptional circumstance
 
 All special models are optional and default to null.
 All models listed here are automatically loaded.
-
-> [!NOTE]
->
-> For backward compatibility with pre-1.21.4 packs, the leading "item/" will be stripped off if present.
 
 ## Asset-generation
 
