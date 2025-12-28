@@ -79,7 +79,7 @@ The identifier of the item component to use.
 The location of the data to extract within the input NBT. If left unspecified, the raw component will be used as the data.
 
 - **`.keyname`** or **`.'keyname'`** is used to access maps, it returns the value under the given key. "keyname" must be replaced with the actual name of the key.  
-  The unquoted syntax supports a limited character set, similar to namespaced identifier: `[a-zA-Z0-9:/_-]`.  
+  The unquoted syntax supports a limited character set: `[a-zA-Z0-9:/_-]`.  
   The quoted syntax allows for any characters except single quotes and escape characters (`'` and `\`).  
 
   In both syntaxes, the escape character `\` can be used to intepret the next character literally, on the off-chance you do need a single quote in your keyname. Note that `\` is already an escape character in JSON, so you'll need to double them up everytime:
@@ -228,7 +228,8 @@ If the input matches the regex, it will be replaced with the substitution string
 
 > [!TIP]
 >
->  Use [regex101.com](https://regex101.com/) to test you patterns and substitution strings.
+> Use [regex101.com](https://regex101.com/) to test you patterns and substitution strings.  
+> Make sure to set the regex flavor to "Java 8" in the left panel !
 
 ### Schema
 ```json

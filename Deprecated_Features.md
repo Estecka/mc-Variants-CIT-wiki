@@ -27,6 +27,7 @@ The java API will probably be removed in the next major version, at the same tim
 - Modules located in `variant-cits/item/` (mispelled) and `variants-cit/item/` should be moved to `variants-cit/modules/`.
 - Modules should explicitely specify an `items` field, instead of naming the module itself after the target item type.
 - `modelPrefix` should never be empty, or containing only `"item/"`.
+- The various `debug` parameters should no longer be used. Use the [`/variants-cit module`](./Troubbleshooting) command instead to troubleshoot your modules.
 
 ### Module Types
 - `stored_enchantments` (plural) should be renamed to `stored_enchantment` (singular)

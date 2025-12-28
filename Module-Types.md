@@ -17,8 +17,9 @@ Pulls a single piece of data from a given component or property, and uses that d
 
 The module will fail if the item does not have the component, or valid data is missing from that component at that path.
 
+This module will only look for exact match. Use [`component_treshold`](#module-component_threshold), for numeric data that can fall back to a nearby value.
+
 ### Parameters:
-- **`debug`**: *Optional boolean, defaults to `false`.* Causes variant IDs encountered by the module to be printed in the log.
 - All fields from [Item Properties](./Item-Properties).
 
 ### Example:
@@ -28,7 +29,6 @@ The module will fail if the item does not have the component, or valid data is m
 	"items": "minecraft:firework_rocket",
 	"modelPrefix": "item/firework_rocket/flight_",
 	"parameters": {
-		"debug": true,
 		"componentType": "lore",
 		"nbtPath": "[0]",
 		"expect": "rich_text",
@@ -43,7 +43,6 @@ A step up from `component_data`, that can pull and combine multiple pieces of da
 The module will fail if at least one piece of data is missing or invalid.
 
 ### Parameters:
-- **`debug`**: *Optional boolean, defaults to `false`.* Causes variant IDs encountered by the module to be printed in the log.
 - **`format`**: *Mandatory, string*. The format of the variant ID. The string can contain variables formatted as `${name}`, which will be substitued with the data extracted from the components. Variable names can contain any character in `[a-zA-Z0-9_]`, but may not start with a number.
 - **`variables`**: *Mandatory, Maps variable names to [Item Properties](./Item-Properties)*. Indicates where and how to get the data for each variable in the format.
 
@@ -55,7 +54,6 @@ This behaves similarly to the [`trim`](./Module-Types#module-trim) module type, 
 	"items": [ "diamond_pickaxe", "iron_axe", "netherite_sword", "..."],
 	"modelPrefix": "item/trimmed_",
 	"parameters": {
-		"debug": true,
 		"format": "${patternSpace}:${item}/${patternPath}_${material}",
 		"variables": {
 			"patternSpace": {
@@ -84,6 +82,25 @@ This behaves similarly to the [`trim`](./Module-Types#module-trim) module type, 
 Example variant id: `minecraft:netherite_sword/sentry_diamond`
 
 Corresponding texture/baked model id: `minecraft:item/trimmed_netherite_sword/sentry_diamond`
+
+## Module: `component_threshold`
+> ⚠ This module is exclusive to VCIT v3/v4 (MC 1.21.4+)
+
+Pulls a single piece of numeric data from a given component, and uses that data as the variant ID. Floating-point numbers are accepted, but are truncated to an integer.
+If no exact match exists, it the module will fallback to a lower or higher value model.
+
+The module will fail if the item does not have the component, the data is missing at the given path, or is not a number.
+
+Despite using a syntax that looks similar to `component_data`, this module does not support Item Properties, Expect, Transforms etc. `nbtPath` and `componentType` are the only parameters they have in common.
+
+### Parameters:
+- **`namespace`**: _Optional String, defaults to `"minecraft"`_
+The namespace that will contain all the models.
+- **`componentType`**: _Mandatory Identifier_. The component that the data will be pulled from.
+- **`nbtPath`**: _Optional String._ The location of the data within the component. If left unspecified, the component as a whole is used.
+- **`modelRange`**: _Mandatory String._ Describes the set of models that can be used, relative to the value found on the item. Possible values are: `"strictly_equal"`, `"lesser_or_equal"`, `"greater_or_equal"`
+- **`scale`**, **`offset`**: _Optional floats, default to `1` and `0` respectively._ Applies a linear function to the data found on the item:  
+  `variant_id = trunc((data * scale) + offset)`
 
 
 # Purpose-made modules
@@ -118,7 +135,6 @@ E.g: "Épée de l'End" -> `minecraft:epee_de_lend`
 Special formatting, such as colour and boldness, are ignored.
 
 ### Parameters:
-- **`debug`**: *Optional, defaults to false*. Prints name-to-variants conversion into the log, whenever a new one is computed.
 - **`specialNames`**: *Optional, Maps Strings to Identifiers.* Lets you hardcode some associations between names and variant ID, instead of letting the module compute them automatically like above. (This parameter is a relica from older versions, and will not be required in most cases.)
 
 > [!TIP]
@@ -175,13 +191,13 @@ This additional module will only apply to items with the `fire_aspect` enchantem
 ```
 
 ## Module: `enchantment_vector`, `stored_enchantment_vector`
-
 > ⚠ This module is exclusive to VCIT v3/v4 (MC 1.21.4+)
 
 Picks a model based on *all* of the item's enchantments and their levels.
 The module will pick a model whose levels are lower or equal to those of the item. By default, models that have the most levels in total will be prioritized.
 
-This module does not compute a variant ID for the item. Instead it takes the variant IDs of the *models*, and converts those into sets of enchantments.  For development, you probably want to enable `bakingDebug` in the module's parameters, which will print extra infos in the log during resource reload.
+This module does not compute a variant ID for the item. Instead it takes the variant IDs of the *models*, and converts those into sets of enchantments.
+You can use the [summary](./Troubbleshooting#command-summary) command to quickly check the list of unique enchantments that are presents on your models; you can easily spot subtle filename errors by looking for enchantment names you know should not exist. You can use the [dump](./Troubbleshooting#command-dump) to get a detailled list of enchantments for every model.
 
 ### Model Name Syntax
 The default syntax should be able to support all vanilla enchantments without creating ambiguous names. It assumes enchantment names will never contain two successive underscores (`"__"`), never end with a number, and never have namespaces that contain two successive dots (`".."`).
@@ -195,7 +211,7 @@ To require a specific level, just add a number after the enchantment's name. (No
 
 `fire_aspect2__mending.png`
 
-For enchantments in modded namespaces, include the namespace before the name as usual, but use two dots (`".."`) as a separator instead of a colon. The namespace of the models never changes, and can be defined in the parameters.
+For enchantments in modded namespaces, include the namespace before the name as usual, but use two dots (`".."`) as a separator instead of a colon. (The namespace of the models themselves never changes, and can be defined in the parameters.)
 
 `fire_aspect2__illagerplus..illager_bane__mending.png`
 
@@ -210,15 +226,11 @@ In order to shorten your filenames, you can define aliases in the module's param
 	}
 }
 ```
-`fire2__sweep3__ill7__mending.png` would then be short for :  
+With this, `fire2__sweep3__ill7__mending.png` would then be short for :  
 `fire_aspect2__sweeping_egde3__illagerplus..illager_bane7__mending.png`
 
-
 ### Parameters:
-- **`bakingDebug`**: _Optional Boolean. Defaults to `false`._
-  During resource reload, the module will print into the log the list of unique enchantments it detected in your CITs, and thinks are valid. You can easily spot subtle filename errors by looking for enchantment names you know should not exist.
-- **`runtimeDebug`**: _Optional Boolean. Defaults to `false`._
-  Whenever the module recomputes an item's model, it will print that model's name into the log.
+All parameters for this module are optional.
 - **`namespace`**: _Optional String. Defaults to `"minecraft"`._
   The namespace that will contain all the models. (Enchantments have no effect on the namespace of models.)
 - **`enchantSeparator`**: _Optional String. Defaults to `"__"`._
@@ -270,7 +282,6 @@ The resulting variant is: `<pattern_namespace>:<pattern_path>_<material_path>`.
 E.g: `minecraft:sentry_diamond`
 
 **Only the namespace of the pattern is used. The material's namespace is discarded.**
-
 
 ## Module: `trim_pattern`, `trim_material`
 Uses either the pattern or the material of the `trim` component as a variant.
