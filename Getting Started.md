@@ -40,7 +40,7 @@ We need to figure out the so-called **"variant ID"** of this item. The variant I
 
 In general, you can get the correct variant ID by using the following command, while holding the sword in your main hand:
 ```
-/variants-cit item_model <module id> walkthrough
+/variants-cit module item_model <module id> walkthrough
 ```
 
 ![walkthrough command](./walkthrough_command.png)

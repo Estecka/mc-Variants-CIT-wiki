@@ -3,7 +3,7 @@
 
 There are a few client-side commands that you can use to check the behaviours of your modules.
 ```
-/variants-cit <context> <module id> [summary|dump|walkthrough]
+/variants-cit module <context> <module id> [summary|dump|walkthrough]
 ```
 `context` will be either "`item_model`" (by default) or "`equippable`" depending on what has been defined in your module.
 
@@ -31,7 +31,7 @@ The details vary from one module type to another, but at minimum, this will tell
 ### Issue: Models are left unchanged
 Put the item you want to change in your main hand, and run the command:
 ```
-/variants-cit <context> <module id> walkthrough
+/variants-cit module <context> <module id> walkthrough
 ```
 Depending on what the result tells you:
 
