@@ -16,7 +16,8 @@ The command `/variants-cit assetgen createPack` will create and load a regular r
 
 > [!CAUTION]
 >
-> **This command will delete any already existing file in the pack's directory.**
+> **This command will delete any already existing file in the pack's directory.**  
+> (`.minecraft/resourcepacks/VCIT Baked AssetGen/`)
 
 For end-users, the command needs to be manually re-run after new VCIT-dependent resource packs are added or removed.
 
