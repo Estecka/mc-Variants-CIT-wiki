@@ -2,7 +2,7 @@
 
 A module is a JSON file provided by a resource pack, located somewhere in `variants-cit/modules/`. It controls a large collection of models, and defines how to match them to an item.
 
-> [!INFO]
+> [!NOTE]
 > 
 > If you look at existing packs, you may find that they store their modules in `item/` instead of `modules/`. This older directory is still functional, but deprecated.
 
