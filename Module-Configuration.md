@@ -149,7 +149,7 @@ An asset generators can be either a [Custom Generator](./Asset-Generation#custom
 In most cases, the values you will want to use are:
 - `item_model/generated` for basic items.
 - `item_model/handheld` for basic tools.
-- `equipment/armor` for basic 4-pieces armors.
+- `equipment/humanoid` for basic 4-pieces armors.
 
 For items with animations such as bows, see the complete list of presets linked above.
 
