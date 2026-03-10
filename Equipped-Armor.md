@@ -33,7 +33,7 @@ Variant ID                                  | `<namespace>:<path>`
 ------------------------------------------- | :-------------------
 Equivalent `equippable` component (assetId) | `<namespace>:<modelPrefix><path>`
 Matching equipment model                    | `/assets/<namespace>/equipment/<modelPrefix><path>.json`
-Matching texture                            | `/assets/<namespace>/entity/equipment/<layer>/<modelPrefix><path>.json`
+Matching texture                            | `/assets/<namespace>/textures/entity/equipment/<layer>/<modelPrefix><path>.json`
 
 Equipements can work with multiple layers, meaning you only need a single model (and thus a single module) to handle all the body parts of an armor tier !
 
