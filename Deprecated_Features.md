@@ -23,7 +23,7 @@ Use `component_data` instead.
 - `expect` in `item_component` now defaults to accepting every data types.
 - Removed `expect` values: `auto`, `primitive`.
 - `sanitize`'s behaviour was changed to be the same as `sanitize_auto`.
-- `custom_name` module's flavour of sanitize was changed to `sanitize_path`
+- `custom_name` module's flavour of sanitize was changed to `sanitize_auto`
 
 ## Deprecated Features
 These features still work, but should no longer be used. Removal is not necessarily planned, but they are no longer maintained. They could change behaviour unexpectedly at the whims of minecraft's internals.
