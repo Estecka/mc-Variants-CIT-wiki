@@ -11,15 +11,14 @@ Optifine works by defining variants on a case-by-case basis. VCIT works by defin
 VCIT works best for packs that have many variants for a single item.
 Its goal is to handle as many variants as possible using a few files as possible, and yield better performances in the most extreme cases.
 
+Variants-CIT v5 introduced a [`predicates`]() module type that works more similarly to optifine. However, its usage should only be considered as a band-aid solution for scenarios that regular modules cannot handles.
 
 ### Q: How do I port a pack ?
-Follow the [introductory tutorial](./Getting%20Started%20&%20Troubleshooting). 
-
-For some specific uses cases, you will also want to learn how to use the vanilla ['`item_model`' component](https://minecraft.wiki/w/Items_model_definition).
+Follow the [introductory tutorial](./Getting%20Started). Then pick a [module type](./Module-Types) that best matches your use case.
 
 
 ### Q: Changing an item's look based on its name.
-Follow the [introductory tutorial](./Getting%20Started%20&%20Troubleshooting), which does precisely that.
+Follow the [introductory tutorial](./Getting%20Started), which does precisely that.
 
 ### Q: Matching prefixes, suffixes, and other patterns in names
 
@@ -33,19 +32,18 @@ Instead of using a `custom_name` module, use a [`component_data`](./Module-Types
 	"modelPrefix": "...",
 	"parameters": {
 		"componentType": "custom_name",
-		"expect": "rich_text",
 		"transform": [
-			"sanitize_path",
 			{
 				"regex": "prefix_(.+)_suffix",
 				"substitution": "$1"
-			}
+			},
+			"sanitize_path"
 		]
 	}
 }
 ```
 
-You can use [Regex 101](https://regex101.com/) to test your regexes and substitution strings. Make sure to select the "Java 8" flavor and the "Substitution" function in the left panel.
+You can use [Regex 101](https://regex101.com/) to test your regexes and substitution strings. Make sure to select the "Java" flavor and the "Substitution" function in the left panel.
 
 Remember that unlike optifine, VCIT does not work by matching values, but by *transforming* raw data into a variant ID. Similarly, the regex here does not simply validate the name's format, it extracts a variant from the name, using _capturing groups_ and a _substitution_ string
 
@@ -53,7 +51,7 @@ See also: [Regex-related Issues](https://github.com/Estecka/mc-Variants-CIT/issu
 
 
 ### Q: Using X or Y component as the variant.
-Check whether their is a [purpose-made module](./Module-Types#purpose-made-modules) for your use case. Otherwise, use a [`component_data`](./Module-Types#component_data) module.
+Check whether there is a [purpose-made module](./Module-Types#purpose-made-modules) for your use case. Otherwise, use a [`component_data`](./Module-Types#component_data) module.
 
 See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#property-item_component)
 
@@ -64,14 +62,34 @@ Use a [`component_format`](./Module-Types#module-component_format) module instea
 See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#property-item_component)
 
 
-### Q: Add arbitrary checks or requirements for what items are affected by a module.
-Technically not a feature, however, this should be possible to achieve using the [regex transform](./Item-Properties#transform-regex) in a `component_format` module.
+### Q: Add arbitrary checks or requirements, without necessarily using them as variants.
+For checking the existence or validity of some invariant data on an item, use the [`precondition`](./Module-Configuration#field-precondition) field of a module.
 
-Defining variables that are not used in the format is currently allowed, but is still considered a fringe case. Please leave a comment [here](https://github.com/Estecka/mc-Variants-CIT/issues/57) describing your use case, to help shape a potential upcoming feature.
+For defining variants that don't neatly follow any rule, use a [`predicates`](./Module-Types) module type.
+
+Example: Enchantment-based variant, but only on swords that have a specific custom-data:
+```jsonc
+{
+	// Automatic enchantment-based variants
+	"type": "enchantment_vector",
+	"modelPrefix": "enchanted_end_sword/",
+	"assetGen": "item_model/handheld",
+
+	// Invariant requirements
+	"items": "diamond_sword",
+	"precondition": {
+		"custom_data.hp_item_type": "END_SWORD"
+	}
+}
+```
 
 
 ### Q: Using threshold values in `component_data`/`component_format`.
-**Not Supported.** Under consideration, but no ETA, and will definitely require deep restructuring of those modules. Some [purpose-made modules](./Module-Types#purpose-made-modules) do support thresholds, and adding new ones is easier for the time being. Please open an issue describing your use case.
+**Not Supported.**
+
+Some other modules do support thresholds: [`component_threshold`](./Module-Types#module-component_threshold), [`item_count`](./Module-Types#module-item_count), [`enchantment_vector`](./Module-Types#module-enchantment_vector-stored_enchantment_vector), etc.
+
+If all else fail, you can also try using a [`predicates`](./Module-Types#module-predicates) module type.
 
 
 ### Q: Variant based on text formatting.
@@ -79,29 +97,31 @@ Defining variables that are not used in the format is currently allowed, but is 
 
 
 ### Q: Changing the look of equipped armor.
-**Experimental.**
-Modules for this are practically identical to regular modules, but need to be provided with [`equipments`](https://minecraft.wiki/w/Equipment) as CITs, (instead of Item States and Baked Models for regular modules).
+In short, add those fields to your modules:
+```jsonc
+{
+	"hook": "equippable",
+	"assetGen": "equipment/humanoid"
+}
+```
 
-See: [Equipable Modules](https://github.com/Estecka/mc-Variants-CIT/wiki/Equipped%20Armor)
+See [Equipable Modules](https://github.com/Estecka/mc-Variants-CIT/wiki/Equipped%20Armor) for detailled instructions.
 
 
 ### Q: Changing the look of the trident's projectile.
 **Not supported.** Projectiles are rendered as entities, not as item stacks.
 
 
-### Q: Weapons/tools in the player's hand are held incorrectly.
-Use `item/handheld` as the [`modelParent`](./Module-Configuration#field-modelparent) in your module, or as the `parent` in your baked models.
+### Q: Weapons/tools in the player's hand are held incorrectly, or do lack have animations.
+Set the "`assetGen`" field of your module to the appropriate preset. Common tools use `item_model/handheld`. Items with animations have more specific presets such as `item_model/bow` or `item_model/trident`.
+See "[Built-in Asset Generator Presets](./Asset-Generation#built-in-asset-generator-presets)" for the complete list of posssible values.
 
+For items with no animation, you can also use the simpler "[`modelParent`](./Module-Configuration#field-modelparent)" field instead of "`assetGen`".
 
-###	Q: Shield blocking, Bow pulling, Trident in hand, Throwing trident, Fishing Rod cast, Goat Horn tooting and other item-specific actions.
-Add an [`assetGen`](./Module-Configuration#asset-generation) field to your module, and set it to the [generator preset](./Asset-Generation#built-in-asset-generator-presets) that matches your item type.
-(This feature is currently in alpha.)
-
-If your item is not supported by any preset, you will need to either provide your own items states and baked models, or learn how to write a [custom asset generator](./Asset-Generation#custom-asset-generators). Either way, this requires a good understanding of how vanilla [item states](https://minecraft.wiki/w/Items_model_definition) work.
+If no preset matches your item, you will need to provide your own item states. You can provide them directly as plain variant assets (see: [`modelPrefix`](./Module-Configuration#field-modelprefix)), or you can write a [custom asset generator](./Asset-Generation#custom-asset-generators) to write most of those assets for you. Either way, this requires a good understanding of how vanilla resource packs.
 
 Item states are a vanilla feature. If you have trouble getting item states to work, you can also try seeking help from other minecraft communities; they probably have more resources and will be more reactive than I.
-
-See also: [`modelPrefix`](./Module-Configuration#field-modelprefix), [Item-states related issues](https://github.com/Estecka/mc-Variants-CIT/issues?q=is%3Aissue%20label%3A%22items%20states%22)
+See also: [Item Model Definition](https://minecraft.wiki/w/Items_model_definition), [Item-states related issues](https://github.com/Estecka/mc-Variants-CIT/issues?q=is%3Aissue%20label%3Aitem-states)
 
 
 ### Q: Animated textures.
@@ -121,4 +141,4 @@ Known issues are:
 
 
 ### Q: Missing models when using ModernFix. (MC 1.21.4 and later)
-Disable ModernFix's [Dynamic Resources](https://github.com/embeddedt/ModernFix/wiki/Dynamic-Resources-FAQ) feature.
+Either disable ModernFix's [Dynamic Resources](https://github.com/embeddedt/ModernFix/wiki/Dynamic-Resources-FAQ) feature, or [bake Variants-CIT's generated assets](./Asset-Generation#baking-generated-assets).

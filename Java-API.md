@@ -1,5 +1,11 @@
 # Java API
 
+> [!IMPORTANT]
+>
+> As of Variants-CIT v5, the java API has been deprecated. The informations listed here are outdated. Whether a new API will be created is uncertain, and longt-term compatibility with dependent mods is not guaranteed.
+>
+> Nonetheless, if you still wish to add custom module types to the most recent versions mod, start by looking at the [VCitRegistries](https://github.com/Estecka/mc-Variants-CIT/blob/HEAD/src/main/java/fr/estecka/variantscit/VCitRegistries.java) class, and work your way up from there.
+
 Custom modules types can be implemented by other mods, for use in [module configurations](Module-Configuration).
 
 A module's primary function is to figure out the variant of an item, from which the mod will derive the model to use. Optionally, it can implement additional logic and special models for situations that are not covered by the variant system.

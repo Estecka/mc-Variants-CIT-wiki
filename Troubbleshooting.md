@@ -1,18 +1,18 @@
 # Troubleshooting
-## Debug tools
+## Debug commands
 
 There are a few client-side commands that you can use to check the behaviours of your modules.
 ```
-/variants-cit module <context> <module id> [summary|dump|walkthrough]
+/variants-cit module <hook> <module id> [summary|dump|walkthrough]
 ```
-`context` will be either "`item_model`" (by default) or "`equippable`" depending on what has been defined in your module.
+`hook` will be either "`item_model`" (by default) or "`equippable`" depending on what has been defined in your module.
 
 > [!TIP]
 >
-> You can use `F3 + D` to clear the in-game chat. For commands that give a lot of feedback, this can make it easier to see where things start.
+> You can use `F3 + D` to clear the in-game chat. For commands that give a lot of feedback, this will make it easier to find where things start.
 
 ### Command: `summary`
-On most module, `summary` will simply give you the amout of variants that this module manages.
+On most module, `summary` will simply give you the amout of variants that this module manages, and the components it relies on.
 
 On `enchant_vector` modules, this will also give the list of unique enchantments that are present on your models. This can be a quick way to check if any of those models has a mispelled name.
 
@@ -23,7 +23,7 @@ On `enchantment_vector`, this will give you the set of enchantments each model i
 
 ### Command: `walkthrough`
 This command will forcibly run the given module on the item in your main hand, and give you information on what the module is trying to do and why it may have failed.
-The details vary from one module type to another, but at minimum, this will tell you what variant ID was found if any, does this variant have a model, and what that model might be.
+The details vary from one module type to another, but at minimum, this will tell you what was the raw value of the item's relevant components, what variant ID was found if any, does this variant have a model, and what that model might be.
 
 ![walkthrough](./walkthrough_command.png)
 
@@ -31,7 +31,7 @@ The details vary from one module type to another, but at minimum, this will tell
 ### Issue: Models are left unchanged
 Put the item you want to change in your main hand, and run the command:
 ```
-/variants-cit module <context> <module id> walkthrough
+/variants-cit module <hook> <module id> walkthrough
 ```
 Depending on what the result tells you:
 
@@ -60,38 +60,33 @@ If you are using `component_data` or `component_format`, look for additional mes
 #### > "Raw Data: Missing or Invalid"
 The item does not provide the data this module expected to find.
 
-First, check that the module's `nbtPath` matches the location of the data. You can check the item's nbt structure by running this command with the item still in your main hand :
+Check that the module's `nbtPath` matches the location of the data. You can check the item's nbt structure by running this command with the item still in your main hand :
 ```
 /data get entity @s SelectedItem.components
 ```
 
-Secondly, check that the module's [`expect`](./Item-Properties#field-expect) is set to the type of data you are looking for. Primitive types will be handled correctly by default, but some texts can only be decoded using `rich_text` or `rich_text_array`.  
-In doubt set it to `auto`, and see if this fixes it. The type `auto`, can be used for quick troubleshooting, but its behaviour may change as new types are added, so it should not be used in released packs.
-
 #### > "Transformed: null"
-The [`transform`](./Item-Properties#transforms) associated with this data failed to produce an output. In particular, if you are using a regex, it may mean that the regex does not match the input.
+The [`transform`](./Item-Properties#transforms) associated with this data failed to produce an output. In particular, if you are using a regex, it may mean that the regex did not match the input. Use [Regex 101](https://regex101.com/) to test your regex against the input, and check that the substitution result is what you expect it to be.
 
 
 ### Issue: Missing models or textures
 (A.k.a. the pink and black checkerboard.)
 
-If you use ModernFix, disable [Dynamic Resources](https://github.com/embeddedt/ModernFix/wiki/Dynamic-Resources-FAQ).
+If you use ModernFix, either disable [Dynamic Resources](https://github.com/embeddedt/ModernFix/wiki/Dynamic-Resources-FAQ), or [bake Variants-CIT's assets](./Asset-Generation#baking-generated-assets).
 
 If you provided only textures, it means that you provided an invalid `modelParent`
 
 If you are providing custom json models, it means those models contains errors.  
-Even if those models originate from a working optifine pack, they may still be invalid. Optifine allows for pack structures and asset formats that are illegal in vanilla minecraft. If you are trying to port an optifine-formatted pack, you may still need to make modifications to its models, and move some files to directories where Minecraft will actually load them.
+Even if those models originate from a working optifine pack, they may still be invalid. Optifine allows for pack structures and asset formats that are illegal in vanilla minecraft. You may need to make modifications to its models, and move some files to directories where Minecraft will actually load them.
 
-Possible issues caused by Optifine are:
+Check the game's log for relevant errors. Possible issues caused by Optifine-formatted assets are:
 - The resource location of models or textures [uses a bad formatting](https://github.com/Estecka/mc-Variants-CIT/issues/42#issuecomment-2746369948)
 - The assets are stored in an [invalid directory](https://github.com/Estecka/mc-Variants-CIT/issues/40#issuecomment-2711744555)
 
 If possible, try testing your models and item states in pure-vanilla minecraft, by using the `item_model` component instead of a VCIT module.
 
 ### Issue: Items aren't held correctly
-Check that you are using the correct model parent. `item/generated` for regular items, `item/handheld` for regular tools and weapons.
+Check that you are using the correct `assetGen` option. `item/generated` for regular items, `item/handheld` for regular tools and weapons.
 
 ### Issue: Item animations are missing
-Models for weapons with complexes animations like bows, shields and tridents cannot be generated automatically from textures. For those, you'll must provide custom item states and baked models, using the vanilla assets as an example.
-
-If possible, try testing your models and item states in pure-vanilla minecraft, by using the `item_model` component instead of a VCIT module.
+Check that you are using the correct `assetGen` option. See [here](./Asset-Generation#built-in-asset-generator-presets) for the list of possible values.
