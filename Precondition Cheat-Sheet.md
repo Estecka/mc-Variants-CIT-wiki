@@ -70,8 +70,6 @@ If enabled, the result of the condition will be inverted.
 ### Condition: `matches_any`, `matches_all`
 Each have single field called either `any` or `all`, accordingly. It is an array of other conditions.
 
-An array of `transform` conditions can instead be formatted as an object, using a simplified syntax described further below.
-
 ### Condition: `transform`
 Makes use of [item properties](./Item-Properties#item-properties) and [transforms](./Item-Properties#transforms) to validate the value of some data. If the transform succesfully produces a result, the condition passes. If no transform is specified, this simply checks that the property exists on the item.
 
@@ -100,7 +98,7 @@ The fields `matches_any` and `matches_all` are treated as the corresponding cond
 
 Keys of the map can be either the ID of an [item property](./Item-Properties#property-types) with no parameters, or an [`item_component`](./Item-Properties#property-item_component) property represented by the value of its `componentType` and its `nbtPath`.
 
-The values of the map are the transform associated with each property. If a value is a plain string or number, it will be interpreted as an [`equals`](./Item-Properties#transform-equals) transform. 
+The values of the map are the transform chains associated with each property. If a value is a plain string or number, it will be interpreted as an [`equals`](./Item-Properties#transform-equals) transform.
 
 
 In case a property provided by Variants-CIT has the same name as an item component (e.g: `axolotl_variant`), you can disambiguate between the two by using an explicit namespace: `variants-cit` or `minecraft`. By default, the property from the mod will be used.
@@ -159,52 +157,15 @@ The following **is not valid** and will not work as expected:
 	"enchantment.sharpness": { "smaller_than": 5 }
 }
 ```
+Instead, use a `matches_any` or `matches_all` transform:
 
-If your condition is `matches_all`, you must instead use its array form:
 ```jsonc
-"precondition": [
-	{
-		"enchantment.sharpness": { "greater_or_equals": 1 },
-	},
-	{
-		"enchantment.sharpness": { "smaller_than": 5 },
-	}
-]
-```
-or use a chain of transforms:
-```jsonc
-"precondition": {
-	"enchantment.sharpness": [
+{
+	"enchantment.sharpness": { "matches_any": [
+		{ "smaller_than": 5 },
 		{ "greater_or_equals": 1 }
-		{ "smaller_than": 5 }
-	],
-}
-```
+	]}
 
-If your condition is a `matches_any`, you must instead use its array form:
-```jsonc
-"precondition": {
-	"matches_any": [
-		{
-			"enchantment.sharpness": { "greater_or_equals": 1 }
-		},
-		{
-			"enchantment.sharpness": { "smaller_than": 5 }
-		}
-	]
-}
-```
-
-or use an [alternative](./Item-Properties#transform-alternative) transform:
-```jsonc
-"precondition": {
-	"enchantment.sharpness": {
-		"function": "alternative",
-		"alternatives": [
-			{ "greater_or_equals": 1 }
-			{ "smaller_than": 5 }
-		]
-	}
 }
 ```
 

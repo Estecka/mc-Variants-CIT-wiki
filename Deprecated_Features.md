@@ -37,6 +37,7 @@ These features still work, but should no longer be used. Removal is not necessar
 ###	Transforms & Item Properties:
 - `validate` in regex transforms should be replaced with `optional`.
 - `expect` should be replaced with its new `transform` counterparts.
+- In `test` transforms, the field `tester` should be renamed to `test`
 
 ### Minecraft versions
 - Variants-CIT v2 (MC 1.21 to 1.21.3) has reached end of life. It may still receive bugfixes, but no new major features. Newer versions of VCIT are unlikely to be backported to this version of Minecraft.
