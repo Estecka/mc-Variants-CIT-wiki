@@ -78,9 +78,9 @@ See [Preconditions](./Precondition%20Cheat-Sheet) for the syntax to use in this 
 > [!IMPORTANT]
 > 
 > **Module preconditions should not be used to differentiate between individual models or textures.**
-> In the example above we want to apply textures on swords with "END_SWORD" as their custom data, but we don't necessarily expect other types of swords to have custom textures. 
+> In the example above the precondition dictates **whether** the sword can have a custom texture **at all**. The enchantment dictates **which** texture to use.
 > 
-> If you wanted to set a texture based on this custom data, but not on enchantmemts, a ["`component_data`" module](./Module-Types#module-component_data) would be a better fit.
+> If you wanted to set a texture based only on the value of this custom data, a ["`component_data`" module](./Module-Types#module-component_data) might be a better fit.
 > 
 > If you really must use preconditions to separate every single model, use a ["`predicates`" module](./Module-Types#module-predicates) instead.
 
