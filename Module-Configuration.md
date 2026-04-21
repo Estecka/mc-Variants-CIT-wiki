@@ -72,7 +72,7 @@ A list of item types the module will be applied to. The mod will silently ignore
 
 A set of conditions that the item must match for the module to apply.
 
-See [Preconditions](./Precondition%20Cheat-Sheet) for the syntax to use in this field. See also [Transforms](./Item-Properties#transforms) for complete list of ways you can evaluate data.
+See [Preconditions](./Precondition%20Cheat-Sheet) for the syntax to use in this field. See also [Transforms](./Transforms) for complete list of ways you can evaluate data.
 
 
 > [!IMPORTANT]

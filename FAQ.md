@@ -22,7 +22,7 @@ Follow the [introductory tutorial](./Getting%20Started), which does precisely th
 
 ### Q: Matching prefixes, suffixes, and other patterns in names
 
-Instead of using a `custom_name` module, use a [`component_data`](./Module-Types#component_data) module with a [Regex Transform](./Item-Properties#transform-regex).
+Instead of using a `custom_name` module, use a [`component_data`](./Module-Types#component_data) module with a [Regex Transform](./Transforms#transform-regex).
 
 #### Example:
 ```json

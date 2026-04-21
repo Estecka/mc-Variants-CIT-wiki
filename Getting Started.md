@@ -150,7 +150,7 @@ For example, this will produce a variant ID formated as `xxxx_steel`:
 ```
 Here, the regex is applied _before_ sanitization, but you can change the order of the transforms in order to have the regex evaluate an already sanitized string.
 
-See also: [Transforms](./Item-Properties#transforms)
+See also: [Transforms](./Transforms)
 
 I recommend you use [regex101.com](https://regex101.com/) to test your regular expressions and substitution strings.
 

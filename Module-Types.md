@@ -102,6 +102,7 @@ A step up from `component_data`, that can pull and combine multiple pieces of da
 ### Parameters:
 - **`format`**: *Mandatory, string*. The format of the variant ID. The string can contain variables formatted as `${name}`, which will be substitued with the data extracted from the components. Variable names can contain any character in `[a-zA-Z0-9_]`, but may not start with a number.
 - **`variables`**: *Mandatory, Maps variable names to [Item Properties](./Item-Properties)*. Indicates where and how to get the data for each variable in the format.
+- **`transform`**: *Optional,* A chain of transform that will be applied to the formatted string.
 
 ### Example:
 This behaves similarly to the [`trim`](./Module-Types#module-trim) module type, but can handle multiple item types at once, without mixing their respective CITs:

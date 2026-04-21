@@ -66,7 +66,7 @@ Check that the module's `nbtPath` matches the location of the data. You can chec
 ```
 
 #### > "Transformed: null"
-The [`transform`](./Item-Properties#transforms) associated with this data failed to produce an output. In particular, if you are using a regex, it may mean that the regex did not match the input. Use [Regex 101](https://regex101.com/) to test your regex against the input, and check that the substitution result is what you expect it to be.
+The [`transform`](./Transforms) associated with this data failed to produce an output. In particular, if you are using a regex, it may mean that the regex did not match the input. Use [Regex 101](https://regex101.com/) to test your regex against the input, and check that the substitution result is what you expect it to be.
 
 
 ### Issue: Missing models or textures

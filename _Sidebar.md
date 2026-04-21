@@ -11,8 +11,8 @@
 - [Module Configuration](./Module-Configuration)
 - [Module Types](./Module-Types)
 - [Preconditions](./Precondition%20Cheat-Sheet)
-- [Item Property Types](./Item-Properties)
-- [Transform Types](./Item-Properties#transforms)
+- [Item Properties](./Item-Properties)
+- [Transforms](./Transforms)
 - [Equipped Armor](./Equipped%20Armor)
 - [Asset Generation](./Asset-Generation)
 

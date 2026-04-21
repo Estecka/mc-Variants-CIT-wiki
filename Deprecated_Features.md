@@ -36,7 +36,7 @@ These features still work, but should no longer be used. Removal is not necessar
 
 ###	Transforms & Item Properties:
 - `validate` in regex transforms should be replaced with `optional`.
-- `expect` should be replaced with its new `transform` counterparts.
+- In `item_component`, the field `expect` should be replaced with its new `transform` counterparts.
 - In `test` transforms, the field `tester` should be renamed to `test`
 
 ### Minecraft versions

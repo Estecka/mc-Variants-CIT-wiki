@@ -71,7 +71,7 @@ If enabled, the result of the condition will be inverted.
 Each have single field called either `any` or `all`, accordingly. It is an array of other conditions.
 
 ### Condition: `transform`
-Makes use of [item properties](./Item-Properties#item-properties) and [transforms](./Item-Properties#transforms) to validate the value of some data. If the transform succesfully produces a result, the condition passes. If no transform is specified, this simply checks that the property exists on the item.
+Makes use of [item properties](./Item-Properties) and [transforms](./Transforms) to validate the value of some data. If the transform succesfully produces a result, the condition passes. If no transform is specified, this simply checks that the property exists on the item.
 
 
 ## Simplified syntax
@@ -98,7 +98,7 @@ The fields `matches_any` and `matches_all` are treated as the corresponding cond
 
 Keys of the map can be either the ID of an [item property](./Item-Properties#property-types) with no parameters, or an [`item_component`](./Item-Properties#property-item_component) property represented by the value of its `componentType` and its `nbtPath`.
 
-The values of the map are the transform chains associated with each property. If a value is a plain string or number, it will be interpreted as an [`equals`](./Item-Properties#transform-equals) transform.
+The values of the map are the transform chains associated with each property. If a value is a plain string or number, it will be interpreted as an [`equals`](./Transforms#transform-equals) transform.
 
 
 In case a property provided by Variants-CIT has the same name as an item component (e.g: `axolotl_variant`), you can disambiguate between the two by using an explicit namespace: `variants-cit` or `minecraft`. By default, the property from the mod will be used.
