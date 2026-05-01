@@ -34,10 +34,12 @@ Instead of using a `custom_name` module, use a [`component_data`](./Module-Types
 		"componentType": "custom_name",
 		"transform": [
 			{
-				"regex": "prefix_(.+)_suffix",
-				"substitution": "$1"
+				"function": "sanitize"
 			},
-			"sanitize_path"
+			{
+				"regex": "prefix_(.*)_suffix",
+				"substitution": "$1"
+			}
 		]
 	}
 }
@@ -112,7 +114,7 @@ See [Equipable Modules](https://github.com/Estecka/mc-Variants-CIT/wiki/Equipped
 **Not supported.** Projectiles are rendered as entities, not as item stacks.
 
 
-### Q: Weapons/tools in the player's hand are held incorrectly, or do lack have animations.
+### Q: Weapons/tools in the player's hand are held incorrectly, or do not have animations.
 Set the "`assetGen`" field of your module to the appropriate preset. Common tools use `item_model/handheld`. Items with animations have more specific presets such as `item_model/bow` or `item_model/trident`.
 See "[Built-in Asset Generator Presets](./Asset-Generation#built-in-asset-generator-presets)" for the complete list of posssible values.
 
