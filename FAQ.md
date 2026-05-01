@@ -27,9 +27,10 @@ Instead of using a `custom_name` module, use a [`component_data`](./Module-Types
 #### Example:
 ```json
 {
-	"type": "component_data",
 	"items": "...",
 	"modelPrefix": "...",
+
+	"type": "component_data",
 	"parameters": {
 		"componentType": "custom_name",
 		"transform": [
