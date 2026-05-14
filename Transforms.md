@@ -10,7 +10,7 @@ Different transforms accept and produce different data types, usually strings or
 	- [`alternative`](#transform-alternative)
 	- [`charset_remap`](#transform-charset_remap)
 	- [`discard_namespace`](#simple-transforms), [`discard_path`](#simple-transforms)
-	- [`get_string`](#string-conversions), [`get_identifier`](#string-conversions), [`get_number`](#string-conversions), [`get_rich_text`](#string-conversions), [`get_rich_text_array`](#string-conversions)
+	- [`get_string`](#data-type-transforms), [`get_identifier`](#data-type-transforms), [`get_number`](#data-type-transforms), [`get_rich_text`](#data-type-transforms), [`get_rich_text_array`](#data-type-transforms), [`get_nbt`](#data-type-transforms), [`get_snbt`](#data-type-transforms)
 	- [`lowercase`](#simple-transforms)
 	- [`nbt_path`](#transform-nbt_path)
 	- [`regex`](#transform-regex)
