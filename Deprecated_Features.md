@@ -14,6 +14,7 @@ The active wiki no longer advertises removed or deprecated features. Wikis for o
 - Removed [item state extensions](https://github.com/Estecka/mc-Variants-CIT-wiki/blob/v3.6/Item%20State%20extensions.md).
 ### Variants-CIT v5
 - Removed the Java API
+- Empty `modelPrefix`es are no longer allowed.
 - Removed module types: `custom_data`, `entity_data`, `bucket_entity_data` and `block_entity_data`.  
 Use `component_data` instead.
 - Removed module parameters: `caseSensitive` and `nbtKey`.  
@@ -31,7 +32,6 @@ These features still work, but should no longer be used. Removal is not necessar
 ### Modules
 - Modules located in `variant-cits/item/` (mispelled) and `variants-cit/item/` should be moved to `variants-cit/modules/`.
 - Modules should explicitely specify an `items` field, instead of naming the module itself after the target item type.
-- `modelPrefix` should never be empty, or contain only `"item/"`.
 - Module type `stored_enchantments` (plural) should be renamed to `stored_enchantment` (singular)
 
 ###	Transforms & Item Properties:

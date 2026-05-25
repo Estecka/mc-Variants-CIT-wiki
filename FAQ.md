@@ -6,23 +6,23 @@ VCIT uses its own resource format, and has a fundamentally different approach to
 
 
 ### Q: What are the main differences with optifine ?
-Optifine works by defining variants on a case-by-case basis. VCIT works by defining a general rule for an item, and letting the mod figure out its variants and their associated models.
+Optifine works by defining variants on a case-by-case basis. Variants-CIT works by defining a "module" for an item, which manages multiple variants at once.
 
 VCIT works best for packs that have many variants for a single item.
-Its goal is to handle as many variants as possible using a few files as possible, and yield better performances in the most extreme cases.
+Its goal is to handle as many variants as possible using as few files as possible, and yield better performances in the most extreme cases.
 
-Variants-CIT v5 introduced a [`predicates`]() module type that works more similarly to optifine. However, its usage should only be considered as a band-aid solution for scenarios that regular modules cannot handles.
+Historically, the main design philosophy for modules was to have a single generic rule that lets the mod automatically figure out an item's variants, and their associated models. Today, there's also a [`predicates`](./Module-Types#module-predicates) module type that works more similarly to optifine, on case-by-case basis.
 
 ### Q: How do I port a pack ?
 Follow the [introductory tutorial](./Getting%20Started). Then pick a [module type](./Module-Types) that best matches your use case.
 
 
-### Q: Changing an item's look based on its name.
+### Q: How do I change an item's look based on its name ?
 Follow the [introductory tutorial](./Getting%20Started), which does precisely that.
 
-### Q: Matching prefixes, suffixes, and other patterns in names
+### Q: How do I match prefixes, suffixes, and other patterns in names ?
 
-Instead of using a `custom_name` module, use a [`component_data`](./Module-Types#component_data) module with a [Regex Transform](./Transforms#transform-regex).
+Instead of using the `custom_name` module showcased in the tutorial, use a [`component_data`](./Module-Types#component_data) module with a [Regex Transform](./Transforms#transform-regex).
 
 #### Example:
 ```json
@@ -53,35 +53,48 @@ Remember that unlike optifine, VCIT does not work by matching values, but by *tr
 See also: [Regex-related Issues](https://github.com/Estecka/mc-Variants-CIT/issues?q=is%3Aissue%20label%3A%22regex%22)
 
 
-### Q: Using X or Y component as the variant.
-Check whether there is a [purpose-made module](./Module-Types#purpose-made-modules) for your use case. Otherwise, use a [`component_data`](./Module-Types#component_data) module.
+### Q: How do I use this or that component as the variant ID ?
+Check whether there is a [purpose-made module](./Module-Types) for your use case. Otherwise, use a [`component_data`](./Module-Types#component_data) module.
 
 See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#property-item_component)
 
 
-### Q: Using multiple components or multiple pathes.
+### Q: How can I use multiple components to build a variant ID ?
 Use a [`component_format`](./Module-Types#module-component_format) module instead of `component_data`.
 
 See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#property-item_component)
 
 
-### Q: Add arbitrary checks or requirements, without necessarily using them as variants.
-For checking the existence or validity of some invariant data on an item, use the [`precondition`](./Module-Configuration#field-precondition) field of a module.
+### Q: Add arbitrary checks or requirements.
+For checking some invariant data on an item, use the [`precondition`](./Module-Configuration#field-precondition) field of a module.
 
-For defining variants that don't neatly follow any rule, use a [`predicates`](./Module-Types) module type.
+For checking data that directly affects the item's variant, you may use a [`predicates`](./Module-Types#module-predicates) module type (if no other module matches your use-case).
 
-Example: Enchantment-based variant, but only on swords that have a specific custom-data:
+Example:
 ```jsonc
 {
-	// Automatic enchantment-based variants
-	"type": "enchantment_vector",
 	"modelPrefix": "enchanted_end_sword/",
 	"assetGen": "item_model/handheld",
 
-	// Invariant requirements
+	// Invariant requirements do not affect which model is used, but are still required to apply a model at all.
 	"items": "diamond_sword",
 	"precondition": {
-		"custom_data.hp_item_type": "END_SWORD"
+		"custom_data.server_item_type": "END_SWORD"
+	},
+
+	// Case-by-case variants
+	"type": "predicates",
+	"parameters": {
+		"predicates": [
+			{
+				"variantId": "ascended",
+				"precondition": { "custom_data.ascended": 1 }
+			}
+			{
+				"variantId": "reforged",
+				"precondition": { "custom_data.reforged": 1 }
+			}
+		]
 	}
 }
 ```

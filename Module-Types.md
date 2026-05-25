@@ -4,25 +4,28 @@ A module's type defines how its item's variant ID will be computed. See [modelPr
 
 Each module type is its own separate system. The `"parameters"` of one type do not apply to the others, unless explicitely specified.
 
-Existing types can be thought of as belonging to either of two families:  
-The purpose-made types require no parameters to be functional, but are tailored for specific and common use cases. When they do have parameters, those are optional, and only there for fine-tuning.  
-The generalist types are more flexible, but require a lot more configuration to achieve basic results. Some purpose-made functionalities can be difficult to replicate through generalist modules.
 
-### Outline
-- Generalist Modules
+### Index
+- **Generalist Modules**  
+  Those are the most flexible, but require some configuration to achieve basic results.
   - [`group`](#module-group)
   - [`component_data`](#module-component_data)
   - [`component_format`](#module-component_format)
   - [`component_threshold`](#module-component_threshold)
   - [`predicates`](#module-predicates)
-- Purpose-made Modules
-  - [`axolotl_variant`](#module-axolotl_variant)
-  - [`custom_name`](#module-custom_name)
+- **Purpose-made Modules**  
+  Those are tailored for specific use cases, but require no parameters to work.
+  Some of these modules have functionalities that are difficult or impossible to replicate through generalist modules.
   - [`durability`](#module-durability)
   - [`enchantment`](#module-enchantment-stored_enchantment), [`stored_echantment`](#module-enchantment-stored_enchantment)
   - [`enchantment_vector`](#module-enchantment_vector-stored_enchantment_vector), [`stored_echantment_vector`](#module-enchantment_vector-stored_enchantment_vector)
-  - [`instrument`](#module-instrument)
   - [`item_count`](#module-item_count)
+- Historical Modules  
+  Purpose-made modules that can be perfectly replicated using generalist modules. Switching to `component_data` or `component_format` may sometimes be a better choice if you need more control.
+   These modules are only kept around for backward compatibility. There is no plan to deprecate them, but they're unlikely to receive new functionalities.
+  - [`axolotl_variant`](#module-axolotl_variant)
+  - [`custom_name`](#module-custom_name)
+  - [`instrument`](#module-instrument)
   - [`jukebox_playable`](#module-jukebox_playable)
   - [`painting_variant`](#module-painting_variant)
   - [`potion_type`](#module-potion_type)
@@ -36,7 +39,7 @@ The generalist types are more flexible, but require a lot more configuration to 
 A group module is syntaxic sugar for creating multiple modules with similar configurations.  
 The submodules share most of the options defined at the root. They can define an additional preconditions, and have a model prefix that is relative to the parent's.
 
-Sub-modules are evaluated in the order they are defined. It is functionally identical to using multiple modules with different priorities, but using a group module yields better performances than creating separate modules with different priorities.
+Sub-modules are evaluated in the order they are defined. It is functionally identical to using multiple modules with different priorities, but using a group module yields better performances.
 
 ### Parameters: 
 - **`submodules`**: *Mandatory array of submodules.* Each submodule can have the following fields:
@@ -154,7 +157,7 @@ The namespace that will contain all the models.
 - **`componentType`**: _Mandatory Identifier_. The component that the data will be pulled from.
 - **`nbtPath`**: _Optional String._ The location of the data within the component. If left unspecified, the component as a whole is used.
 - **`modelRange`**: _Mandatory String._ Describes the set of models that can be used, relative to the value found on the item. Possible values are: `"strictly_equal"`, `"lesser_or_equal"`, `"greater_or_equal"`
-- **`scale`**, **`offset`**: _Optional floats, default to `1` and `0` respectively._ Applies a linear function to the data found on the item:  
+- **`scale`**, **`offset`**: _Optional floats, default to `1` and `0` respectively._ Applies an affine function to the data found on the item:  
   `variant_id = trunc((data * scale) + offset)`
 
 
@@ -202,41 +205,6 @@ If you find yourself needing to use this module type with large amounts of varia
 
 
 # Purpose-made modules
-These modules were designed around specific use cases and item types. They can still be used on any item, so long as it provides the required component.
-
-## Module: `axolotl_variant`
-Derives the variant id from the color of an axolotl in a bucket, and optionally its age. Target components and data vary with the version of Minecraft.
-
-Colours available in vanilla are: `lucy`, `wild`, `gold`, `cyan`, `blue`. All are in the `minecraft` namespace.
-
-If a baby model is missing the module will fallback to the adult model of the same colour.
-
-Example variant ids:
-- `minecraft:lucy` Default for all ages.
-- `minecraft:lucy_baby` Default for babies.
-- `minecraft:lucy_adult` If `adultSuffix` is set to `_adult`.
-
-### parameters
-- **`adultSuffix`**: *Optional, defaults to an empty string*.
-- **`babySuffix`**: *Optional, defaults to `"_baby"`*.
-
-## Module: `custom_name`
-Derives the variant from the `custom_name` component.
-
-The name itself is used as the variant, with illegal characters being either removed or converted:
-Uppercases are converted to lowercases, accents are stripped off, spaces '` `' are converted to underscores '`_`', and all other invalid characters are completely removed.
-
-E.g: "Épée de l'End" -> `minecraft:epee_de_lend`
-
-Special formatting, such as colour and boldness, are ignored.
-
-> [!TIP]
->
-> This historical module type a has very limited set of options. It is easily replicated though [`component_data`](#component_data) which will give you access to Regex matching and substitutions.
-
-### Parameters:
-- **`specialNames`**: *Optional, Maps Strings to Identifiers.* Lets you hardcode some associations between names and variant ID, instead of letting the module compute them automatically like above. (This parameter is a relica from older versions, and will not be required in most cases.)
-
 
 ## Module: `durability`
 Uses the item's remaining durability as variant. The module will use the closest model whose value is greater than or equal to the item's durability.
@@ -343,13 +311,7 @@ All parameters for this module are optional.
 	- `"euclidian"`: Prioritizes models with the highest sum of squared levels.
 
 
-## Module: `instrument`
-Copies the variant from the item component `instrument`, used by goat horns.
-
-Note that all vanilla instruments have their names suffixed with `_goat_horn`. You will need to include that in the filenames of your models.
-
 ## Module: `item_count`
-
 Uses the item count as the variant. If no model matches the exact count, it will automatically fall back to lower-value model.
 
 The namespace of the variant id is fixed, but configurable.
@@ -357,8 +319,57 @@ The namespace of the variant id is fixed, but configurable.
 ### Parameters:
 - `namespace` _Optional string, defaults to `"minecraft"`._ The namespace to use for the variant id.
 
+
+## Historical modules
+
+## Module: `axolotl_variant`
+Derives the variant id from the color of an axolotl in a bucket, and optionally its age. Target components and data vary with the version of Minecraft.
+
+Colours available in vanilla are: `lucy`, `wild`, `gold`, `cyan`, `blue`. All are in the `minecraft` namespace.
+
+If a baby model is missing the module will fallback to the adult model of the same colour.
+
+Example variant ids:
+- `minecraft:lucy` Default for all ages.
+- `minecraft:lucy_baby` Default for babies.
+- `minecraft:lucy_adult` If `adultSuffix` is set to `_adult`.
+
+### parameters
+- **`adultSuffix`**: *Optional, defaults to an empty string*.
+- **`babySuffix`**: *Optional, defaults to `"_baby"`*.
+
+## Module: `custom_name`
+Derives the variant from the `custom_name` component.
+
+The name itself is used as the variant, with illegal characters being either removed or converted:
+Uppercases are converted to lowercases, accents are stripped off, spaces '` `' are converted to underscores '`_`', and all other invalid characters are completely removed.
+
+E.g: "Épée de l'End" -> `minecraft:epee_de_lend`
+
+Special formatting, such as colour and boldness, are ignored.
+
+
+### Parameters:
+- **`specialNames`**: *Optional, Maps Strings to Identifiers.* Lets you hardcode some associations between names and variant ID, instead of letting the module compute them automatically like above. (This parameter is a relica from older versions, and will not be required in most cases.)
+
+
+> [!TIP]
+>
+>
+> This historical module type a has very limited set of options. Ironically, it is not always the best choice for name-based modules
+>
+> It is easily replicated though [`component_data`](#component_data) which will give you access to Regex matching and substitutions, and support for the `item_name` component.
+> 
+
+## Module: `instrument`
+Copies the variant from the item component `instrument`, used by goat horns.
+
+Note that all vanilla instruments have their names suffixed with `_goat_horn`. You will need to include that in the filenames of your models.
+
+
 ## Module: `jukebox_playable`
 Copies the variant from the item component `jukebox_playable`, used by music discs.
+
 
 ## Module: `painting_variant`
 Copies the variant ID a painting's ID, useable on paintings in the creative inventory.
@@ -366,8 +377,10 @@ Target component varies depending on the version of Minecraft.
 
 The special model `invalid` will be applied to painting variants that do not exist with the current datapacks. This is no longer possible in MC 1.21.5, where painting items can no longer hold invalid variants.
 
+
 ## Module: `potion_type`
 Copies the variant ID from the item component `potion_contents`, used by potions, splash potions, and lingering potions. This specifically looks at the potion's "type", and not the actual status effects.
+
 
 ## Module: `trim`
 Combines the pattern and material from the `trim` component into a single identifier, in a way that imitates the vanilla format for trimmed armour models.
@@ -376,6 +389,7 @@ The resulting variant is: `<pattern_namespace>:<pattern_path>_<material_path>`.
 E.g: `minecraft:sentry_diamond`
 
 **Only the namespace of the pattern is used. The material's namespace is discarded.**
+
 
 ## Module: `trim_pattern`, `trim_material`
 Uses either the pattern or the material of the `trim` component as a variant.

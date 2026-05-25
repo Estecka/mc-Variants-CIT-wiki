@@ -125,12 +125,12 @@ You can use the command `/variants-cit assetGen peek` to quickly check the conte
 
 
 At the generators' level:
-1. Each generator receives every single asset that corresponds to its `pass` option. The ID of each asset is tested against the generator's input regex. If it doesn't match, the generator ignores this asset. The ID used here is not necessarily the asset's full identifier identifier (see [`pass`](#field-pass)).
+1. Each generator receives every single asset that corresponds to its `pass` option. The ID of each asset is tested against the generator's input regex. If it doesn't match, the generator ignores this asset. The ID used here is not necessarily the asset's full identifier. (See [`pass`](#field-pass))
 
 2. The generator computes the ID of its output asset, or if specified, the ID of the output's [radical](#field-radicalpath). This ID is tested against the module. If the module refuses to collect it, the generator will not produce this output.
 For an ID to be accepted, it must match the model prefix, the fallback model, or special models. For IDs that match the modelPrefix, certain module types may further restrict which ones they will accept. (E.g: number-based modules only accept number-based assets.)
 
-3. The generators uses fills up a template using the ID of the input asset, output asset, and other user-defined variables. The filled template is used as the content of the generator's output.
+3. The generators fills up a template using the ID of the input asset, output asset, and other user-defined variables. The filled template is used as the content of the generator's output.
 
 
 ## Templates

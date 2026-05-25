@@ -106,7 +106,7 @@ When multiple modules are applied to the same item stack, modules with higher pr
 - The module has found a variant ID, but that variant has no associated model, and no fallback was specified.
 - The module wants to use a special model, but that model was not specified.
 
-As an alternative to priority, if you have multiple modules that apply to the same item, and have similar values for `modelPrefix` and `assetGen`, you can instead bundle them into a ["`group`" module](./Module-Types#module-group). This will achieve the same effect, but yield better performances than assigning them different priorities.
+As an alternative to priority, if you have multiple modules that apply to the same item, and use similar values for `modelPrefix` and `assetGen`, you can instead bundle them into a ["`group`" module](./Module-Types#module-group). This will achieve the same effect, but yield better performances than assigning them different priorities.
 
 ## Variant Library
 Fields that define what set of assets will be collected by the module, in order to create its library of variants.
@@ -122,13 +122,11 @@ Fields that define what set of assets will be collected by the module, in order 
 
 The location of the assets that this module will use as variants. The exact asset type varies with the module's `hook` and asset-generation options. They can be textures, json models, or a mix of everything.
 
+The prefix **cannot** be empty.
+
 The presence or absence of a slash '`/`' at the end of a prefix is important! It makes the difference between a prefix that consists only of directories, and a prefix that contains the beginning of a filename:
 - Prefix: `enchanted_book/` -> Variant asset: `<namespace>:enchanted_book/<path>`
 - Prefix: `enchanted_book_` -> Variant asset: `<namespace>:enchanted_book_<path>`
-
-> [!CAUTION]
->
-> You should never use an empty string, or only `"item/"` as the model prefix. Doing so will cause the module to collect **every single** model in the game as potential variants. This may cause unexpected behaviours (especially with modules like `custom_name`) and reduce performances.
 
 The fundamental asset types are [Item States](https://minecraft.wiki/w/Items_model_definition) (`items/`) and [Equipment models](https://minecraft.wiki/w/Equipment) (`equipments/`). With the proper `assetGen` option, modules will also collect orphaned textures and baked models, and automatically create the underlying asset types.
 
@@ -164,6 +162,8 @@ All special models are always optional.
 
 
 ## Asset-generation
+
+The fields `assetGen` and `modelParent` are differently formated aliases for the same setting. You can only use one at the same time.
 
 ### Field: `assetGen`
 **Optional**, A single or an array of Asset Generators.

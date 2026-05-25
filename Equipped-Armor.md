@@ -13,10 +13,8 @@ Set the [`hook`](./Module-Configuration#field-hook) of your module to `"equippab
 ```json
 {
 	"hook": "equippable",
-	"type": "...",
-	"items": "...",
-	"modelPrefix": "...",
-	"assetGen": "equipment/humanoid"
+	"assetGen": "equipment/humanoid",
+	"...": "..."
 }
 ```
 
@@ -26,11 +24,11 @@ It's technically possible for a module to pull double-duty, and change both the 
 ## Asset Types
 Instead of collecting Item States, Baked Models and Textures, equippable modules will collect ['`equipment`' assets](https://minecraft.wiki/w/Equipment).
 
-Variant ID                                  | `<namespace>:<path>`
-------------------------------------------- | :-------------------
-Equivalent `equippable` component (assetId) | `<namespace>:<modelPrefix><path>`
-Matching equipment model                    | `/assets/<namespace>/equipment/<modelPrefix><path>.json`
-Matching texture                            | `/assets/<namespace>/textures/entity/equipment/<layer>/<modelPrefix><path>.png`
+Variant ID                                          | `<namespace>:<path>`
+--------------------------------------------------- | :-------------------
+Equivalent `asset_id` in the `equippable` component | `<namespace>:<modelPrefix><path>`
+Matching equipment model                            | `/assets/<namespace>/equipment/<modelPrefix><path>.json`
+Matching texture                                    | `/assets/<namespace>/textures/entity/equipment/<layer>/<modelPrefix><path>.png`
 
 Equipements models can have multiple layers, meaning you only need a single model (and thus a single module) to handle all the body parts of an armor tier, potentially even across multiple mobs !
 

@@ -1,17 +1,11 @@
 # Preconditions
 Conditions have several syntaxes.
 
-The simplified syntax is easier on the eyes and much faster to type, but can create ambiguity in some extreme edge cases.
+The simplified syntax is easier on the eyes and much faster to type, but can create ambiguity in some edge cases.
 
-The canonical syntax is more verbose, but stricter. If you are already familiar with `component_data`, this is a similar syntax. Learning to use preconditions through the lens of the canonical syntax will make it easier to understand how conditions relate to [item properties](./Item-Properties).
+The canonical syntax is more verbose, but stricter. If you are already familiar with `component_data`, this is a similar syntax. Learning to use preconditions through the lens of the canonical syntax will make it easier to understand how conditions relate to [item properties](./Item-Properties) and [Transforms](./Transforms).
 
 It is possible to mix and match different syntaxes at different levels as needed.
-
-> [!CAUTION]
-> 
-> This feature is experimental, its syntax may receive breaking changes.
->
-> The canonical syntax is pretty much set in stone, but the simplified syntax is likely to receive adjustments. JSON is not a format that lends itself very well to this kinds of syntax. Suggestions are welcome.
 
 ## Canonical Syntax
 There are only 3 types of conditions: `matches_any`, `matches_all` and `transform`. The later is where all the interesting stuff happens. The others are just wrappers for other conditions.
@@ -90,19 +84,23 @@ The example above can be simplified to this:
 }
 ```
 
-The value of `matches_any` can be represented as map instead of an array, where each entry is a condition. When listed inside an array, such a map will always be treated as a `matches_all` condition.
+The value of the conditions `matches_any` and `matches_all` can be represented as map instead of an array, where each entry is a condition. 
 
 If an entry's key starts with an exclamation mark, the condition is negated.
 
-The fields `matches_any` and `matches_all` are treated as the corresponding condition type. Every other entry are be interpreted as a `transform` condition:
+The fields `matches_any` and `matches_all` are treated as the corresponding condition type.
+The root `precondition` map is always `matches_all`, same for anonymous maps nested inside an array.
 
-Keys of the map can be either the ID of an [item property](./Item-Properties#property-types) with no parameters, or an [`item_component`](./Item-Properties#property-item_component) property represented by the value of its `componentType` and its `nbtPath`.
+----
 
-The values of the map are the transform chains associated with each property. If a value is a plain string or number, it will be interpreted as an [`equals`](./Transforms#transform-equals) transform.
+Every field other than `matches_any` and `matches_all` are treated as a `transform` condition:
+
+The name of the fields can be either the ID of an [item property](./Item-Properties#property-types) with no parameters, or in the case of the [`item_component`](./Item-Properties#property-item_component) property, the ID of the data component immediately followed by an optional [nbt path](./Transforms#transform-nbt_path).
+
+The values of the fields are the transform chains associated with each property. If a value is a plain string or number, it will be interpreted as an [`equals`](./Transforms#transform-equals) transform.
 
 
-In case a property provided by Variants-CIT has the same name as an item component (e.g: `axolotl_variant`), you can disambiguate between the two by using an explicit namespace: `variants-cit` or `minecraft`. By default, the property from the mod will be used.
-Although I don't believe there is currently any reason to do so, this trick might end up being useful in the future.
+In case a property provided by Variants-CIT has the same name as a data component (e.g: `axolotl_variant`), you can disambiguate between the two by using an explicit namespace: `variants-cit` or `minecraft`.
 
 
 ## Cheat-Sheet
@@ -123,10 +121,13 @@ Although I don't believe there is currently any reason to do so, this trick migh
 	// Enchantment must be absent from the item.
 	"!enchantment.vanishing_curse": { "greater_than": 0 },
 
-	// Component must exist. Any value allowed.
+	// Namespaced keys in nbt path don't require special syntax.
+	"enchantment.illagerplus:illagerbane": { "greater_than": 7 },
+
+	// Component or data must exist. Any value allowed.
 	// (Empty array = empty chain of transforms = no-op)
 	"equippable": [],
-	// Component must not exist.
+	// Component or data must not exist.
 	"!consumable": []
 }
 ```
@@ -136,7 +137,7 @@ Although I don't believe there is currently any reason to do so, this trick migh
 "precondition": {
 	// Enchantment level must be EXACTLY 1
 	"enchantment.mending": 1,
-	// In order to be equal to 0, the data MUST BE PRESENT in the nbt.
+	// In order to be equal to 0, the enchantment MUST BE LISTED in the nbt.
 	"enchantment.vanishing_curse": 0,
 
 	// Undefined behaviour. Do not use.
@@ -170,7 +171,7 @@ Instead, use a `matches_any` or `matches_all` transform:
 ```
 
 ### Checking whether data exists or not.
-The downside of transforms is that they can only deal with data that exists. By themselves, they can't assert whether a piece of data exists.
+Transforms can only evaluate data that does exist; by themselves they technically can't assert whether a piece is absent or present. For that you need to turn to the property itself.
 
 An item property without any transform evaluates to true if any data exists.
 

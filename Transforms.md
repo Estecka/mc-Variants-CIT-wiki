@@ -3,35 +3,30 @@ Transforms are functions that can be used to either modify or validate some data
 
 Different transforms accept and produce different data types, usually strings or numbers. Type conversions in-between transforms will happen automatically in most cases.
 
-### Outline
+### Index
 - [Schema](#schema)
 - [Notable data types](#notable-data-types)
-- Transforms Types (Functions)
-	- [`alternative`](#transform-alternative)
-	- [`charset_remap`](#transform-charset_remap)
-	- [`discard_namespace`](#simple-transforms), [`discard_path`](#simple-transforms)
-	- [`get_string`](#data-type-transforms), [`get_identifier`](#data-type-transforms), [`get_number`](#data-type-transforms), [`get_rich_text`](#data-type-transforms), [`get_rich_text_array`](#data-type-transforms), [`get_nbt`](#data-type-transforms), [`get_snbt`](#data-type-transforms)
-	- [`lowercase`](#simple-transforms)
-	- [`nbt_path`](#transform-nbt_path)
-	- [`regex`](#transform-regex)
-	- [`remap`](#transform-remap)
-	- [`sanitize`](#simple-transforms), [`sanitize_path`](#simple-transforms), [`sanitize_namespace`](#simple-transforms), [`sanitize_legacy`](#simple-transforms)
-- Transforms Types (Predicates)
-	- [`blacklist`](#transform-whitelist--blacklist), [`whitelist`](#transform-whitelist--blacklist)
-	- [`equals`](#transform-equals)
-	- [`greater_than`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equal), [`greater_or_equals`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equal)
-	- [`matches_any`](#transform-matches_any-matches_all), [`matches_any`](#transform-matches_any-matches_all)
-	- [`regex`](#transform-regex)
-	- [`smaller_than`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equals), [`smaller_or_equals`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equal)
-	- [`test`](#transform-test)
-	- [`whitelist`](#transform-whitelist--blacklist), [`blacklist`](#transform-whitelist--blacklist)
-- Transforms Types (Flow-control)
+- Transforms Types (General)
 	- [`alternative`](#transform-alternative)
 	- [`foreach`](#transform-foreach)
+	- [`get_<datatype>`](#data-type-transforms)
 	- [`log`](#transform-log)
-	- [`matches_all`](#transform-matches_any-matches_all), [`matches_any`](#transform-matches_any-matches_all)
+	- [`matches_any`](#transform-matches_any-matches_all), [`matches_all`](#transform-matches_any-matches_all)
 	- [`nbt_path`](#transform-nbt_path)
 	- [`test`](#transform-test)
+- Transforms Types (String)
+	- [`blacklist`](#transform-whitelist--blacklist), [`whitelist`](#transform-whitelist--blacklist)
+	- [`charset_remap`](#transform-charset_remap)
+	- [`discard_namespace`](#simple-transforms), [`discard_path`](#simple-transforms)
+	- [`equals`](#transform-equals)
+	- [`lowercase`](#simple-transforms)
+	- [`regex`](#transform-regex)
+	- [`remap`](#transform-remap)
+	- [`sanitize`](#simple-transforms)
+- Transforms Types (Numeric)
+	- [`equals`](#transform-equals)
+	- [`greater_than`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equal), [`greater_or_equals`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equal)
+	- [`smaller_than`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equals), [`smaller_or_equals`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equal)
 
 ## Schema
 
@@ -132,7 +127,8 @@ Numbers are stand-in for booleans. There are no transforms that deal with boolea
 These transforms take no parameter. They accept strings, and will never fail when fed with this data type.
 
 - **`lowercase`**: Converts all upper-case characters to lower-case.
-- **`sanitize`**: Does nothing if the input is a valid identifier. Otherwise, behaves identically to `sanitize_path`. It is guaranteed to return a valid identifier.
+- **`sanitize`**: Shorthand for `sanitize_auto`.
+- **`sanitize_auto`**: Does nothing if the input is a valid identifier. Otherwise, behaves identically to `sanitize_path`. It is guaranteed to return a valid identifier.
 - **`sanitize_legacy`**: The old behaviour of `sanitize`. Removes all characters that are illegal for an identifier. Uppercases are replaced with lowercases, spaces are replaced with underscores, accentuated characters have their accents stripped, and all other invalid characters are removed completely.
 **The result is not guaranteed to be a valid identifier**; it may still contain more than one colon `':'`, or the namespace could contain a slash `'/'`.  
 See also: [`charset_remap`](#transform-charset_remap).
