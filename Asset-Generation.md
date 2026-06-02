@@ -6,6 +6,15 @@ Older versions of Variants-CIT did this through the [`modelParent`](./Module-Con
 
 This page describes how the generation process works, and hwow you may use it to automatically generate custom assets. For common use cases, some [presets](#built-in-asset-generator-presets) already exists.
 
+### Index
+- [Baking generated asset](#baking-generated-assets) (Mod incompatibility workaround)
+- [Built-in generator presets](#built-in-asset-generator-presets)
+- [Custom generators](#custom-asset-generators)
+	- [Pipeline](#pipeline)
+	- [Custom presets](#custom-presets)
+	- [Templates](#templates)
+	- [Schema](#custom-asset-generators)
+
 
 ## Baking generated assets
 Variant-CIT's generates asset at runtime, during the resource-reload process. This is known to be incompatible with ModernFix's [Dynamic Resources](https://github.com/embeddedt/ModernFix/wiki/Dynamic-Resources-FAQ) feature.
@@ -38,21 +47,34 @@ Presets are the easy out to change an item's texture by providing only textures.
 ```
 
 ### Preset: `item_model/generated`
-Creates basic models and item states for a simple item with no animation. Most items will use this option. This is equivalent to the old-school option `"modelParent":"item/generated"`.
+Creates basic models and item states for a simple item with no animation. Most items will use this option.
+This is equivalent to the old-school option `"modelParent":"item/generated"`.
 
 ### Preset: `item_model/handheld`
-Creates basic models and item states for a simple tool with no animation. This is equivalent to the old-school option `"modelParent":"item/handheld"`.
+Creates basic models and item states for a simple tool with no animation.
+This is equivalent to the old-school option `"modelParent":"item/handheld"`.
+
+### Preset: `item_model/handheld_rod`
+Creates basic models and item states for a rod-like item with no animation. (stick, blaze rods,..)
+This is equivalent to the old-school option `"modelParent":"item/handheld"`.
+
+### Preset: `item_model/player_head`
+Creates basic models and item states for head-like items. This is equivalent to the old-school option `"modelParent":"variants-cit:item/player_head"`.
+
+The expected texture for this model is 64x64 pixels, and is formatted like a player skin:
+
+![bbhead.png](./bbhead.png)
 
 ### Preset: `item_model/bow`
 Creates models and items states with the same structure as the vanilla bow.
-Each variant should also provide textures or baked models with the following suffixes:
+This expects additional textures or baked models with the following suffixes:
 - `_pulling_0`
 - `_pulling_1`
 - `_pulling_2`
 
 ### Preset: `item_model/crossbow`
 Creates models and items states with the same structure as the vanilla crossbow.
-Each variant should also provide textures or baked models with the following suffixes:
+This expects additional textures or baked models with the following suffixes:
 - `_arrow`
 - `_rocket`
 - `_pulling_0`
@@ -61,7 +83,7 @@ Each variant should also provide textures or baked models with the following suf
 
 ### Preset: `item_model/fishing_rod`
 Creates models and items states with the same structure as the vanilla fishing rod.
-Each variant should also provide textures or baked models with the following suffixes:
+This expects additional textures or baked models with the following suffixes:
 - `_cast`
 
 ### Preset: `item_model/goat_horn`
@@ -70,38 +92,45 @@ No additional texture needs be provided for the tooting animation.
 
 Custom tooting models can be provided with a `_tooting` suffix. Do note that this a **SUFFIX**, unlike the vanilla goat horn which uses `tooting_` as a *prefix*.
 
+### Preset: `item_model/spear`
+Creates models and items states similar to the vanilla spear.
+This expects additional textures suffixed with:
+- `_in_hand`.
+
+**This preset is functional only on MC 1.21.11 and onward.**
+
 ### Preset: `item_model/trident`
 Creates models and items states similar to the vanilla trident.
 
-Each variant should also provide a texture suffixed with:
+This expects additional textures suffixed with:
 - `_in_hand`
 
-or baked models suffixed with:
+or additional baked models suffixed with:
 - `_in_hand`
 - `_throwing`
 
 The auto-generated `_throwing` model will use the `_in_hand` texture.
 
 Generated models will have the same shape as the vanilla trident, and expect a similarly formatted texture.
-Unlike vanilla, **the `_in_hand` texture must be located in the same folder as the GUI textures**.
+**Unlike vanilla, the `_in_hand` texture must be located in the same folder as the GUI textures**.
 
 ### Preset: `item_model/trident_gui_only`
-Creates models for a trident, but only replace the inventory texture. The in-hand model will use the vanilla trident model and texture.
+Creates item models for a trident, but only replace the inventory texture. The in-hand model will use the vanilla model and texture.
 
 ### Preset: `equipment/humanoid`
 Creates two-layers equipment models for humanoid armors.
-Each variant can provide textures for the following layers:
+This expects textures for the following layers:
 - `humanoid/`
 - `humanoid_leggings/`
 
 ### Preset: `equipment/elytra`
 Creates single-layer equipment models for an elytra. The elytra will use the player's cape texture if any.
-Each variant can provide textures for the following layers:
+This expects textures for the following layers:
 - `wings/`
 
 ### Preset: `equipment/saddle`
 Creates equipment models for a saddle which supports all animals.
-Each variant can provide textures for the following layers:
+This expects textures for the following layers:
 - `camel_saddle/`
 - `donkey_saddle/`
 - `horse_saddle/`
@@ -110,6 +139,8 @@ Each variant can provide textures for the following layers:
 - `skeleton_horse_saddle/`
 - `strider_saddle/`
 - `zombie_horse_saddle/`
+
+Providing all layers is not strictly required, however the generated json model still expects them all, and thus will show a missing texture if equipped to the wrong animal.
 
 # Custom Asset Generators
 ## Pipeline
@@ -162,9 +193,9 @@ Some variables are automatically generated by the mod, and are available to all 
 ## Custom Presets
 Generator presets can be added in `variants-cit/assetgen_presets/`, and then referenced from multiple modules. Generators stored here won't do anything until they are referenced from at least one module.
 
-Creating a preset is not a requirement to use custom generators. They can instead be defined directly inside the `assetGen` option of a module.
+**Creating a preset is not a requirement to use custom generators.** Generators can instead be defined directly inside the `assetGen` field of a module.
 
-Generator presets must always be declared inside an array and cannot contain references to other presets.
+Unlike the `assetGen` field, presets must always be declared inside an array, and cannot contain references to other presets.
 
 
 ## Schema
