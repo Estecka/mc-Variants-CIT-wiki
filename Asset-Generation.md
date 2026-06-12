@@ -56,7 +56,7 @@ This is equivalent to the old-school option `"modelParent":"item/handheld"`.
 
 ### Preset: `item_model/handheld_rod`
 Creates basic models and item states for a rod-like item with no animation. (stick, blaze rods,..)
-This is equivalent to the old-school option `"modelParent":"item/handheld"`.
+This is equivalent to the old-school option `"modelParent":"item/handheld_rod"`.
 
 ### Preset: `item_model/player_head`
 Creates basic models and item states for head-like items. This is equivalent to the old-school option `"modelParent":"variants-cit:item/player_head"`.
