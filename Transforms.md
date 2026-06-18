@@ -333,7 +333,7 @@ This example could be used to find and return the first texture stored inside th
 How to iterate over the input.
 
 If `foreach` is an array of transform chains, they are independently applied to the input, and their outputs will be fed into `do`.
-Unlike every other place where arrays of transforms are used. The root array **is not** a chain of transform. It is its entries that can be chains of transforms.
+Unlike every other place where arrays of transforms are used, the root array **is not** a chain of transform. It is its entries that can be chains of transforms.
 
 If the input is an NBT array or an NBT compound, `foreach` can instead take one the following values:
 - **`value`**: The `"do"` transform will receive every value in the input.

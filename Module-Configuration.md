@@ -13,8 +13,8 @@ The strict minimum required to form a working module is its type, its target ite
 
 ```json
 {
-	"type": "painting_variant",
 	"items": "painting",
+	"type": "painting_variant",
 	"modelPrefix": "painting/",
 	"assetGen": "item_model/generated"
 }
@@ -22,27 +22,24 @@ The strict minimum required to form a working module is its type, its target ite
 
 `assetGen` is technically optional, but will be useful in almost all cases.
 
-Here's a different example with all possible fields:
+Here's a different example with a few more fields:
 ```json
 {
-	"priority": 0,
-	"hook": "item_model",
-	"items": ["diamond_sword"],
-	"precondition": {
-		"custom_data": "END_SWORD"
-	},
+	"items": ["diamond_helmet", "diamond_boots"],
+	"precondition": { "custom_data": "END_ARMOR" },
 
-	"type": "enchantment",
+	"type": "durability",
 	"parameters": {
-		"levelSeparator": "_"
+		"scale": 100
 	},
 
-	"assetGen": "item_model/handheld",
-	"modelPrefix": "end_sword/single_enchant/",
-	"fallback": "end_sword/unknown_enchant",
-	"special": {
-		"multi": "end_sword/multi_enchants"
-	}
+	"modelList": {
+		"100": "end_armor_full",
+		"50":  "end_armor_half",
+	},
+
+	"hook": "equippable",
+	"assetGen": "equipment/humanoid"
 }
 ```
 
@@ -78,13 +75,11 @@ See [Preconditions](./Precondition%20Cheat-Sheet) for the syntax to use in this 
 > [!IMPORTANT]
 > 
 > **Module preconditions should not be used to differentiate between individual models or textures.**
-> In the example above the precondition dictates **whether** the sword can have a custom texture **at all**. The enchantment dictates **which** texture to use.
+> In the example at the top, the precondition dictates **whether** the armor can have a custom texture **at all**. The durability dictates **which** texture to use.
 > 
 > If you wanted to set a texture based only on the value of this custom data, a ["`component_data`" module](./Module-Types#module-component_data) might be a better fit.
 > 
 > If you really must use preconditions to separate every single model, use a ["`predicates`" module](./Module-Types#module-predicates) instead.
-
-
 
 ### Field: `hook`
 **Optional**, a single, or an array of strings. Defaults to `"item_model"`.
@@ -111,45 +106,63 @@ As an alternative to priority, if you have multiple modules that apply to the sa
 ## Variant Library
 Fields that define what set of assets will be collected by the module, in order to create its library of variants.
 
+The exact asset type that a module looks for varies with its `hook` and asset-generation options. This page only describes the different fields in isolation, for a more comprehensive overview of what it means for a module to collect assets, see the dedicated page: [Building a Variant Library](./Variant-Library)
+
 > [!IMPORTANT]
->
-> Pre-1.21.4, before the introduction of the `items/` folder, model prefixes, fallbacks and special models were resolved from the root of `models/` and `texture/`, instead of their `item/` subdirectory.
->
-> For versions of minecraft 1.21.4 and above, the leading `item/` is implied. For backward compatibility, pathes starting with "`item/`" will have that bit ignored. However if you want your pack to be compatible with versions earlier than MC 1.21.4, you must keep using "`item/`" at the start of your pathes.
+> 
+> You may see older modules use `item/` at the start of their model prefix or other pathes. This is a relica from before MC 1.21.4 and is only supported for the sake of backward compatibility. This may stop being supported in the future.
+> 
+> The leading `item/` is now implied for item models and item textures. It should no longer be specified, in order to mirror the IDs of items-states, located in `items/` (plural).
+
+### Field: `modelList`
+**Optional**, _either a list of identifiers, or a map of identifiers to identifier._
+
+A hardcoded list of models that the module can use, and their variant IDs. This can be used in replacement of, or in complement to the `modelPrefix` option.
+
+If a map, each key is a variant ID, and the value is its associated model. 
+
+If an array, the variant IDs will identical to the model IDs.
+
+Any binding done here will override variant IDs detected by the `modelPrefix`.
+Models listed here are exempt from matching the predicates `modelNamespace` and `modelPathes`. However, certain module types may still refuse variant IDs listed here.
 
 ### Field: `modelPrefix`
-**Mandatory**, String
+**Optional**, _string_
 
-The location of the assets that this module will use as variants. The exact asset type varies with the module's `hook` and asset-generation options. They can be textures, json models, or a mix of everything.
+The location of a of set models that the modules can use. The module will automatically collect every asset whose Model ID starts with this prefix, and use the remainder of the path as the model's Variant ID.
+The exact set of of models collected in this way can be further restricted using `modelNamespace` and `modelPathes`.
 
 The prefix **cannot** be empty.
 
 The presence or absence of a slash '`/`' at the end of a prefix is important! It makes the difference between a prefix that consists only of directories, and a prefix that contains the beginning of a filename:
-- Prefix: `enchanted_book/` -> Variant asset: `<namespace>:enchanted_book/<path>`
-- Prefix: `enchanted_book_` -> Variant asset: `<namespace>:enchanted_book_<path>`
+- Prefix: `enchanted_book/` -> Models: `<namespace>:enchanted_book/<path>`
+- Prefix: `enchanted_book_` -> Models: `<namespace>:enchanted_book_<path>`
 
-The fundamental asset types are [Item States](https://minecraft.wiki/w/Items_model_definition) (`items/`) and [Equipment models](https://minecraft.wiki/w/Equipment) (`equipments/`). With the proper `assetGen` option, modules will also collect orphaned textures and baked models, and automatically create the underlying asset types.
+### Field: `modelNamespace`
+**Optional**, _a string, or a chain of transforms._
 
-#### Asset types for `item_model` modules
-Variant ID                         | `<namespace>:<path>`
----------------------------------- | :-------------------
-Equivalent `item_model` component  | `<namespace>:<modelPrefix><path>`
-Matching item state                | `/assets/<namespace>/items/<modelPrefix><path>.json`
-Matching baked model               | `/assets/<namespace>/models/item/<modelPrefix><path>.json`
-Matching item texture              | `/assets/<namespace>/textures/item/<modelPrefix><path>.png`
+A predicate for which namespaces the `modelPrefix` is allowed to collect models from. 
 
-#### Asset types for `equippable` modules
-Variant ID                         | `<namespace>:<path>`
----------------------------------- | :-------------------
-Equivalent `equippable` component  | `<namespace>:<modelPrefix><path>`
-Matching equipment asset           | `/assets/<namespace>/equipment/<modelPrefix><path>`
-Matching equipment texture         | `/assets/<namespace>/entity/equipment/<layer>/<modelPrefix><path>`
+If absent, all namespaces will be used.  
+If a plain string, this represents a single namespace to pull from.  
+If a chain of transforms, it will be used as a predicate. The most relevant transform to use here is [whitelist](./Transforms#transform-whitelist--blacklist)
+
+### Field: `modelPathes`
+**Optional**, _a chain of transform_.
+
+A predicated for which variant IDs are allowed to be collected using `modelPrefix`.
+The most relevant transforms to use here is [regex](./Transforms#transform-regex) for pattern matching.
+
+The evaluated strings do not include the model prefix.
+
 
 ### Field: `fallback`
 **Optional**, Identifier.
 
 If the module managed to compute a variant ID for an item, but this variant has no associated model, the fallback model will be used instead.
 Modules with fallback are much less likely to hand over control to lower priority modules.
+
+The fallback model is bound to the variant ID `variants-cit:fallback`. It can also be assigned using `modelList`.
 
 ### Field: `special`
 **Optional**, maps Strings to Identifiers.
@@ -159,6 +172,8 @@ What models are used and when depends on the [`type`](Module-Types) of the CIT m
 
 Very few module types actually make use of this option; you can safely ignore it.
 All special models are always optional.
+
+Special models are bound to variant IDs starting with `variants-cit:special/`. They can instead be assigned using `modelList`
 
 
 ## Asset-generation
@@ -181,7 +196,8 @@ For items with animations, such as bows, see the complete list of presets linked
 ### Field: `modelParent`
 **Optional**, Identifier.
 
-Old-school alternative to the `assetGen` option; this does nothing if `assetGen` is already defined. It is equivalent to this, where `<modelParent>` is the value of this option:
+Old-school alternative to the `assetGen` option; this does nothing if `assetGen` is already defined.
+This is equivalent to the following, where `<modelParent>` is the value of this option:
 ```json
 "assetGen": [
 	{

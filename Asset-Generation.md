@@ -88,8 +88,8 @@ This expects additional textures or baked models with the following suffixes:
 
 ### Preset: `item_model/goat_horn`
 Creates models and items states similar to the vanilla goat horn.
-No additional texture needs be provided for the tooting animation.
 
+No additional texture needs be provided for the tooting animation.
 Custom tooting models can be provided with a `_tooting` suffix. Do note that this a **SUFFIX**, unlike the vanilla goat horn which uses `tooting_` as a *prefix*.
 
 ### Preset: `item_model/spear`
@@ -98,6 +98,15 @@ This expects additional textures suffixed with:
 - `_in_hand`.
 
 **This preset is functional only on MC 1.21.11 and onward.**
+
+### Preset: `item_model/shield_no_pattern`
+Creates models and items states similar to the vanilla shield.
+**Banner patterns are not supported at this time.**
+
+No additional texture needs be provided for the blocking animation.
+Custom blocking models can be provided with a `_blocking` suffix.
+
+Generated models have the same shape as the vanilla shield, and expected a similarly formatted texture. **Unlike vanilla, textures must be located somehwere down `textures/item/`** (like for any other non-shield item preset).
 
 ### Preset: `item_model/trident`
 Creates models and items states similar to the vanilla trident.
@@ -112,7 +121,7 @@ or additional baked models suffixed with:
 The auto-generated `_throwing` model will use the `_in_hand` texture.
 
 Generated models will have the same shape as the vanilla trident, and expect a similarly formatted texture.
-**Unlike vanilla, the `_in_hand` texture must be located in the same folder as the GUI textures**.
+**Unlike vanilla, the `_in_hand` texture must be located in the same folder as the GUI textures** (like for any other non-trident preset).
 
 ### Preset: `item_model/trident_gui_only`
 Creates item models for a trident, but only replace the inventory texture. The in-hand model will use the vanilla model and texture.
@@ -141,6 +150,12 @@ This expects textures for the following layers:
 - `zombie_horse_saddle/`
 
 Providing all layers is not strictly required, however the generated json model still expects them all, and thus will show a missing texture if equipped to the wrong animal.
+
+### Preset: `trim_pattern/humanoid`
+Creates trim models for humanoid armors.
+This expects textures for the following layers:
+- `humanoid/`
+- `humanoid_leggings/`
 
 # Custom Asset Generators
 ## Pipeline
@@ -231,18 +246,19 @@ For more examples, you can find the other built-in presets here:
 Indicates which asset type is accepted as input, and which asset type is produced.
 This also affects which portion of the asset ID will be tested against the input regex, and how the output path will be interpreted:
 
-Pass                           | Input Files                                 | Output Files                    | Radical
+Pass                           | Input Files                                 | Output Files                    | Core file
 ------------------------------ | ------------------------------------------- | ------------------------------- | -------
+**`trims_from_textures`** | textures/trims/entity/`<inputPath>`.png | variants-cit/trim_pattern/`<outputPath>`.json   | variants-cit/trim_pattern/`<radicalPath>`.json
 **`equipments_from_textures`** | textures/entity/equipment/`<inputPath>`.png | equipment/`<outputPath>`.json   | equipment/`<radicalPath>`.json
 **`models_from_textures`**     | textures/item/`<inputPath>`.png             | models/item/`<outputPath>`.json | items/`<radicalPath>`.json
 **`items_from_models`**        | models/item/`<inputPath>`.json              | items/`<outputPath>`.json       | items/`<radicalPath>`.json
 
 Any model generated during the `models_from_texture` pass will then be received by the `items_from_models` pass.
 
-The input path for equipment textures includes the layer name, wich you will usually want to exclude from the radical and output pathes.
+**The input path for trim and equipment textures includes the layer name, wich you will want to exclude from the radical and output pathes.**
 
 ### Field: `inputPath`
-**Optional** Regex, defaults to "`.*`" (accepts everything).
+**Optional** Regex, defaults to `"^.*$"` (accepts everything).
 
 Describes what assets can trigger this generator.
 This regex is matched against a portion of input asset's path (See [Pass](#field-pass)). If the input matches, the defined output is created.

@@ -171,7 +171,7 @@ If you find yourself needing to use this module type with large amounts of varia
 
 
 ### Parameters
-- **`predicates`**: *Mandatory array of variants.* Each variant is evaluated in teh order they are defined, and the first match returns immediately. Each variant takes the following fields:
+- **`predicates`**: *Mandatory array of variants.* Each variant is evaluated in the order they are defined, and the first match returns immediately. Each variant takes the following fields:
 	- **`variantId`**: *Mandatory identifier.* The variant ID that will be returned if the item matches the associated predicate.
 	- **`precondition`**: *Mandatory precondition.* The condition that the item must match in order to be associated with the aforementioned variant ID.
 	This follows the same syntax as a module's global precondition. See: [Preconditions](./Precondition%20Cheat-Sheet) and [Transforms](./Item-Properties#transforms).
