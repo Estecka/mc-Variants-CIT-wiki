@@ -24,22 +24,35 @@
 > You can use `F3 + D` to clear the in-game chat. For commands that give a lot of feedback, this will make it easier to find where things start.
 
 ### Command: `summary`
+```
+/variants-cit module <hook> <module id> summary
+```
+
 On most module, `summary` will simply give you the amout of variants that this module manages, and the components it relies on.
 
 On `enchant_vector` modules, this will also give the list of unique enchantments that are present on your models. This can be a quick way to check if any of those models has a mispelled name.
 
 ### Command: `dump`
+```
+/variants-cit module <hook> <module id> dump
+```
 This will give you the complete list of models that this module manages, and their associated variant ID. This can also be used to check whether the module collected models or textures it was not supposed to, which may be the result of an insufficiently specific model prefix.
 
 On `enchantment_vector`, this will give you the set of enchantments each model is associated to, instead of their variant ID.
 
 ### Command: `walkthrough`
+```
+/variants-cit module <hook> <module id> walkthrough [[self|nearest_item|nearest_player]]
+```
 This command will forcibly run the given module on the item in your main hand, and give you information on what the module is trying to do and why it may have failed.
 The details vary from one module type to another, but at minimum, this will tell you what was the raw value of the item's relevant components, what variant ID was found if any, does this variant have a model, and what that model might be.
 
 ![walkthrough](./walkthrough_command.png)
 
 ### Command: `crawl`
+```
+/variants-cit moduletree <hook> crawl [[self|nearest_item|nearest_player]]
+```
 This command tests which modules are applied to the item in your main-hand, and which one actually succeeded in changing its model.
 
 The command will print the name of every module that attempts to apply to the item, and stop immediately after any module succesfully does so. Any module with a lower priority is skipped, and so is not displayed in the ouput.
