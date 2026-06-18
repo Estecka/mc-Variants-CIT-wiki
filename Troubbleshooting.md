@@ -1,4 +1,17 @@
 # Troubleshooting
+### Index
+#### Debug Commands
+- [`module summary`](#command-summary)
+- [`module dump`](#command-dump)
+- [`module walkthrough`](#command-walkthrough)
+- [`moduletree crawl`](#command-crawl)
+#### Common issues
+- [Models are left unchanged](#issue-models-are-left-unchanged)
+- [Missing models or texture](#issue-missing-models-or-textures)
+- [Items aren't held correctly](#issue-items-arent-held-correctly)
+- [Items animation are missing](#issue-item-animations-are-missing)
+
+
 ## Debug commands
 ```
 /variants-cit module <hook> <module id> [summary|dump|walkthrough]
@@ -48,6 +61,10 @@ If no error appears at all, your module is probably stored in the wrong folder.
 #### > "This module would normally not apply to items of type xxxx."
 Your item's type was not listed in the module's target [`items`](./Module-Configuration#field-items).
 
+#### > "Precondition failed"
+Your module's [precondition](./Precondition%20Cheat-Sheet) did not match the item.
+You can try inserting [log](./Transforms#transform-log) into your preconditions to try and inspect the outputs of your other transforms.
+
 #### > "The item has a valid variant, but no associated model exists."
 The command will also give you the variant ID of your item, and what your model/texture should be named. Make sure that the file name matches exactly what is given.
 
@@ -71,7 +88,11 @@ Check that the module's `nbtPath` matches the location of the data. You can chec
 ```
 
 #### > "Transformed: null"
-The [`transform`](./Transforms) associated with this data failed to produce an output. In particular, if you are using a regex, it may mean that the regex did not match the input. Use [Regex 101](https://regex101.com/) to test your regex against the input, and check that the substitution result is what you expect it to be.
+The [`transform`](./Transforms) associated with this data failed to produce an output.
+
+In particular, if you are using a regex, it may mean that the regex did not match the input. Use [Regex 101](https://regex101.com/) to test your regex against the input, and check that the substitution result is what you expect it to be.
+
+More gerally, you can insert [log](./Transforms#transform-log) at various points into your transform to try and figure out where it has failed exactly.
 
 
 ### Issue: Missing models or textures
