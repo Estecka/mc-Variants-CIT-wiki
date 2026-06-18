@@ -1,11 +1,10 @@
 # Troubleshooting
 ## Debug commands
-
-There are a few client-side commands that you can use to check the behaviours of your modules.
 ```
 /variants-cit module <hook> <module id> [summary|dump|walkthrough]
+/variants-cit moduletree <hook> crawl
 ```
-`hook` will be either "`item_model`" (by default) or "`equippable`" depending on what has been defined in your module.
+`hook` can be "`item_model`" (by default), "`equippable`" or "`trim_pattern`" depending on what has been defined in your module.
 
 > [!TIP]
 >
@@ -26,6 +25,12 @@ This command will forcibly run the given module on the item in your main hand, a
 The details vary from one module type to another, but at minimum, this will tell you what was the raw value of the item's relevant components, what variant ID was found if any, does this variant have a model, and what that model might be.
 
 ![walkthrough](./walkthrough_command.png)
+
+### Command: `crawl`
+This command tests which modules are applied to the item in your main-hand, and which one actually succeeded in changing its model.
+
+The command will print the name of every module that attempts to apply to the item, and stop immediately after any module succesfully does so. Any module with a lower priority is skipped, and so is not displayed in the ouput.
+
 
 ## Common Issues
 ### Issue: Models are left unchanged

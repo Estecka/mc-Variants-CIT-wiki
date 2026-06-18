@@ -50,7 +50,7 @@ The existence of a single layer's texture is enough to trigger the creation of a
 To change the look of trim patterns, use the `trim_pattern` hook, and place your textures at:  
 `/assets/<namespace>/textures/trims/entity/<layer>/<modelPrefix><path>.png`.
 
-Similarly to equipements, trims need separate textures for the `humanoid` and `humanoid_leggings` layer, and modules can handles all body parts of an armor set.
+Similarly to equipements, trims need separate textures for the `humanoid` and `humanoid_leggings` layer, and modules can handle all body parts of an armor set.
 
 **Unlike other hooks, you must manually add your textures to the trim atlas, else they'll show as missing textures.** ([See below](#coloured-trim-atlases)).
 
@@ -81,15 +81,16 @@ There exist only a single `assetGen` preset for this hook, and you will not need
 Make sure to register your custom trim textures to the [trim atlas](#coloured-trim-atlases) !
 
 
-Variant ID                                     | `<namespace>:<path>`
+Variant ID:                                    | `<namespace>:<path>`
 ---------------------------------------------- | :-------------------
-Equivalent `asset_id` in the `trim` component. | `<namespace>:<modelPrefix><path>`
-Matching trim model                            | `/assets/<namespace>/variants-cit/trim_pattern/<modelPrefix><path>.json`
-Matching texture                               | `/assets/<namespace>/textures/trims/entity/<layer>/<modelPrefix><path>.png`
+Equivalent `asset_id` in the `trim` component: | `<namespace>:<modelPrefix><path>`
+Matching trim model:                           | `/assets/<namespace>/variants-cit/trim_pattern/<modelPrefix><path>.json`
+Matching texture:                              | `/assets/<namespace>/textures/trims/entity/<layer>/<modelPrefix><path>.png`
 
-Textures are the only assets you really need to care about. The existence of "trim models" is but a technicality; you'll never need to care about them, unless you want a pattern to use a differently named texture.
 
-Although trim patterns have a vanilla resource to represent them, those resources are *server-side*. VCIT cannot interact with them as easily, so it uses a custom assets type instead. Those only support the `asset_id` field.
+Textures are the only assets you really need to care about.   
+The "trim models" are a technicality, used by the mod to bring together the different layers.
+Although trim patterns have a vanilla resource type representing them, those resources are *server-side*. VCIT cannot interact with them as easily, so it uses a custom assets type instead.
 
 ### Coloured trim atlases
 Trim textures are unique in that they need to have coloured variations for every material.
