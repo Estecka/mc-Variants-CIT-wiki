@@ -4,7 +4,7 @@ A module is a JSON file provided by a resource pack, located in `variants-cit/mo
 
 > [!NOTE]
 > 
-> If you look at odler packs, you may find that they store their modules in `item/` instead of `modules/`. This older directory is still functional, but deprecated.
+> If you look at older packs, you may find that they store their modules in `item/` instead of `modules/`. This older directory is still functional, but deprecated.
 
 Ultimately, the only thing a module does is override one of the component of an item, (either `item_model` or `equippable`), meaning everything that can be done with those components can also be done with Variants-CIT. Having a good understanding of vanilla model mechanics ([Item states](https://minecraft.wiki/w/Items_model_definition) and [Equipments](https://minecraft.wiki/w/Equipment)) will help a lot.
 
