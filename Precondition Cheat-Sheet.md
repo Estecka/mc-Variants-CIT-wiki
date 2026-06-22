@@ -1,9 +1,19 @@
 # Preconditions
+
+### Index
+- [Canonical syntax](#canonical-syntax)
+- [Simplified syntax](#simplified-syntax)
+- Cheat-Sheet
+  - [Misc examples](#cheat-sheet)
+  - [Pitfalls](#pitfalls)
+  - [Checking multiple requirements on the same data](#checking-multiple-requirements-on-the-same-data-path)
+  - [Checking whether data exists](#checking-whether-data-exists-or-not)
+
 Conditions have several syntaxes.
 
 The simplified syntax is easier on the eyes and much faster to type, but can create ambiguity in some edge cases.
 
-The canonical syntax is more verbose, but stricter. If you are already familiar with `component_data`, this is a similar syntax. Learning to use preconditions through the lens of the canonical syntax will make it easier to understand how conditions relate to [item properties](./Item-Properties) and [Transforms](./Transforms).
+The canonical syntax is more verbose, but stricter. If you are already familiar with `component_data`, this is a similar syntax. Learning to use preconditions through the lens of the canonical syntax will make it more obvious how conditions relate to [item properties](./Item-Properties) and [Transforms](./Transforms).
 
 It is possible to mix and match different syntaxes at different levels as needed.
 
@@ -107,18 +117,22 @@ In case a property provided by Variants-CIT has the same name as a data componen
 ### Various types of requirements :
 ```jsonc
 "precondition": {
-	// Must be strictly equal
+	// Must be strictly equal (pick one)
 	"custom_data.path.to.data1": "somevalue",
+	"custom_data.path.to.data2": { "equals": "somevalue" },
 	// Pattern matching
 	"custom_data.path.to.data3": { "regex": "ultimate_.*" },
 	// Case-insensitive matching
 	"custom_name": { "regex": "(?i)Ultimate .*" },
 
-	// Must be strictly equal
-	"custom_data.path.to.data2": 20,
-	// Enchantment must be present on the item.
+	// Must be strictly equal (pick one)
+	"custom_data.path.to.data4": 20,
+	"custom_data.path.to.data5": { "equals": 20 },
+	// Enchantment must be present on the item. (pick one)
 	"enchantment.sharpness": { "greater_or_equals": 1 },
-	// Enchantment must be absent from the item.
+	"enchantment.sharpness": { "greater_than": 0 },
+	// Enchantment must be absent from the item (notice the leading '!')
+	"!enchantment.vanishing_curse": { "greater_or_equals": 1 },
 	"!enchantment.vanishing_curse": { "greater_than": 0 },
 
 	// Namespaced keys in nbt path don't require special syntax.
