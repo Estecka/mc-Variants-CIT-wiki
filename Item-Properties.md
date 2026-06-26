@@ -4,7 +4,7 @@ Item Properties extract some data from an item stack. The data can then be used 
 
 They can be used in every module's [preconditions](./Precondition%20Cheat-Sheet), and in the parameters of `component_data`, `component_format`, and `predicates` module types.
 
-## Outline
+## Index
 - [Schema](#schema)
 - Property Types:
 	- [`item_component`](#property-item_component)

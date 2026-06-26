@@ -37,6 +37,8 @@ There is no place where transforms cannot be chained in this way.
 There are a handful of places that are instead described as using an ***"array of transform chains"***.
 In these cases, the root array *is not a chain*, but can contains other chains.
 Entries in the root array are run ***in parallel***; they all receive the same input, and produce separate results.
+
+Individual transforms are formatted like this:
 ```json
 {
 	"function": "transform_type",
@@ -89,7 +91,7 @@ This just a wrapper for other data types, the component will be treated as the i
 In the walktrough command, unprocessed component are represented with `[@component_name]{value}` instead of `[#data_type]{value}`.
 
 ### NBT
-Plain strings, plain numbers, Rich Texts, and Rich Text Arrays are interchangeable with their NBT representations. However, the same NBT can have multiple different interpretations as different types. Use a `get_xxxx` transform if you get the wrong interpretation. (See [Data Type Transforms](#data-type-transforms) below)
+Plain strings, plain numbers, Rich Texts, and Rich Text Arrays are interchangeable with their NBT representations. **However, the same NBT can have multiple different interpretations as different types.** Other transforms will try to guess the correct data type, but may still be wrong. Use a `get_xxxx` transform if you get the wrong interpretation. (See [Data Type Transforms](#data-type-transforms) below)
 
 NBT is not to be confused with SNBT (Stringified NBT), which is the JSON-like syntax used in commands.
 NBT can be converted to SNBT using the `get_snbt` transform; this is the equivalent of Optifine's `raw:` prefix. **This is a destructive operation.** Stringified NBT is treated as a plain string, and *cannot* be converted back to binary NBT at this times. It cannot be explored using `nbtPath`, and will not work with transform that specifically expect NBT.
@@ -242,7 +244,10 @@ How the regex will behave when fed a string that contains multiple lines:
 ## Transform: `nbt_path`
 **Accepted input**: NBT elements, or unprocessed data components.
 
-Returns the element located at the given path. This fails if the input cannot be cast to NBT, or the path does not exist in the element.
+Returns the NBT element located at the given path. This fails if the input cannot be cast to NBT, or the path does not exist in the element.
+
+**This always outputs NBT data, which may be misinterpreted by following transforms.**
+Most notably when selecting a line of Lore, some Rich Texts encoding will be misinterpreted as plain strings; in this case, use a [`get_rich_text`](#data-type-transforms) transform immediately after `nbt_path` to force the correct interpretation.
 
 ### Schema:
 ```jsonc
