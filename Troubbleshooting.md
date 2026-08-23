@@ -4,6 +4,8 @@
 - [`module summary`](#command-summary)
 - [`module dump`](#command-dump)
 - [`module walkthrough`](#command-walkthrough)
+- [`module variant-id`](#command-variant-id-model-id)
+- [`module model-id`](#command-variant-id-model-id)
 - [`moduletree crawl`](#command-crawl)
 #### Common issues
 - [Models are left unchanged](#issue-models-are-left-unchanged)
@@ -23,6 +25,7 @@
 >
 > You can use `F3 + D` to clear the in-game chat. For commands that give a lot of feedback, this will make it easier to find where things start.
 
+
 ### Command: `summary`
 ```
 /variants-cit module <hook> <module id> summary
@@ -32,13 +35,25 @@ On most module, `summary` will simply give you the amout of variants that this m
 
 On `enchant_vector` modules, this will also give the list of unique enchantments that are present on your models. This can be a quick way to check if any of those models has a mispelled name.
 
+
 ### Command: `dump`
 ```
 /variants-cit module <hook> <module id> dump
 ```
-This will give you the complete list of models that this module manages, and their associated variant ID. This can also be used to check whether the module collected models or textures it was not supposed to, which may be the result of an insufficiently specific model prefix.
+This gives the complete list of models that was collected by this module, and their associated variant ID.
 
-On `enchantment_vector`, this will give you the set of enchantments each model is associated to, instead of their variant ID.
+
+### Command: `variant-id`, `model-id`
+```
+/variants-cit module <hook> <module id> variant-id <identifier>
+/variants-cit module <hook> <module id> model-id <identifier>
+```
+
+Gives information about what the given id represents for this module, such as what variant or model is it associated with, or why it was or was not collected by the module.
+The module `enchantment_vector` will also give the exact list of enchantments it parsed from the tested variant ID.
+
+The autocomplete will suggest IDs that are relevant to the module, but any ID can be tested here.
+
 
 ### Command: `walkthrough`
 ```
@@ -49,13 +64,12 @@ The details vary from one module type to another, but at minimum, this will tell
 
 ![walkthrough](./walkthrough_command.png)
 
+
 ### Command: `crawl`
 ```
 /variants-cit moduletree <hook> crawl [[self|nearest_item|nearest_player]]
 ```
-This command tests which modules are applied to the item in your main-hand, and which one actually succeeded in changing its model.
-
-The command will print the name of every module that attempts to apply to the item, and stop immediately after any module succesfully does so. Any module with a lower priority is skipped, and so is not displayed in the ouput.
+This command tests all modules that can potentially apply to the item in your main-hand. It reports whether the modules failed or succeeded, and which one actually took control of the item's model.
 
 
 ## Common Issues

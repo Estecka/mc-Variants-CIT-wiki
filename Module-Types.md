@@ -162,38 +162,39 @@ The namespace that will contain all the models.
 
 
 ## Module: `predicates`
-Lets you manually configure every single variant, and the precise conditions required for each variant to apply.
+This module is the closest to how Optifine CIT works.
+It lets you manually configure every single variant, and the precise conditions required for each variant to apply.
 
-This module is the closest to how Optifine CIT works, but is also the most verbose, and its performances will degrade faster as you add more variants to it.
-(Most modules have a complexity of O(1) or O(Log N), but `predicates` has a complexity of O(N).)  
-Its usage should only be considered when few variants are required, or as a band-aid solution to patch holes that regular modules do not cover.  
-If you find yourself needing to use this module type with large amounts of variants, please [open an issue](https://github.com/Estecka/mc-Variants-CIT/issues) to describe your use case.
+It is uniquely capable of operating without a `modelPrefix` or `modelList` option. Models declared in its parameters will be collected without the need to be bound to a variant ID.
+
+Most modules have a computational complexity of O(1) or O(log *n*), but `predicates` has a complexity of O(*n*), meaning its performances will degrade faster as you add more variants to it. Nonetheless performances should not be a concern unless extreme amounts of variants are involved.
 
 
 ### Parameters
 - **`predicates`**: *Mandatory array of variants.* Each variant is evaluated in the order they are defined, and the first match returns immediately. Each variant takes the following fields:
-	- **`variantId`**: *Mandatory identifier.* The variant ID that will be returned if the item matches the associated predicate.
+	- **`modelId`**: *Mandatory identifier.* The model ID that will be returned if the item matches the associated predicate.
 	- **`precondition`**: *Mandatory precondition.* The condition that the item must match in order to be associated with the aforementioned variant ID.
 	This follows the same syntax as a module's global precondition. See: [Preconditions](./Precondition%20Cheat-Sheet) and [Transforms](./Item-Properties#transforms).
+
+You may use `variantId` instead of `modelId` in order to refer to refer to models gathered by the `modelPrefix` and `modelList` options, if any are specified.
 
 ### Example:
 ```jsonc
 {
 	"items": "apple",
-	"modelPrefix": "apples_set/",
 
 	"types": "predicates",
 	"parameters": {
 		"predicates":
 		[
 			{
-				"variantId": "boatloads_of",
+				"modelId": "boatloads_of_apples",
 				"precondition": {
 					"item_count": { "greater_than": 32 }
 				}
 			},
 			{
-				"variantId": "lots_of",
+				"modelId": "lots_of_apple",
 				"precondition": {
 					"item_count": { "greater_than": 8 }
 				}
@@ -258,8 +259,8 @@ This additional module will only apply to items with the `fire_aspect` enchantem
 Picks a model based on *all* of the item's enchantments and their levels.
 The module will pick a model whose levels are lower or equal to those of the item. By default, models that have the most levels in total will be prioritized.
 
-This module does not compute a variant ID for the item. Instead it takes the variant IDs of the *models*, and converts those into sets of enchantments.
-You can use the [summary](./Troubbleshooting#command-summary) command to quickly check the list of unique enchantments that are presents on your models; you can easily spot subtle filename errors by looking for enchantment names you know should not exist. You can use the [dump](./Troubbleshooting#command-dump) to get a detailled list of enchantments for every model.
+This module does not really compute a variant ID for the item. Instead it takes the variant IDs of the *models*, and converts those into sets of enchantments.
+You can use the [summary](./Troubbleshooting#command-summary) command to quickly check the list of unique enchantments used across your models; you can easily spot subtle filename errors by looking for enchantment names you know should not exist. To inspect a specific variant, use the [variant-id](./Troubbleshooting#command-variant-id-model-id) command.
 
 ### Model Name Syntax
 The default syntax should be able to support all vanilla enchantments without creating ambiguous names. It assumes enchantment names will never contain two successive underscores (`"__"`), never end with a number, and never have namespaces that contain two successive dots (`".."`).

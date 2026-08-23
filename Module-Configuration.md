@@ -90,8 +90,9 @@ Defines which aspect of the item will be changed by the module.
 Possible values are:
 - **`item_model`**: causes the module to override the `item_model` component of the item.
 - **`equippable`**: causes the module to override the `equippable` component of the item, or more specifically, the '`assetId`' field inside that component.
+- **`trim_pattern`**: causes the module to override the `trim` component of the item, or more specifically, the '`assetId`' field inside the trim patterns defined by datapacks.
 
-It's technically possible for a module to pull double-duty, and change both aspects of an item at once. However, because of the discrepancy in how item assets and equipment assets are structured, it might not always be as convenient as using two separate modules.
+It's technically possible for a module to change multiple aspects of an item at once. However, because of the discrepancy in how assets are structured amongst those components, it's often more convenient to use separate modules.
 
 ### Field: `priority`
 **Optional**, Integer, defaults to 0.
