@@ -129,14 +129,13 @@ In case a property provided by Variants-CIT has the same name as a data componen
 	"custom_data.path.to.data4": 20,
 	"custom_data.path.to.data5": { "equals": 20 },
 	// Enchantment must be present on the item. (pick one)
-	"enchantment.sharpness": { "greater_or_equals": 1 },
-	"enchantment.sharpness": { "greater_than": 0 },
+	"enchantment.minecraft:sharpness": { "greater_or_equals": 1 },
+	"enchantment.minecraft:sharpness": { "greater_than": 0 },
 	// Enchantment must be absent from the item (notice the leading '!')
-	"!enchantment.vanishing_curse": { "greater_or_equals": 1 },
-	"!enchantment.vanishing_curse": { "greater_than": 0 },
+	"!enchantment.minecraft:vanishing_curse": { "greater_or_equals": 1 },
+	"!enchantment.minecraft:vanishing_curse": { "greater_than": 0 },
 
-	// Namespaced keys in nbt path don't require special syntax.
-	"enchantment.illagerplus:illagerbane": { "greater_than": 7 },
+	// Note that the 'minecraft:' namespace MUST be explicitely specified!
 
 	// Component or data must exist. Any value allowed.
 	// (Empty array = empty chain of transforms = no-op)
@@ -150,9 +149,9 @@ In case a property provided by Variants-CIT has the same name as a data componen
 ```jsonc
 "precondition": {
 	// Enchantment level must be EXACTLY 1
-	"enchantment.mending": 1,
+	"enchantment.minecraft:mending": 1,
 	// In order to be equal to 0, the enchantment MUST BE LISTED in the nbt.
-	"enchantment.vanishing_curse": 0,
+	"enchantment.minecraft:vanishing_curse": 0,
 
 	// Undefined behaviour. Do not use.
 	"custom_data.eg1": true,
@@ -168,15 +167,15 @@ The following **is not valid** and will not work as expected:
 ```jsonc
 // Undefined behaviour
 {
-	"enchantment.sharpness": { "greater_or_equals": 1 },
-	"enchantment.sharpness": { "smaller_than": 5 }
+	"enchantment.minecraft:sharpness": { "greater_or_equals": 1 },
+	"enchantment.minecraft:sharpness": { "smaller_than": 5 }
 }
 ```
 Instead, use a `matches_any` or `matches_all` transform:
 
 ```jsonc
 {
-	"enchantment.sharpness": { "matches_any": [
+	"enchantment.minecraft:sharpness": { "matches_any": [
 		{ "smaller_than": 5 },
 		{ "greater_or_equals": 1 }
 	]}
