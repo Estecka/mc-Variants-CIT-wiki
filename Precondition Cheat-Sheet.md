@@ -129,13 +129,12 @@ In case a property provided by Variants-CIT has the same name as a data componen
 	"custom_data.path.to.data4": 20,
 	"custom_data.path.to.data5": { "equals": 20 },
 	// Enchantment must be present on the item. (pick one)
-	"enchantments.minecraft:sharpness": { "greater_or_equals": 1 },
-	"enchantments.minecraft:sharpness": { "greater_than": 0 },
+	"enchantments.sharpness": { "greater_or_equals": 1 },
+	"enchantments.sharpness": { "greater_than": 0 },
 	// Enchantment must be absent from the item (notice the leading '!')
-	"!enchantments.minecraft:vanishing_curse": { "greater_or_equals": 1 },
-	"!enchantments.minecraft:vanishing_curse": { "greater_than": 0 },
+	"!enchantments.vanishing_curse": { "greater_or_equals": 1 },
+	"!enchantments.vanishing_curse": { "greater_than": 0 },
 
-	// Note that the 'minecraft:' namespace MUST be explicitely specified!
 
 	// Component or data must exist. Any value allowed.
 	// (Empty array = empty chain of transforms = no-op)
@@ -149,9 +148,9 @@ In case a property provided by Variants-CIT has the same name as a data componen
 ```jsonc
 "precondition": {
 	// Enchantment level must be EXACTLY 1
-	"enchantments.minecraft:mending": 1,
+	"enchantments.mending": 1,
 	// In order to be equal to 0, the enchantment MUST BE LISTED in the nbt.
-	"enchantments.minecraft:vanishing_curse": 0,
+	"enchantments.vanishing_curse": 0,
 
 	// Undefined behaviour. Do not use.
 	"custom_data.eg1": true,
@@ -167,15 +166,15 @@ The following **is not valid** and will not work as expected:
 ```jsonc
 // Undefined behaviour
 {
-	"enchantments.minecraft:sharpness": { "greater_or_equals": 1 },
-	"enchantments.minecraft:sharpness": { "smaller_than": 5 }
+	"enchantments.sharpness": { "greater_or_equals": 1 },
+	"enchantments.sharpness": { "smaller_than": 5 }
 }
 ```
 Instead, use a `matches_any` or `matches_all` transform:
 
 ```jsonc
 {
-	"enchantments.minecraft:sharpness": { "matches_any": [
+	"enchantments.sharpness": { "matches_any": [
 		{ "smaller_than": 5 },
 		{ "greater_or_equals": 1 }
 	]}

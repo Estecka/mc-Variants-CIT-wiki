@@ -13,6 +13,7 @@ They can be used in every module's [preconditions](./Precondition%20Cheat-Sheet)
 	- [`axolotl_variant`](#property-axolotl_variant)
 	- [`bucket_entity_age`](#property-bucket_entity_age)
 	- [`display_name`](#property-display_name)
+	- [`dyed_color`](#property-dyed_color)
 	- [`painting_variant`](#property-painting_variant)
 
 ## Schema:
@@ -116,6 +117,12 @@ Minecraft determines the display name using these sources, in order:
 1. The `custom_name` component
 2. Hardcoded name variations (Lodestone compass, banner shields)
 3. The `item_name` component
+
+## Property: `dyed_color`
+
+Returns the raw number representing the color of a dyed item.
+
+The NBT representation of this component varies with versions of Minecraft, so using this property is more reliable than `item_component`.
 
 
 ## Property: `bucket_entity_age`

@@ -93,6 +93,12 @@ The "trim models" are a technicality, used by the mod to bring together the diff
 Although trim patterns have a vanilla resource type representing them, those resources are *server-side*. VCIT cannot interact with them as easily, so it uses a custom assets type instead.
 
 ### Coloured trim atlases
+> [!NOTE]
+>
+> This section is relevant only to **MC 26.2 and prior**.
+>
+> Since MC 26.3, no action is required from you for coloured trims to work.
+
 Trim textures are unique in that they need to have coloured variations for every material.
 VCIT currently does not automate this, and Minecraft only partially automates the creation of coloured trim textures. For those to be created, you must manually add your textures to the armor_trim atlas.
 

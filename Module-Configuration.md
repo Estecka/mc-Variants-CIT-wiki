@@ -13,7 +13,7 @@ The strict minimum required to form a working module is its type, its target ite
 
 ```json
 {
-	"items": "painting",
+	"item": "painting",
 	"type": "painting_variant",
 	"modelPrefix": "painting/",
 	"assetGen": "item_model/generated"
@@ -59,10 +59,12 @@ See [here](Module-Types) for a complete list of possible types, and what paramet
 An object containing additional parameters that affect the behaviour of the module.
 The list of possible parameters and their effects depends on the **type** of the module. This object may or may not be required depending on the module's type.
 
-### Field: `items`
+### Field: `item`, `items`
 **Mandatory**. A single, or an array of Identifiers.
 
 A list of item types the module will be applied to. The mod will silently ignore identifiers that do not match an existing item, so a module will remain compatible with versions of minecraft that lack some of the defined items.
+
+The singular and plural forms are aliases. They don't actually have separate functionalities. You can only use one of these names at a time.
 
 ### Field: `precondition`
 **Optional**. A single, or an array of preconditions.

@@ -93,11 +93,12 @@ No additional texture needs be provided for the tooting animation.
 Custom tooting models can be provided with a `_tooting` suffix. Do note that this a **SUFFIX**, unlike the vanilla goat horn which uses `tooting_` as a *prefix*.
 
 ### Preset: `item_model/spear`
+**This preset is only supported on MC 1.21.11 and onward.**
+
 Creates models and items states similar to the vanilla spear.
 This expects additional textures suffixed with:
 - `_in_hand`.
 
-**This preset is functional only on MC 1.21.11 and onward.**
 
 ### Preset: `item_model/shield_no_pattern`
 Creates models and items states similar to the vanilla shield.
@@ -131,13 +132,52 @@ Creates two-layers equipment models for humanoid armors.
 This expects textures for the following layers:
 - `humanoid/`
 - `humanoid_leggings/`
+- `humanoid_baby/` **(MC 26.1+)**
 
 ### Preset: `equipment/elytra`
 Creates single-layer equipment models for an elytra. The elytra will use the player's cape texture if any.
 This expects textures for the following layers:
 - `wings/`
 
+### Preset: `equipment/wolf`
+Creates equipment models for wolf armor.
+
+This expects textures for the following layers:
+- `wolf_body/`
+
+### Preset: `equipment/horse`
+Creates equipment models for horse armors and saddles.
+
+This expects textures for the following layers:
+- `horse_armor/`
+- `horse_saddle/`
+- `skeleton_horse_saddle/`
+- `zombie_horse_saddle/`
+
+### Preset: `equipment/llama`
+Creates equipment models for carpets.
+
+This expects textures for the following layers:
+- `llama_body/`
+
+### Preset: `equipment/nautilus`
+**This is preset is only supported on MC 1.21.11 and onward.**
+
+Creates equipment models for nautilus armors and saddles.
+This expects textures for the following layers:
+- `nautilus_body/`
+- `nautilus_saddle/`
+
+### Preset: `equipment/ghast`
+**This is preset is only supported on MC 1.21.6 and onward.**
+
+Creates equipment models for happy ghast harnesses.
+This expects textures for the following layers:
+- `happy_ghast_body/`
+
 ### Preset: `equipment/saddle`
+**This is preset is only supported on MC 1.21.5 and onward.**
+
 Creates equipment models for a saddle which supports all animals.
 This expects textures for the following layers:
 - `camel_saddle/`
@@ -148,6 +188,8 @@ This expects textures for the following layers:
 - `skeleton_horse_saddle/`
 - `strider_saddle/`
 - `zombie_horse_saddle/`
+- `nautilus_saddle/` **(MC 1.21.11+)**
+- `camel_husk_saddle/` **(MC 1.21.11+)**
 
 Providing all layers is not strictly required, however the generated json model still expects them all, and thus will show a missing texture if equipped to the wrong animal.
 

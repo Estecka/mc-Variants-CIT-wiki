@@ -14,7 +14,7 @@ Different transforms accept and produce different data types, usually strings or
 	- [`matches_any`](#transform-matches_any-matches_all), [`matches_all`](#transform-matches_any-matches_all)
 	- [`nbt_path`](#transform-nbt_path)
 	- [`test`](#transform-test)
-- Transforms Types (String)
+- Transforms Types (String/Text)
 	- [`blacklist`](#transform-whitelist--blacklist), [`whitelist`](#transform-whitelist--blacklist)
 	- [`charset_remap`](#transform-charset_remap)
 	- [`discard_namespace`](#simple-transforms), [`discard_path`](#simple-transforms)
@@ -23,7 +23,9 @@ Different transforms accept and produce different data types, usually strings or
 	- [`regex`](#transform-regex)
 	- [`remap`](#transform-remap)
 	- [`sanitize`](#simple-transforms)
+	- [`translate`](#transform-translate)
 - Transforms Types (Numeric)
+	- [`blacklist`](#transform-whitelist--blacklist), [`whitelist`](#transform-whitelist--blacklist)
 	- [`equals`](#transform-equals)
 	- [`greater_than`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equal), [`greater_or_equals`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equal)
 	- [`smaller_than`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equals), [`smaller_or_equals`](#transform-smaller_than-smaller_or_equals-greater_than-greater_or_equal)
@@ -241,6 +243,35 @@ How the regex will behave when fed a string that contains multiple lines:
 - **`first_match_only`**: Each line is separately fed into the regex until one matches. Only the substitution for this line is returned. The remaining lines are ignored.
 
 
+## Transform: `translate`
+**Accepted input**: Rich Text
+
+Translate rich text into a specific language.
+This can for example, be used on name-based or lore-based modules, to ensure they work regardless of the player's client language.
+
+This uses the language files provided by resource packs, and thus can only translate texts that have translations keys.
+
+This outputs plain a string, which is stripped of its formatting, and cannot be translated again.
+
+### Schema
+```json
+{
+	"function": "translate",
+	"languages": [ "fr_fr", "en_us" ]
+}
+```
+#### Field: `languages`
+**Mandatory** array of strings
+
+The first language in the list is the main one, with the others used as fallback for missing tranlations.  
+Minecraft uses `en_us` as a fallback for every language, so you may want to include it if you want the result to be accurate to what the game actually displays.
+
+An empty array can be used to get only the translations keys.
+
+The language codes are the same as the filenames of the language files: 
+[**List of Languages**](https://minecraft.wiki/w/Language#Languages)  
+
+
 ## Transform: `nbt_path`
 **Accepted input**: NBT elements, or unprocessed data components.
 
@@ -266,6 +297,8 @@ Most notably when selecting a line of Lore, some Rich Texts encoding will be mis
   1. Json file: `"nbtPath":".'weird\\'key\\\\"`
   2. As received by VCIT: `.'weird\'key\\'`
   3. Resulting key name: `weird'key\`
+
+  Keynames are treated as identifiers whenever possible, such that the path `".sharpness"` will attempt to fetch both the "`sharpness`" and "`minecraft:sharpness`" keys.
 
 - **`[n]`** is used to access arrays, it returns the value at the given index. "n" must be a number. Negative values start at the end of the index.
 
@@ -412,41 +445,62 @@ Identical to `matches_any` above, but returns the result of the first sub-transf
 ```
 
 ## Transform: `whitelist` / `blacklist`
-**Accepted input:** String
+**Accepted input:** any
 
 Fails or succeeds depending on whether the input is in the given list.
 The original value is returned on success.
 
+There are three variants of each: `_string`, `_number` and `_id`.
+- `_string` does plain string comparisons.
+- `_id` treats its input and entries as identifiers, such that `"sharpness"` and `"minecraft:sharpness"` are considered equal.
+- `_number` treats its input and entries as doubles, such that `2` and `2.0` are considered equal.
+
+If the input is not of the specified type, `whitelist` *fails*, but `blacklist` *succeeds*.
+
+
 ###	Schema
 ```json
 {
+	"function": "whitelist_string",
 	"whitelist": [
 		"allowed_value_1",
 		"allowed_value_2",
-		"allowed_value_3",
+		"allowed_value_3"
 	]
 }
 ```
 ```json
 {
+	"function": "blacklist_number",
 	"blacklist": [
-		"disallowed_value_1",
-		"disallowed_value_2",
-		"disallowed_value_3",
+		1,
+		2.0,
+		3.00,
 	]
 }
 ```
-> Specifying the `function` type is optional for these transforms.
 
+The old plain `whitelist` and `blacklist` are aliases for the `_string` versions.
+The `function` type is **required** on the suffixed versions, even though it was optional on the plain ones.
 
 ## Transform: `remap`
-**Accepted input:** String
+**Accepted input:** any
 
 If the input is amongst the given keys, this returns the associated value.
 This fails if the input is not in the map.
+
+There are three variants of this transform `_string`, `_number` and `_id`.
+- `_string` does plain string comparisons.
+- `_id` treats its input and entries as identifiers, such that `"sharpness"` and `"minecraft:sharpness"` are considered equal.
+- `_number` treats its input and entries as doubles, such that `2` and `2.0` are considered equal.
+
+Behaviour is undefined if the keys of the map contains two equivalent keys.
+
+The output can be either a string or a number, regardless of the version. The same map can contain a mix of both.
+
 ```json
 {
-	"function": "remap",
+	"function": "remap_string",
 	"map": {
 		"input_1": "output_1",
 		"input_2": "output_2",
@@ -454,6 +508,18 @@ This fails if the input is not in the map.
 	}
 }
 ```
+```json
+{
+	"function": "remap_number",
+	"map": {
+		"1":   111,
+		"2.0": 222,
+	}
+}
+```
+
+The old plain `remap` is an alias for the `_string` version.
+The `function` type is **required** on the suffixed versions, even though it was optional on the plain one.
 
 ## Transform: `charset_remap`
 **Accepted input:** String
