@@ -2,14 +2,16 @@
 
 ### [FAQ](./FAQ)
 
+### [Troubleshooting](./Troubbleshooting)
+
 ### For Mod-Pack makers
 - [Baking generated assets](./Asset-Generation#baking-generated-assets)
 
-### Tutorial
-- [Getting Started](./Getting%20Started)
-- [Troubleshooting](./Troubbleshooting)
-- [Building a variant Library](./Variant-Library)
-- [Equipped Armor](./Equipped-Armor)
+### Tutorials
+1. [Getting Started](./Getting-Started)
+1. [Pattern-Seeking Modules](./Seeking-Patterns)
+1. [Understanding Asset-Generation](./Understanding-AssetGen)
+1. [Changing Equipped Armor](./Equipped-Armor)
 
 ### Technical Documentation
 - [Module Configuration](./Module-Configuration)

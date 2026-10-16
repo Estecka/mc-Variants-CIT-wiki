@@ -1,3 +1,11 @@
+> [!NOTE]
+> 
+> This page redundant. It needs to be be broken down and merged with its newer counterpart:
+> - Tutorial: [Pattern Seeking Modules](./Seeking-Patterns)
+> - Tutorial: [Understanding AssetGen](./Understanding-AssetGen)
+> 
+
+
 # Building a Variant Library
 This page covers some of the *theory* behind the mod. If you would like a more *practical* introduction instead, see: [Getting Started](./Getting%20Started).
 

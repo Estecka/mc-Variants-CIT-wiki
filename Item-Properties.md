@@ -99,14 +99,14 @@ This property takes no parameters.
 
 > [!IMPORTANT]
 >
-> When used in `component_data` or `component_format`, the module will match a model to an item stack only if they have **exactly**. Using the item count as a threshold value will only work in `predicates` or `item_count` modules, or inside the Preconditions of a module.
+> When used in `component_data` or `component_format`, the module will match a model to an item stack only if they have **exactly** the correct count. Using the item count as a threshold value will only work with the module types `predicates`, `item_count`, or inside the Preconditions of a module.
 >
 
 ## Property: `axolotl_variant`
 
 Returns the color name of an axolotl in a bucket.
 
-The component representing this data varies between versions of minecraft, so using this property can be more reliable than `item_component`.
+The component representing this data changes between versions of minecraft, so using this property is more reliable than using `item_component` to access the component directly.
 
 
 ## Property: `display_name`
@@ -122,7 +122,7 @@ Minecraft determines the display name using these sources, in order:
 
 Returns the raw number representing the color of a dyed item.
 
-The NBT representation of this component varies with versions of Minecraft, so using this property is more reliable than `item_component`.
+The component representing this data changes between versions of minecraft, so using this property is more reliable than using `item_component` to access the component directly.
 
 
 ## Property: `bucket_entity_age`
@@ -151,7 +151,7 @@ The value to return for babies.
 
 Returns the variant of a painting picked from the creative inventory.
 
-The component representing this data varies between versions of minecraft, so using this property can be more reliable than `item_component`.
+The component representing this data changes between versions of minecraft, so using this property is more reliable than using `item_component` to access the component directly.
 
 # Transforms
 

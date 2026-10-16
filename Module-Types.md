@@ -15,14 +15,13 @@ Each module type is its own separate system. The `"parameters"` of one type do n
   - [`predicates`](#module-predicates)
 - **Purpose-made Modules**  
   Those are tailored for specific use cases, but require no parameters to work.
-  Some of these modules have functionalities that are difficult or impossible to replicate through generalist modules.
+  Some of these modules have functionalities that are difficult or impossible to replicate with `component_*` modules.
   - [`durability`](#module-durability)
   - [`enchantment`](#module-enchantment-stored_enchantment), [`stored_echantment`](#module-enchantment-stored_enchantment)
   - [`enchantment_vector`](#module-enchantment_vector-stored_enchantment_vector), [`stored_echantment_vector`](#module-enchantment_vector-stored_enchantment_vector)
   - [`item_count`](#module-item_count)
 - Historical Modules  
-  Purpose-made modules that can be perfectly replicated using generalist modules. Switching to `component_data` or `component_format` may sometimes be a better choice if you need more control.
-   These modules are only kept around for backward compatibility. There is no plan to deprecate them, but they're unlikely to receive new functionalities.
+  Purpose-made modules that can be perfectly replicated using generalist modules. Switching to `component_data` or `component_format` may be a better choice if you need more control over their behaviour.
   - [`axolotl_variant`](#module-axolotl_variant)
   - [`custom_name`](#module-custom_name)
   - [`instrument`](#module-instrument)
@@ -100,7 +99,7 @@ This module will only look for exact match. Use [`component_treshold`](#module-c
 ```
 
 ## Module: `component_format`
-A step up from `component_data`, that can pull and combine multiple pieces of data from multiple properties at once. 
+A step up from `component_data`, that can combine multiple pieces of data from multiple properties at once. 
 
 ### Parameters:
 - **`format`**: *Mandatory, string*. The format of the variant ID. The string can contain variables formatted as `${name}`, which will be substitued with the data extracted from the components. Variable names can contain any character in `[a-zA-Z0-9_]`, but may not start with a number.
@@ -165,10 +164,10 @@ The namespace that will contain all the models.
 This module is the closest to how Optifine CIT works.
 It lets you manually configure every single variant, and the precise conditions required for each variant to apply.
 
-It is uniquely capable of operating without a `modelPrefix` or `modelList` option. Models declared in its parameters will be collected without the need to be bound to a variant ID.
+**This module is probably the most beginner friendly.**
+This module is the closest to how Optifine CIT works. It is also much less likely to cause assetGen conflicts.
 
-Most modules have a computational complexity of O(1) or O(log *n*), but `predicates` has a complexity of O(*n*), meaning its performances will degrade faster as you add more variants to it. Nonetheless performances should not be a concern unless extreme amounts of variants are involved.
-
+Most modules have a computational complexity of O(1) or O(log *n*), but `predicates` has a complexity of O(*n*), meaning its performances will degrade faster as you add more variants to it. Nonetheless performances should not be a concern unless ridiculously extreme amounts of variants are involved.
 
 ### Parameters
 - **`predicates`**: *Mandatory array of variants.* Each variant is evaluated in the order they are defined, and the first match returns immediately. Each variant takes the following fields:

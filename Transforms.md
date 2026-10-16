@@ -1,5 +1,5 @@
 # Transforms
-Transforms are functions that can be used to either modify or validate some data, extracted from an [item property](./Item-Properties). All transforms can technically serve both roles; they will always either produce some piece of data (success) or produce nothing at all (failure).
+Transforms are functions that can be used to either modify or validate some data, usually extracted from an [item property](./Item-Properties). All transforms can technically serve both roles; they will always either produce some piece of data (success) or produce nothing at all (failure).
 
 Different transforms accept and produce different data types, usually strings or numbers. Type conversions in-between transforms will happen automatically in most cases.
 
@@ -32,7 +32,7 @@ Different transforms accept and produce different data types, usually strings or
 
 ## Schema
 
-Everywhere transforms are used, they will be described as a ***"transform chain"***. Meaning you can provide either a single transform, or multiple transforms wrapped in an array.
+Everywhere transforms are used, they will be described as a ***"transform chain"***. Meaning you can provide either a single transform, or an array of them.
 Transforms in a chain are run ***in succession*** to produce more complex results; the output of the first is used as the input for the next, and so on.  
 There is no place where transforms cannot be chained in this way.
 
@@ -370,20 +370,19 @@ This example could be used to find and return the first texture stored inside th
 
 How to iterate over the input.
 
-If `foreach` is an array of transform chains, they are independently applied to the input, and their outputs will be fed into `do`.
-Unlike every other place where arrays of transforms are used, the root array **is not** a chain of transform. It is its entries that can be chains of transforms.
-
 If the input is an NBT array or an NBT compound, `foreach` can instead take one the following values:
 - **`value`**: The `"do"` transform will receive every value in the input.
 - **`key`**: The `"do"` transform will receive every key/index in the input.
 - **`key_value`**: The `"do"` transform will receive both the keys/indices and values, in the form of another NBT compound, formated as `{ key: ..., value: ... }`. Use the `nbt_path` transform to navigate to one or another.
 
+For any data type, `foreach` can instead be an array of transform chains. They are independently applied to the input, and their outputs and their outputs are the entries that will be fed into `do`.  
+Unlike every other place where arrays of transforms are used, the root array **is not** a chain of transform. It is its entries that can be chains of transforms.
+
+
 #### Field: `do`
 **Mandatory,** *a transform chain*
 
 A transform, that will be applied to each entry provided by the `foreach` field.
-
-If `"foreach"` is an array of transform chains, this is equivalent to having the `"do"` transform included at the end of every chain in `"foreach"`.
 
 #### Field: `return`
 **Mandatory,** *string*

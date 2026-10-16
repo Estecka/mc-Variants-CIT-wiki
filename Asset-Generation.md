@@ -36,7 +36,7 @@ Modpack makers can include the baked resource pack directly into their modpacks.
 ![Resource Pack Menu Order](./baked_pack.jpg)
 
 # Built-In Asset Generator Presets
-Presets are the easy out to change an item's texture by providing only textures. Just set your module's `assetGen` option to one of the values below.
+Presets are the easy way to change an item's texture by providing only textures. Just set your module's `assetGen` option to one of the values below.
 
 ```json
 {
@@ -204,21 +204,21 @@ This expects textures for the following layers:
 At the modules' level:
 1. Assets are fed into every generator. As a rule of thumbs, generators only process and produce assets that their module can use.
 
-2. All generator attempt to generate new assets from the given input. If multiple generators end up creating assets with the same name, the firstmost generator in the array takes priority.
+2. All generators attempt to generate new assets from the given input. If multiple generators end up creating assets with the same name, the firstmost generator in the array takes priority.
 
 3. If multiple modules attempt to generate the same assets, the module with the most specific `modelPrefix` will take priority. If the prefixes have the same size, it is undefined which module takes priority.
 
 4. The generated assets are added to a virtual resource pack. This pack is located at the bottom of the stack, so generators can never overwrite already existing assets.
-You can use the command `/variants-cit assetGen peek` to quickly check the content of any asset in this pack.
+You can use the command `/variants-cit assetGen peek` check the content of any asset in this pack.
 
 
 At the generators' level:
-1. Each generator receives every single asset that corresponds to its `pass` option. The ID of each asset is tested against the generator's input regex. If it doesn't match, the generator ignores this asset. The ID used here is not necessarily the asset's full identifier. (See [`pass`](#field-pass))
+1. Each generator receives every single asset that corresponds to its `pass` option. The ID of each asset is tested against the generator's input regex. If it doesn't match, the generator is skipped. The ID used here is not necessarily the asset's full identifier. (See [`pass`](#field-pass))
 
-2. The generator computes the ID of its output asset, or if specified, the ID of the output's [radical](#field-radicalpath). This ID is tested against the module. If the module refuses to collect it, the generator will not produce this output.
-For an ID to be accepted, it must match the model prefix, the fallback model, or special models. For IDs that match the modelPrefix, certain module types may further restrict which ones they will accept. (E.g: number-based modules only accept number-based assets.)
+2. The generator computes the ID of its output asset, or if specified, the ID of the output's [radical](#field-radicalpath). This ID is tested against the module. If the module refuses to collect this model, the generator is skipped.  
+Generally for an output ID to be accepted, it must match the `modelPrefix`, be listed in `modelList` or be otherwise relevant to the module. Certain module types may further restrict which IDs they will accept. (E.g: number-based modules only accept number-based assets, and `predicates` only accepts models declared in its parameters.)
 
-3. The generators fills up a template using the ID of the input asset, output asset, and other user-defined variables. The filled template is used as the content of the generator's output.
+3. The generator fills up a template with the ID of the input asset, output asset, and other user-defined variables. The filled template is used as the content of the generated asset.
 
 
 ## Templates

@@ -2,11 +2,27 @@
 
 A module is a JSON file provided by a resource pack, located in `variants-cit/modules/`. It controls a large collection of models, and defines how to match them to an item.
 
-> [!NOTE]
-> 
-> If you look at older packs, you may find that they store their modules in `item/` instead of `modules/`. This older directory is still functional, but deprecated.
+(If you look at older packs, you may find that they store their modules in `item/` instead of `modules/`. This older directory is now deprecated.)
 
-Ultimately, the only thing a module does is override one of the component of an item, (either `item_model` or `equippable`), meaning everything that can be done with those components can also be done with Variants-CIT. Having a good understanding of vanilla model mechanics ([Item states](https://minecraft.wiki/w/Items_model_definition) and [Equipments](https://minecraft.wiki/w/Equipment)) will help a lot.
+Ultimately, the only thing a module does is override one of the components of an item, (`item_model`, `equippable`, etc), meaning everything that can be done with those components can also be done with Variants-CIT. Having a good understanding of the mechanics surrounding vanilla models ([Item states](https://minecraft.wiki/w/Items_model_definition), [Equipments](https://minecraft.wiki/w/Equipment), etc) will help a lot.
+
+### Index
+- Variant Computation
+	- [Field: `hook`](#field-hook)
+	- [Field: `items`](#field-items)
+	- [Field: `priority`](#field-priority)
+	- [Field: `precondition`](#field-precondition)
+	- [Field: `type`](#field-type)
+	- [Field: `parameters`](#field-parameters)
+- Model Library
+	- [Field: `modelList`](#field-modellist)
+	- [Field: `modelPrefix`](#field-modelprefix)
+	- [Field: `modelNamespace`](#field-modelnamespace)
+	- [Field: `modelPathes`](#field-modelpathes)
+	- [Field: `fallback`](#field-fallback)
+- Asset Generation
+	- [Field: `assetGen`](#field-assetgen)
+	- [Field: `modelParent`](#field-modelparent)
 
 ## Schema
 The strict minimum required to form a working module is its type, its target items, and the location of its models:

@@ -144,7 +144,7 @@ More gerally, you can insert [log](./Transforms#transform-log) at various points
 ### Issue: Missing models or textures
 (A.k.a. the pink and black checkerboard.)
 
-If you are changing trim pattern textures, make sure you added those textures to the [armor trim sprite atlas](./Equipped-Armor#coloured-trim-atlases).
+If you are changing trim pattern textures on MC 26.2 or prior, make sure you added those textures to the [armor trim sprite atlas](./Equipped-Armor#coloured-trim-atlases).
 
 If you use ModernFix, either disable [Dynamic Resources](https://github.com/embeddedt/ModernFix/wiki/Dynamic-Resources-FAQ), or [bake Variants-CIT's assets](./Asset-Generation#baking-generated-assets).
 

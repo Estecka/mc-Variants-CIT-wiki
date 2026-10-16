@@ -4,7 +4,7 @@ The active wiki no longer advertises removed or deprecated features. Wikis for o
 
 ## Removed Features / Breaking changes
 ### Variants-CIT v3
-- Textures and models must now be located in `textures/item/` and `models/item/`. Assets outside of the `item/` subdirectory will no longer be loaded.
+- Item textures and models must now be located in `textures/item/` and `models/item/`. Assets outside of the `item/` subdirectory will no longer be collected.
 - Removed custom [model override predicates](https://github.com/Estecka/mc-Variants-CIT-wiki/blob/v2.9/Override%20Predicates.md), no longer supported by Minecraft.
 - **Java API:** CIT modules now provide models as plain `Identifier` instead of `ModelIdentifier`.
 - **Java API:** `ICitModule::getItemVariant` was moved to `ISimpleCitModule::getItemVariant`.
@@ -27,16 +27,16 @@ Use `component_data` instead.
 - `custom_name` module's flavour of sanitize was changed to `sanitize_auto`
 
 ## Deprecated Features
-These features still work, but should no longer be used. Removal is not necessarily planned, but they are no longer maintained. They could change behaviour unexpectedly at the whims of minecraft's internals.
+These features still work, but should no longer be used. Removal is not necessarily planned, but they are no longer maintained.
 
 ### Modules
 - Modules located in `variant-cits/item/` (mispelled) and `variants-cit/item/` should be moved to `variants-cit/modules/`.
-- Modules should explicitely specify an `items` field, instead of naming the module itself after the target item type.
+- Modules should explicitely specify an `item` field, instead of naming the module itself after the target item type.
 - Module type `stored_enchantments` (plural) should be renamed to `stored_enchantment` (singular)
 
 ###	Transforms & Item Properties:
-- `validate` in regex transforms should be replaced with `optional`.
-- In `item_component`, the field `expect` should be replaced with its new `transform` counterparts.
+- `"validate":false` in regex transforms should be replaced with `"optional":true`.
+- In `item_component`, the field `expect` should be replaced with its new `transform` counterparts (`get_<datatype>`).
 - In `test` transforms, the field `tester` should be renamed to `test`
 
 ### Minecraft versions

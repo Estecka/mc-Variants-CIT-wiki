@@ -140,7 +140,21 @@ In case a property provided by Variants-CIT has the same name as a data componen
 	// (Empty array = empty chain of transforms = no-op)
 	"equippable": [],
 	// Component or data must not exist.
-	"!consumable": []
+	"!consumable": [],
+	// Item must have at least 2 enchantments.
+	// (Indices start at zero, so {1} tests the value of the *second* enchantment)
+	"enchantment{1}": [],
+
+	// Item must *only* have enchantments from this list
+	"stored_enchantments": {
+		"function": "foreach",
+		"foreach": "key",
+		"do": { "whitelist": [
+			"minecraft:vanishing_curse",
+			"minecraft:binding_curse"
+		]},
+		"return": "matches_all"
+	}
 }
 ```
 

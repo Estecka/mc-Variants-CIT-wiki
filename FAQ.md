@@ -1,119 +1,64 @@
-# FAQ / Index
+# FAQ
 
 ### Q: Will this work with X or Y pack ?
-If this pack was made for Optifine: **No**.
-VCIT uses its own resource format, and has a fundamentally different approach to CITs.
+If this pack was made for Optifine: **No**.  
+VCIT uses its own resource format, which is not based on anything Optifine-like.
 
 
 ### Q: What are the main differences with optifine ?
 Optifine works by defining variants on a case-by-case basis. Variants-CIT works by defining a "module" for an item, which manages multiple variants at once.
 
-VCIT works best for packs that have many variants for a single item.
-Its goal is to handle as many variants as possible using as few files as possible, and yield better performances in the most extreme cases.
+Certain module types can automatically associate models to the corresponding item variant, based on the model's name. This makes it possible to add several dozens of variants to an item, by writing only a handful of lines of code in a single file.
 
-Historically, the main design philosophy for modules was to have a single generic rule that lets the mod automatically figure out an item's variants, and their associated models. Today, there's also a [`predicates`](./Module-Types#module-predicates) module type that works more similarly to optifine, on case-by-case basis.
+### Q: How do I port or create a pack ?
+Start by follow the [introductory tutorial](./Getting-Started).
 
-### Q: How do I port a pack ?
-Follow the [introductory tutorial](./Getting%20Started). Then pick a [module type](./Module-Types) that best matches your use case.
+VCIT uses a completely different format from Optifine, so there is no quick and easy way to port a pack.
 
 
 ### Q: How do I change an item's look based on its name ?
-Follow the [introductory tutorial](./Getting%20Started), which does precisely that.
+Start by following the [introductory tutorial](./Getting-Started), which has examples of that.
 
-### Q: How do I match prefixes, suffixes, and other patterns in names ?
+Do consider that there are three flavours of name to choose from:
+- `custom_name` is the name given in an anvil.
+- `item_name` is the intrinsic name of the item, regardless of custom name. (Sometimes incorrectly refered to as "command-given name")
+- `display_name` is whichever name is shown to the player.
 
-Instead of using the `custom_name` module showcased in the tutorial, use a [`component_data`](./Module-Types#component_data) module with a [Regex Transform](./Transforms#transform-regex).
+In doubt, use `display_name`.
 
-#### Example:
+
+### Q: How do I check text formatting ?
+**Limited support only.**
+Use [`nbt_path`](./Transforms#transform-nbt_path) to navigate through the NBT structure of a rich text. You may also use [`get_snbt`](./Transforms#nbt) to get the String representation of the NBT, and check it against a Regex.
+
+A features using Legacy Formatting Codes is under consideration, but has no ETA.
+
+
+### Q: How do I check custom data ?
+In `predicates` modules, add the path to the data directly after the name of the component:
 ```json
 {
 	"items": "...",
-	"modelPrefix": "...",
 
-	"type": "component_data",
-	"parameters": {
-		"componentType": "custom_name",
-		"transform": [
-			{
-				"function": "sanitize"
-			},
-			{
-				"regex": "prefix_(.*)_suffix",
-				"substitution": "$1"
-			}
-		]
-	}
-}
-```
-
-You can use [Regex 101](https://regex101.com/) to test your regexes and substitution strings. Make sure to select the "Java" flavor and the "Substitution" function in the left panel.
-
-Remember that unlike optifine, VCIT does not work by matching values, but by *transforming* raw data into a variant ID. Similarly, the regex here does not simply validate the name's format, it extracts a variant from the name, using _capturing groups_ and a _substitution_ string
-
-See also: [Regex-related Issues](https://github.com/Estecka/mc-Variants-CIT/issues?q=is%3Aissue%20label%3A%22regex%22)
-
-
-### Q: How do I use this or that component as the variant ID ?
-Check whether there is a [purpose-made module](./Module-Types) for your use case. Otherwise, use a [`component_data`](./Module-Types#component_data) module.
-
-See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#property-item_component)
-
-
-### Q: How can I use multiple components to build a variant ID ?
-Use a [`component_format`](./Module-Types#module-component_format) module instead of `component_data`.
-
-See also: [Item properties](./Item-Properties) and ['`item_component`' property](./Item-Properties#property-item_component)
-
-
-### Q: Add arbitrary checks or requirements.
-For checking some invariant data on an item, use the [`precondition`](./Module-Configuration#field-precondition) field of a module.
-
-For checking data that directly affects the item's variant, you may use a [`predicates`](./Module-Types#module-predicates) module type (if no other module matches your use-case).
-
-Example:
-```jsonc
-{
-	"modelPrefix": "enchanted_end_sword/",
-	"assetGen": "item_model/handheld",
-
-	// Invariant requirements do not affect which model is used, but are still required to apply a model at all.
-	"items": "diamond_sword",
-	"precondition": {
-		"custom_data.server_item_type": "END_SWORD"
-	},
-
-	// Case-by-case variants
 	"type": "predicates",
 	"parameters": {
 		"predicates": [
 			{
-				"variantId": "ascended",
-				"precondition": { "custom_data.ascended": 1 }
-			}
-			{
-				"variantId": "reforged",
-				"precondition": { "custom_data.reforged": 1 }
+				"modelId": "excalibur",
+				"precondition": {
+					"custom_data.id": "EXCALIBUR"
+				}
 			}
 		]
 	}
 }
 ```
 
-
-### Q: Using threshold values in `component_data`/`component_format`.
-**Not Supported.**
-
-Some other modules do support thresholds: [`component_threshold`](./Module-Types#module-component_threshold), [`item_count`](./Module-Types#module-item_count), [`enchantment_vector`](./Module-Types#module-enchantment_vector-stored_enchantment_vector), etc.
-
-If all else fail, you can also try using a [`predicates`](./Module-Types#module-predicates) module type.
+See also: [Item properties](./Item-Properties), [Precondition](./Precondition%20Cheat-Sheet)
 
 
-### Q: Variant based on text formatting.
-**Not supported.** Under consideration, but no ETA. Please open an issue describing your use cases, to help shape a potential upcoming feature.
-
-
-### Q: Changing the look of equipped armor.
-In short, add those fields to your modules:
+### Q: Can I change the look of equipped armor ?
+Yes. In short, add those fields to your modules:
 ```jsonc
 {
 	"hook": "equippable",
@@ -124,8 +69,32 @@ In short, add those fields to your modules:
 See [Equipable Modules](https://github.com/Estecka/mc-Variants-CIT/wiki/Equipped%20Armor) for detailled instructions.
 
 
-### Q: Changing the look of the trident's projectile.
+### Q: Can I change the look of the trident's projectile ?
 **Not supported.** Projectiles are rendered as entities, not as item stacks.
+
+
+### Q: Can I add arbitrary conditions to modules other than `predicates` ?
+Every module can have a `precondition` block at its root, which works similarly to the conditions used in `predicates` modules :
+```jsonc
+{
+	"item": "diamond_sword",
+	"precondition": {
+		"custom_data.server_item_type": "END_SWORD"
+	},
+
+	"modelPrefix": "enchanted_end_sword/",
+	"assetGen": "item_model/handheld",
+
+	"type": "enchantment"
+}
+```
+
+See also: [Precondition Cheat-Sheet](./Precondition%20Cheat-Sheet#cheat-sheet)
+
+
+### Q: Can I use threshold values in `component_data`/`component_format` ?
+**Not Supported.**
+Module types that do support thresholds are: [`component_threshold`](./Module-Types#module-component_threshold), [`durability`](./Module-Types#module-durability), [`item_count`](./Module-Types#module-item_count), [`enchantment`](./Module-Types#module-enchantment-stored_enchantment), [`enchantment_vector`](./Module-Types#module-enchantment_vector-stored_enchantment_vector)
 
 
 ### Q: Weapons/tools in the player's hand are held incorrectly, or do not have animations.
@@ -134,13 +103,12 @@ See "[Built-in Asset Generator Presets](./Asset-Generation#built-in-asset-genera
 
 For items with no animation, you can also use the simpler "[`modelParent`](./Module-Configuration#field-modelparent)" field instead of "`assetGen`".
 
-If no preset matches your item, you will need to provide your own item states. You can provide them directly as plain variant assets (see: [`modelPrefix`](./Module-Configuration#field-modelprefix)), or you can write a [custom asset generator](./Asset-Generation#custom-asset-generators) to write most of those assets for you. Either way, this requires a good understanding of how vanilla resource packs.
+If no preset matches your item, you will need to either provide your own JSON models, or write a [custom asset generator](./Asset-Generation#custom-asset-generators).
 
-Item states are a vanilla feature. If you have trouble getting item states to work, you can also try seeking help from other minecraft communities; they probably have more resources and will be more reactive than I.
-See also: [Item Model Definition](https://minecraft.wiki/w/Items_model_definition), [Item-states related issues](https://github.com/Estecka/mc-Variants-CIT/issues?q=is%3Aissue%20label%3Aitem-states)
+See also: [Understanding Asset-Generation](./Understanding-AssetGen), [Item Model Definition](https://minecraft.wiki/w/Items_model_definition), [Item-states related issues](https://github.com/Estecka/mc-Variants-CIT/issues?q=is%3Aissue%20label%3Aitem-states)
 
 
-### Q: Animated textures.
+### Q: How do I make animated textures ?
 Just use the vanilla format for your textures. This means putting all your frames in a single png, with a corresponding [`.png.mcmeta`](https://minecraft.wiki/w/Resource_pack#Texture_animation) file.
 
 If you have trouble getting vanilla animations to work, also try seeking help from other Minecraft communities; they probably have more resources and will be more reactive than I.
@@ -149,9 +117,9 @@ If you have trouble getting vanilla animations to work, also try seeking help fr
 ### Q: Missing models/textures (magenta checkerboard), but the models work in optifine.
 __**Do not use Optifine, Cit-Resewn, or Blockbench as indicators that your models are valid.**__
 
-Your json models probably rely on **features that are exclusive to optifine,** those models are not compatible with vanilla minecraft and need to be modified. Unlike Optifine, Variants-CIT does not change the inner-working of models; all it does is swap one model for another.
+Those models may still rely on **features that are exclusive to optifine,** and need to be modified so as to be compatible with Vanilla Minecraft.
 
-Known issues are:
+Known issues in optifine-formatted models are:
 - The resource location of models or textures [uses a bad formatting](https://github.com/Estecka/mc-Variants-CIT/issues/42#issuecomment-2746369948)
 - The assets are stored in an [invalid directory](https://github.com/Estecka/mc-Variants-CIT/issues/40#issuecomment-2711744555)
 
